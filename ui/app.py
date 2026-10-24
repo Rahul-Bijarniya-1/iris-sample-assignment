@@ -26,6 +26,7 @@ from components.site_intelligence_panel import render_site_intelligence
 # from components.map.legend import render_map_legend
 from components.site_score_panel import render_site_score
 from components.map.pydeck.map_legend import render_map_legend
+from site_intelligence_view import site_section
 import time
 
 page_start = time.perf_counter()
@@ -176,7 +177,7 @@ if st.session_state.selected_facility_id:
 render_site_intelligence(site_intelligence)
 
 render_site_score(
-    site_intelligence.get("site_score")
+    site_section(site_intelligence, "site_score")
 )
 
 render_market_intelligence(latest_news)
