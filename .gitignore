@@ -13,6 +13,11 @@ __pycache__/
 data/runs/
 data/current/
 
+# Acquired and derived datasets — large, reproducible from the pipeline.
+# Overpass alone is ~66 MB and the BORIS shapefile ~500 MB extracted.
+data/raw/
+data/processed/
+
 # Tooling scratch
 .pytest_cache/
 .ruff_cache/
