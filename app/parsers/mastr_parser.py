@@ -99,6 +99,10 @@ class MaStRParser:
                 "mastr",
             ),
 
+            country_code=record.get(
+                "country_code"
+            ),
+
             mastr_number=mastr_number,
 
             name=record.get(
