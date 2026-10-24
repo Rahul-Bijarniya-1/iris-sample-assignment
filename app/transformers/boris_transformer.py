@@ -47,6 +47,8 @@ class BorisTransformer:
 
     FILENAME = "BRW_2026.shp"
 
+    FALLBACK_ENCODING = "cp1252"
+
     def __init__(
         self,
         paths: DataPaths | None = None,
@@ -87,6 +89,39 @@ class BorisTransformer:
             self.paths.boris_processed
             / "land_values.geojson"
         )
+
+    # =====================================================
+    # ENCODING
+    # =====================================================
+
+    def _resolve_encoding(self) -> str:
+        """
+        Determine the .dbf text encoding.
+
+        The NRW download ships a .cpg sidecar naming the real encoding, and
+        the current export declares UTF-8. Reading it as cp1252 silently
+        mangles every umlaut, so the sidecar wins when present.
+
+        Older exports shipped without a .cpg and were cp1252, which is why
+        that remains the fallback rather than UTF-8.
+        """
+
+        cpg_file = self.input_file.with_suffix(".cpg")
+
+        if cpg_file.exists():
+
+            declared = (
+                cpg_file.read_text(
+                    encoding="ascii",
+                    errors="ignore",
+                )
+                .strip()
+            )
+
+            if declared:
+                return declared
+
+        return self.FALLBACK_ENCODING
 
     # =====================================================
     # TRANSFORM
@@ -171,7 +206,7 @@ class BorisTransformer:
 
         reader = shapefile.Reader(
             str(self.input_file),
-            encoding="cp1252",
+            encoding=self._resolve_encoding(),
         )
 
         fields = [
