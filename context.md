@@ -85,14 +85,25 @@ OPENAI_API_KEY=sk-...        # STILL A PLACEHOLDER — needed for the AI Advisor
 
 - Environment, migrations, tests: **working.**
 - **Defects: fixed.** Issues 1, 2, 3 and 6 below are closed with tests. See the branch.
-- Database: **all 7 `iris_core` tables still at 0 rows.** No data has ever loaded.
+- Database: **no longer empty.** `power_infrastructure` = 45,363 rows, `osm_infrastructure` = 481 rows.
+  The other 5 tables are still 0 — see the blocker table below.
+- Data on disk: 66 MB raw Overpass, 18 MB processed Overpass, 232 KB MaStR, 24 KB news.
 - One failed pipeline attempt staged at `data/runs/2026-10-24_144227/` →
   `run_status.json: {"status": "FAILED", "error": "429 ... datacentermap.com/germany/"}`. Left in place
   as evidence.
 - Dashboard: now loads against the empty database and renders "no data" states instead of crashing.
 
-**Net:** the code defects that blocked a working dashboard are fixed; **the remaining blocker is purely
-that no data has been acquired** (Issue 4, external rate limit).
+| Table | Rows | Blocker |
+|---|---|---|
+| `power_infrastructure` | 45,363 | — loaded |
+| `osm_infrastructure` | 481 | — loaded |
+| `facilities` | 0 | datacentermap 429 (Issue 4) |
+| `energy_assets` | 0 | **Issue 7** — loader unreachable; data is ready on disk |
+| `land_values` | 0 | **Issue 8** — no BORIS acquisition step, shapefile never shipped |
+| `news_articles` / `news_matches` | 0 | transitively need `facilities` |
+
+**Net:** infrastructure data is in and the Overpass path works end to end. The remaining gaps are one
+external rate limit (Issue 4), one missing input file (Issue 8), and one unwired loader (Issue 7).
 
 ---
 
@@ -173,6 +184,36 @@ one-shot country scrape.
 
 Phases 2–4 hit entirely different hosts (Overpass, MaStR, BORIS, RSS) and **have never been attempted.**
 
+### 7. `energy_assets` loader is unreachable from the pipeline — **OPEN, same bug as Issue 1**
+
+`app/loaders/energy_asset_loader.py` and `app/commands/load_energy_assets.py` both exist, and the MaStR
+chain (`mastr` → `mastr-parse` → `mastr-transform`) successfully produces
+`data/processed/mastr/power_generation.json`. But there is **no `energy-asset-load` command** — zero
+references to the loader anywhere in `app/runners/pipeline_runner.py` or any runner. `energy_assets` can
+therefore never be populated via `main.py`.
+
+This is the **identical defect to Issue 1**, which was fixed for facilities in `717a2e3`. The same remedy
+applies: add an `energy-asset-load` command, call it at the end of phase 2, and resolve its input through
+`DataPaths`. Data is already staged on disk, so this is the cheapest remaining win.
+
+### 8. BORIS has no acquisition step — **OPEN, needs an external file**
+
+The pipeline exposes `boris-transform` and `boris-enricher` but nothing that *fetches* BORIS data.
+`boris-transform` fails immediately:
+
+```
+FileNotFoundError: BORIS shapefile not found: data/raw/boris/BRW_2026.shp
+```
+
+The repo ships no such shapefile and no step downloads one, so `land_values` is unreachable without
+manually obtaining `BRW_2026.shp` from the NRW BORIS land-value portal. **Ask Amauri for this file.**
+
+### 9. MaStR scraper is capped at 100 records — **OPEN, by design?**
+
+`app/scrapers/mastr/mastr_scraper.py:57-58` hardcodes `max_pages: int = 5, page_size: int = 20`, so a
+full run yields exactly 100 records from a national registry holding millions. Looks like a demo/sample
+limit rather than a defect, but it means "Data Collection — Completed" in the README overstates MaStR.
+
 ### 5. `DataPaths` convention violations — **mostly not a defect**
 
 Corrected from the earlier reading of this file. `app/config/paths.py` says all ETL components should use
@@ -244,11 +285,15 @@ phase fails. Individual commands run without a RunContext and use the flat `data
 
 Direction A (fix the defects as the deliverable) is **complete**. What remains:
 
-**Get data flowing — the only thing still blocking a working dashboard**
-- [ ] Ask Amauri for a DB dump, or for a cached `data/raw/datacentermap/de.json` to seed past the 429
-- [ ] Or try Phases 2–4 independently — different hosts, unaffected by the datacentermap.com 429
-      *(ask the user before running: live external requests)*
-- [ ] Or retry Phase 1 later and let the new `facility-load` step populate the table
+**Get data flowing**
+- [x] ~~Try Phases 2–4 independently~~ — **done 2026-10-24.** Overpass worked end to end (45,363 power
+      + 481 telecom rows in the DB). MaStR acquired but unloadable (Issue 7). BORIS blocked (Issue 8).
+      News acquired but blocked behind `facilities`.
+- [ ] **Wire `energy-asset-load` (Issue 7)** — cheapest remaining win; the data is already on disk
+- [ ] **Ask Amauri for `BRW_2026.shp`** (Issue 8) to unlock `land_values`
+- [ ] Ask Amauri for a DB dump, or a cached `data/raw/datacentermap/de.json` to seed past the 429
+- [ ] Retry Phase 1 later — the 429 was still active 7.6 h after the first hit, so the window is long
+      (possibly 24 h). Once facilities land, `entity-matcher` → `news-load` unblocks too.
 - [ ] Put a real `OPENAI_API_KEY` in `.env` — required for the AI Advisor
 - [ ] Once facilities exist, confirm the dashboard renders end to end with real data
 
