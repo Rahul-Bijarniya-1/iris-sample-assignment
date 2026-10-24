@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+
+# Environment — never commit real credentials
+.env
+.env.*
+!.env.example
+
+# Pipeline run output (generated, run-scoped, large)
+data/runs/
+data/current/
+
+# Tooling scratch
+.pytest_cache/
+.ruff_cache/
+.superpowers/

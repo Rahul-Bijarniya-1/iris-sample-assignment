@@ -38,3 +38,17 @@ dependencies = [
     "streamlit-folium>=0.27.3",
     "streamlit-option-menu>=0.4.0",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+# Only collect the real suite. Root-level test_*.py files are ad-hoc scripts
+# that execute database queries at import time.
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "integration: requires a live PostgreSQL server on localhost:5433",
+]
