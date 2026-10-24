@@ -11,13 +11,17 @@ Last updated: **2026-10-24** · Last verified against live code + DB: **2026-10-
 
 1. Read this whole file. It supersedes the README for project *state*; the README is now correct for
    setup and pipeline usage (it was rewritten this session — see Issue 6).
-2. **Work is on branch `fix/pipeline-defects`, 6 commits ahead of `main`.** Not merged, not pushed.
-   `main` is still the single squashed `76d448e Iris-Sample`.
+2. **Work is on `main`, 7 commits, pushed to a private repo of the user's own.**
+   `fix/pipeline-defects` no longer exists — its 6 commits now sit directly on `main`, plus this file.
+   Remotes: `origin` → **`Rahul-Bijarniya-1/iris-sample-assignment` (private)**, `upstream` →
+   `amaurisantosjr/iris-sample` (public, **READ access only — you cannot push there**).
+   `upstream/main` is still the single squashed `76d448e Iris-Sample`.
 3. **Do not trust `pipeline_context.md`** — a stale code dump. It now carries a warning header saying so.
 4. Re-verify state before acting on it — claims below were true on the date above:
    ```bash
    cd ~/Assignment/iris-sample
-   git log --oneline main..HEAD                             # expect 6 commits
+   git log --oneline upstream/main..HEAD                    # expect 7 commits
+   git status -sb                                           # expect main...origin/main, in sync
    uv run pytest                                            # expect 20 passed
    uv run alembic current                                   # expect b18ad888465f (head)
    psql -h localhost -p 5433 -U postgres -d nrw_dc_bi -c "
@@ -92,7 +96,7 @@ that no data has been acquired** (Issue 4, external rate limit).
 
 ---
 
-## Branch `fix/pipeline-defects`
+## Commits on `main` (pushed to `origin`)
 
 | Commit | What |
 |---|---|
@@ -102,6 +106,7 @@ that no data has been acquired** (Issue 4, external rate limit).
 | `43605a7` | guard the site score lookup on the dashboard (Issue 3) |
 | `528960a` | document the data pipeline, fix README defects (Issue 6) |
 | `5665ed6` | derive test DB server from `DATABASE_URL` |
+| `66bc109` | add this handoff document |
 
 Test suite (20 tests, `tests/`):
 
@@ -226,6 +231,12 @@ phase fails. Individual commands run without a RunContext and use the flat `data
   `data/processed/...`, so after a staged run promoted to `data/current/` it can fail with
   FileNotFoundError. Pre-existing for all 23 steps; changing it would alter every step.
 - The final code review this session was a **self-review**, not a fresh reviewer. Weigh that before merge.
+- The work was pushed to a **private repo under the user's own account**
+  (`Rahul-Bijarniya-1/iris-sample-assignment`) rather than a fork, accepting the loss of visible
+  lineage in exchange for not publishing the solution where it could serve as an answer key for future
+  candidates. `upstream` was kept so the original remains reachable for pulling or a later fork/PR.
+- `context.md` is now **tracked and committed** (`66bc109`). It contains candid internal notes; keep that
+  in mind if the repo visibility ever changes or it is shared with Amauri.
 
 ---
 
@@ -247,9 +258,12 @@ Direction A (fix the defects as the deliverable) is **complete**. What remains:
 - [ ] `app/commands/load_facilities.py` is a dead near-duplicate wrapper around `FacilityLoader`
 
 **Decide**
-- [ ] Whether to merge `fix/pipeline-defects` into `main`, and whether a fresh code review is wanted first
-- [ ] Whether to report the migration bug and missing docs to Amauri as findings (there is no upstream
-      remote to open a PR against — `main` is one squashed commit)
+- [ ] **Confirm the submission channel with Amauri** — the repo contains no submission instructions, and
+      the brief lives outside it. This is time-sensitive against the 48h window.
+- [ ] Whether a fresh (non-self) code review is wanted before submitting
+- [ ] How to report the migration bug and missing docs to Amauri. A PR requires a **fork** —
+      `upstream` grants READ only, so no branch can be pushed there. Note a fork of a public repo
+      cannot be made private, which is why the private copy was chosen over forking.
 
 **Always**
 - [ ] Update this file at the end of each session: refresh the "Last verified" date, move items between
