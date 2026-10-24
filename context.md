@@ -22,11 +22,11 @@ Last updated: **2026-10-24** · Last verified against live code + DB: **2026-10-
    cd ~/Assignment/iris-sample
    git log --oneline upstream/main..HEAD                    # expect 7 commits
    git status -sb                                           # expect main...origin/main, in sync
-   uv run pytest                                            # expect 20 passed
+   uv run pytest                                            # expect 25 passed
    uv run alembic current                                   # expect b18ad888465f (head)
    psql -h localhost -p 5433 -U postgres -d nrw_dc_bi -c "
      select relname, n_live_tup from pg_stat_user_tables
-     where schemaname='iris_core' order by relname;"         # all still 0 rows
+     where schemaname='iris_core' order by relname;"         # power 45363, osm 481, energy 100
    ```
 5. **Guardrail:** do not run the full data pipeline (`main.py all`) without asking the user first. It
    makes many live external requests, takes a long time, and has already triggered one rate-limit ban.
@@ -68,7 +68,7 @@ Key files: `app/runners/` (one runner per step — the real entry points), `app/
 | App schema | `iris_core` (7 tables) |
 | Python | 3.12 via `uv`, `.venv` at repo root |
 | Alembic head | `b18ad888465f` — all 14 migrations applied |
-| Tests | pytest, 20 tests, `uv run pytest` |
+| Tests | pytest, 25 tests, `uv run pytest` |
 
 `.env` at repo root uses a **single `DATABASE_URL`**, not split `POSTGRES_*` vars —
 `app/database/session.py` and `alembic/env.py` both only read `DATABASE_URL`. `.env.example` now exists
@@ -84,7 +84,7 @@ OPENAI_API_KEY=sk-...        # STILL A PLACEHOLDER — needed for the AI Advisor
 ## Verified current state
 
 - Environment, migrations, tests: **working.**
-- **Defects: fixed.** Issues 1, 2, 3 and 6 below are closed with tests. See the branch.
+- **Defects: fixed.** Issues 1, 2, 3, 6, 7 and 10 below are closed with tests.
 - Database: **no longer empty.** `power_infrastructure` = 45,363 rows, `osm_infrastructure` = 481 rows.
   The other 5 tables are still 0 — see the blocker table below.
 - Data on disk: 66 MB raw Overpass, 18 MB processed Overpass, 232 KB MaStR, 24 KB news.
@@ -98,12 +98,13 @@ OPENAI_API_KEY=sk-...        # STILL A PLACEHOLDER — needed for the AI Advisor
 | `power_infrastructure` | 45,363 | — loaded |
 | `osm_infrastructure` | 481 | — loaded |
 | `facilities` | 0 | datacentermap 429 (Issue 4) |
-| `energy_assets` | 0 | **Issue 7** — loader unreachable; data is ready on disk |
+| `energy_assets` | 100 | — loaded (Issues 7 + 10 fixed) |
 | `land_values` | 0 | **Issue 8** — no BORIS acquisition step, shapefile never shipped |
 | `news_articles` / `news_matches` | 0 | transitively need `facilities` |
 
-**Net:** infrastructure data is in and the Overpass path works end to end. The remaining gaps are one
-external rate limit (Issue 4), one missing input file (Issue 8), and one unwired loader (Issue 7).
+**Net:** infrastructure and energy data are in; the Overpass and MaStR paths both work end to end. The
+remaining gaps are one external rate limit (Issue 4) and one missing input file (Issue 8) — both external
+dependencies, not code defects.
 
 ---
 
@@ -118,12 +119,18 @@ external rate limit (Issue 4), one missing input file (Issue 8), and one unwired
 | `528960a` | document the data pipeline, fix README defects (Issue 6) |
 | `5665ed6` | derive test DB server from `DATABASE_URL` |
 | `66bc109` | add this handoff document |
+| `69394f0` | update handoff doc for the move to a private origin |
+| `fd6b9cd` | record Phase 2 load results and Issues 7–9 |
+| `89030ff` | wire energy asset loading into the pipeline (Issue 7) |
+| `aae15a0` | keep `country_code` through MaStR parsing (Issue 10) |
 
-Test suite (20 tests, `tests/`):
+Test suite (25 tests, `tests/`):
 
 - `test_migration_chain.py` — `alembic upgrade head` on a genuinely fresh DB
 - `test_facility_load_wiring.py` — `facility-load` is a command, phase 1 calls it, path comes from DataPaths
 - `test_facility_loading.py` — facilities actually land in `iris_core.facilities`, idempotently, with PostGIS geometry
+- `test_energy_asset_load_wiring.py` — `energy-asset-load` is a command, phase 2 calls it after `mastr-transform`
+- `test_mastr_parsing.py` — `country_code` survives parsing (Issue 10 regression guard)
 - `test_dashboard_site_sections.py` — the missing-intelligence path
 - `test_db_config.py` — the suite follows `DATABASE_URL`
 
@@ -184,7 +191,7 @@ one-shot country scrape.
 
 Phases 2–4 hit entirely different hosts (Overpass, MaStR, BORIS, RSS) and **have never been attempted.**
 
-### 7. `energy_assets` loader is unreachable from the pipeline — **OPEN, same bug as Issue 1**
+### 7. `energy_assets` loader is unreachable from the pipeline — **FIXED** (`89030ff`)
 
 `app/loaders/energy_asset_loader.py` and `app/commands/load_energy_assets.py` both exist, and the MaStR
 chain (`mastr` → `mastr-parse` → `mastr-transform`) successfully produces
@@ -192,9 +199,23 @@ chain (`mastr` → `mastr-parse` → `mastr-transform`) successfully produces
 references to the loader anywhere in `app/runners/pipeline_runner.py` or any runner. `energy_assets` can
 therefore never be populated via `main.py`.
 
-This is the **identical defect to Issue 1**, which was fixed for facilities in `717a2e3`. The same remedy
-applies: add an `energy-asset-load` command, call it at the end of phase 2, and resolve its input through
-`DataPaths`. Data is already staged on disk, so this is the cheapest remaining win.
+This was the **identical defect to Issue 1**, fixed for facilities in `717a2e3`.
+
+Fixed the same way: added an `energy-asset-load` command called at the end of `phase_2`, plus a
+`LoadEnergyAssetsCommand` resolving its input through `DataPaths`. `EnergyAssetLoader` needed no changes —
+already an idempotent upsert on `mastr_number`. Covered by `tests/test_energy_asset_load_wiring.py`.
+
+**`energy_assets` now holds 100 rows**, verified idempotent across two runs.
+
+### 10. `MaStRParser` dropped `country_code` — **FIXED** (`aae15a0`)
+
+Surfaced only once Issue 7 made the loader reachable. `energy_assets.country_code` is `String(2)`
+`NOT NULL` and every record in `processed/mastr/power_generation.json` carries `"DE"`, but
+`MaStRParser._build_entity` never passed it to `EnergyAsset`. The load aborted on the first batch with
+`psycopg.errors.NotNullViolation`, leaving the table empty.
+
+One-line fix, covered by `tests/test_mastr_parsing.py`. Worth noting as a lesson: Issue 7 looked like a
+pure wiring bug, but unreachable code had been hiding a second defect behind it.
 
 ### 8. BORIS has no acquisition step — **OPEN, needs an external file**
 
@@ -289,7 +310,7 @@ Direction A (fix the defects as the deliverable) is **complete**. What remains:
 - [x] ~~Try Phases 2–4 independently~~ — **done 2026-10-24.** Overpass worked end to end (45,363 power
       + 481 telecom rows in the DB). MaStR acquired but unloadable (Issue 7). BORIS blocked (Issue 8).
       News acquired but blocked behind `facilities`.
-- [ ] **Wire `energy-asset-load` (Issue 7)** — cheapest remaining win; the data is already on disk
+- [x] ~~Wire `energy-asset-load` (Issue 7)~~ — **done**, and it exposed Issue 10 underneath
 - [ ] **Ask Amauri for `BRW_2026.shp`** (Issue 8) to unlock `land_values`
 - [ ] Ask Amauri for a DB dump, or a cached `data/raw/datacentermap/de.json` to seed past the 429
 - [ ] Retry Phase 1 later — the 429 was still active 7.6 h after the first hit, so the window is long
