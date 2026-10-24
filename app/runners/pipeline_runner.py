@@ -32,6 +32,10 @@ from app.runners.facility_geo_transform_runner import (
     run as run_facility_geo_transform,
 )
 
+from app.runners.facility_load_runner import (
+    run as run_facility_load,
+)
+
 # ==========================================================
 # OVERPASS
 # ==========================================================
@@ -178,6 +182,10 @@ class PipelineRunner:
 
             "facility-geo-transform": (
                 self.facility_geo_transform
+            ),
+
+            "facility-load": (
+                self.facility_load
             ),
 
             "overpass": self.overpass,
@@ -473,6 +481,28 @@ class PipelineRunner:
         else:
 
             run_facility_geo_transform()
+
+    # ======================================================
+    # FACILITY LOAD
+    # ======================================================
+
+    def facility_load(self):
+
+        print(
+            "▶ Loading Facilities..."
+        )
+
+        paths = self.get_paths()
+
+        if paths:
+
+            run_facility_load(
+                paths=paths,
+            )
+
+        else:
+
+            run_facility_load()
 
     # ======================================================
     # OVERPASS
@@ -1057,6 +1087,8 @@ class PipelineRunner:
         self.transform()
 
         self.facility_geo_transform()
+
+        self.facility_load()
 
         print(
             "\n[Phase 1] Completed"
