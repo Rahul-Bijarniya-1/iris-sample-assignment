@@ -68,6 +68,10 @@ from app.runners.mastr_transform_runner import (
     run as run_mastr_transform,
 )
 
+from app.runners.energy_asset_load_runner import (
+    run as run_energy_asset_load,
+)
+
 # ==========================================================
 # POWER
 # ==========================================================
@@ -206,6 +210,10 @@ class PipelineRunner:
 
             "mastr-transform": (
                 self.mastr_transform
+            ),
+
+            "energy-asset-load": (
+                self.energy_asset_load
             ),
 
             "power-enricher": (
@@ -633,6 +641,26 @@ class PipelineRunner:
             run_mastr_transform(
                 country_code=self.country_code,
             )
+
+    # ======================================================
+
+    def energy_asset_load(self):
+
+        print(
+            "▶ Loading Energy Assets..."
+        )
+
+        paths = self.get_paths()
+
+        if paths:
+
+            run_energy_asset_load(
+                paths=paths,
+            )
+
+        else:
+
+            run_energy_asset_load()
 
     # ======================================================
     # POWER
@@ -1117,6 +1145,8 @@ class PipelineRunner:
         self.mastr_transform()
 
         self.boris_transform()
+
+        self.energy_asset_load()
 
         print(
             "\n[Phase 2] Completed"
