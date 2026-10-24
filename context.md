@@ -11,8 +11,8 @@ Last updated: **2026-10-24** · Last verified against live code + DB: **2026-10-
 
 1. Read this whole file. It supersedes the README for project *state*; the README is now correct for
    setup and pipeline usage (it was rewritten this session — see Issue 6).
-2. **Work is on `main`, 7 commits, pushed to a private repo of the user's own.**
-   `fix/pipeline-defects` no longer exists — its 6 commits now sit directly on `main`, plus this file.
+2. **Work is on `main`, 15 commits, pushed to a private repo of the user's own.**
+   `fix/pipeline-defects` no longer exists — its 6 commits now sit directly on `main`.
    Remotes: `origin` → **`Rahul-Bijarniya-1/iris-sample-assignment` (private)**, `upstream` →
    `amaurisantosjr/iris-sample` (public, **READ access only — you cannot push there**).
    `upstream/main` is still the single squashed `76d448e Iris-Sample`.
@@ -20,18 +20,19 @@ Last updated: **2026-10-24** · Last verified against live code + DB: **2026-10-
 4. Re-verify state before acting on it — claims below were true on the date above:
    ```bash
    cd ~/Assignment/iris-sample
-   git log --oneline upstream/main..HEAD                    # expect 7 commits
+   git log --oneline upstream/main..HEAD                    # expect 15 commits
    git status -sb                                           # expect main...origin/main, in sync
-   uv run pytest                                            # expect 25 passed
+   uv run pytest                                            # expect 27 passed
    uv run alembic current                                   # expect b18ad888465f (head)
    psql -h localhost -p 5433 -U postgres -d nrw_dc_bi -c "
      select relname, n_live_tup from pg_stat_user_tables
-     where schemaname='iris_core' order by relname;"         # power 45363, osm 481, energy 100
+     where schemaname='iris_core' order by relname;"         # all 7 tables populated
    ```
 5. **Guardrail:** do not run the full data pipeline (`main.py all`) without asking the user first. It
    makes many live external requests, takes a long time, and has already triggered one rate-limit ban.
 6. Time constraint: 48-hour take-home. Exact deadline not recorded — confirm with the user if it
-   affects prioritisation. Contact for scope questions / data: **Amauri**.
+   affects prioritisation. **Amauri is not reachable** — do not plan around asking him for data or
+   scope decisions; both external data blockers were resolved independently (Issues 4 and 8).
 
 ---
 
@@ -68,7 +69,7 @@ Key files: `app/runners/` (one runner per step — the real entry points), `app/
 | App schema | `iris_core` (7 tables) |
 | Python | 3.12 via `uv`, `.venv` at repo root |
 | Alembic head | `b18ad888465f` — all 14 migrations applied |
-| Tests | pytest, 25 tests, `uv run pytest` |
+| Tests | pytest, 27 tests, `uv run pytest` |
 
 `.env` at repo root uses a **single `DATABASE_URL`**, not split `POSTGRES_*` vars —
 `app/database/session.py` and `alembic/env.py` both only read `DATABASE_URL`. `.env.example` now exists
@@ -84,27 +85,34 @@ OPENAI_API_KEY=sk-...        # STILL A PLACEHOLDER — needed for the AI Advisor
 ## Verified current state
 
 - Environment, migrations, tests: **working.**
-- **Defects: fixed.** Issues 1, 2, 3, 6, 7 and 10 below are closed with tests.
-- Database: **no longer empty.** `power_infrastructure` = 45,363 rows, `osm_infrastructure` = 481 rows.
-  The other 5 tables are still 0 — see the blocker table below.
-- Data on disk: 66 MB raw Overpass, 18 MB processed Overpass, 232 KB MaStR, 24 KB news.
+- **Defects: fixed.** Issues 1, 2, 3, 6, 7, 10, 11 and 12 below are closed with tests.
+- Database: **all 7 tables populated** — see the table below.
+- Data on disk (~500 MB, all gitignored): 420 MB BORIS shapefile, 66 MB raw Overpass, 18 MB processed
+  Overpass, 232 KB MaStR, 24 KB news.
 - One failed pipeline attempt staged at `data/runs/2026-10-24_144227/` →
   `run_status.json: {"status": "FAILED", "error": "429 ... datacentermap.com/germany/"}`. Left in place
   as evidence.
-- Dashboard: now loads against the empty database and renders "no data" states instead of crashing.
+- Dashboard: **runs end to end against real data.** `uv run python ui/app.py` (bare mode) exits 0.
+  Verify this way, not with `streamlit run` + HTTP 200 — see the note under Issue 3.
 
-| Table | Rows | Blocker |
+| Table | Rows | Source |
 |---|---|---|
-| `power_infrastructure` | 45,363 | — loaded |
-| `osm_infrastructure` | 481 | — loaded |
-| `facilities` | 0 | datacentermap 429 (Issue 4) |
-| `energy_assets` | 100 | — loaded (Issues 7 + 10 fixed) |
-| `land_values` | 0 | **Issue 8** — no BORIS acquisition step, shapefile never shipped |
-| `news_articles` / `news_matches` | 0 | transitively need `facilities` |
+| `land_values` | 61,916 | BORIS NRW open data (Issue 8) |
+| `power_infrastructure` | 45,363 | Overpass |
+| `osm_infrastructure` | 481 | Overpass |
+| `facilities` | 223 | **OpenStreetMap fallback, not datacentermap** (Issue 4) |
+| `energy_assets` | 100 | MaStR (capped — Issue 9) |
+| `news_articles` | 40 | DataCenter-Insider RSS |
+| `news_matches` | 1 | entity matcher (Issue 12) |
 
-**Net:** infrastructure and energy data are in; the Overpass and MaStR paths both work end to end. The
-remaining gaps are one external rate limit (Issue 4) and one missing input file (Issue 8) — both external
-dependencies, not code defects.
+**All seven tables are populated and the full stack runs end to end.** `ui/app.py` in bare mode exits 0
+and computes real composite scores (e.g. `overall_score: 47, rating: Moderate`) with working news
+intelligence.
+
+**The one caveat that matters:** `facilities` is **OpenStreetMap-derived, not datacentermap**. See Issue 4.
+It is a deliberate, documented substitute so the rest of the pipeline could be exercised; it carries far
+fewer attributes than datacentermap (no power capacity, no floor space). Replace it with a real Phase 1
+run when datacentermap is reachable — the loader upserts and the id spaces are disjoint.
 
 ---
 
@@ -123,14 +131,20 @@ dependencies, not code defects.
 | `fd6b9cd` | record Phase 2 load results and Issues 7–9 |
 | `89030ff` | wire energy asset loading into the pipeline (Issue 7) |
 | `aae15a0` | keep `country_code` through MaStR parsing (Issue 10) |
+| `480f831` | ignore acquired/derived datasets in git |
+| `0cc062b` | read BORIS in the encoding its `.cpg` declares (Issue 11) |
+| `1027fa2` | flush articles before resolving news matches (Issue 12) |
+| `6715236` | OpenStreetMap fallback for facility acquisition (Issue 4) |
 
-Test suite (25 tests, `tests/`):
+Test suite (27 tests, `tests/`):
 
 - `test_migration_chain.py` — `alembic upgrade head` on a genuinely fresh DB
 - `test_facility_load_wiring.py` — `facility-load` is a command, phase 1 calls it, path comes from DataPaths
 - `test_facility_loading.py` — facilities actually land in `iris_core.facilities`, idempotently, with PostGIS geometry
 - `test_energy_asset_load_wiring.py` — `energy-asset-load` is a command, phase 2 calls it after `mastr-transform`
 - `test_mastr_parsing.py` — `country_code` survives parsing (Issue 10 regression guard)
+- `test_boris_encoding.py` — umlauts survive the shapefile read (Issue 11 regression guard)
+- `test_news_match_loading.py` — a match loads on the *first* run (Issue 12 regression guard)
 - `test_dashboard_site_sections.py` — the missing-intelligence path
 - `test_db_config.py` — the suite follows `DATABASE_URL`
 
@@ -178,7 +192,26 @@ script against the empty DB: exit 0 with the guard, original AttributeError with
 > serves the page shell over HTTP and runs the script only when a websocket session connects — the server
 > came up clean while this bug was live. Run the script directly in bare mode instead.
 
-### 4. `main.py all` aborts on a live-scraping rate limit — **STILL OPEN**
+### 4. `main.py all` aborts on a live-scraping rate limit — **WORKED AROUND, root cause still open**
+
+**Status 2026-10-24 23:30:** still 429 after **~9 hours**. Probe it in one second instead of paying the
+8-minute retry cycle:
+
+```bash
+curl -sI -A "Mozilla/5.0" https://www.datacentermap.com/germany/ | head -1
+```
+
+**Worked around** by `scripts/build_facilities_from_osm.py`, which builds an equivalent dataset from
+Overpass (`telecom=data_center`, 268 elements in Germany → 223 named facilities with coordinates) in the
+shape `FacilityParser` expects. That unblocked the entire downstream chain: geo-transform → power
+enricher → BORIS enricher → site score → entity matcher → news load.
+
+**This is a substitute, not a fix.** OSM carries no power capacity, floor space or operator detail. When
+datacentermap is reachable, run the real Phase 1: `FacilityLoader` upserts on `source_id` and the
+generated ids are offset into a disjoint space, so the two coexist.
+
+Original diagnosis follows.
+
 
 Phase 1's country scraper hit `429 Too Many Requests` on `https://www.datacentermap.com/germany/`,
 retried 3× with backoff (~7.7 min), then aborted cleanly without promoting. Not a code bug.
@@ -217,7 +250,28 @@ Surfaced only once Issue 7 made the loader reachable. `energy_assets.country_cod
 One-line fix, covered by `tests/test_mastr_parsing.py`. Worth noting as a lesson: Issue 7 looked like a
 pure wiring bug, but unreachable code had been hiding a second defect behind it.
 
-### 8. BORIS has no acquisition step — **OPEN, needs an external file**
+### 11. BORIS shapefile read in the wrong encoding — **FIXED** (`0cc062b`)
+
+`boris_transformer.py` hardcoded `encoding="cp1252"` while the NRW download ships a `.cpg` sidecar
+declaring UTF-8. pyshp *warns* about the mismatch instead of failing, so it went unnoticed: 15,939 of
+61,916 rows landed with mojibake names ("Köln" → "KÃ¶ln"). Zero rows had correct umlauts.
+
+Fixed by reading the `.cpg` when present, keeping cp1252 as the fallback for older exports that ship
+without one. Covered by `tests/test_boris_encoding.py`. Reloaded: mojibake count is now 0.
+
+### 12. News matches never loaded on a first run — **FIXED** (`1027fa2`)
+
+`NewsLoader.execute()` adds articles to the session, then resolves each match's article by URL.
+`SessionLocal` sets `autoflush=False` (`app/database/session.py:18`), so those articles were still
+pending and invisible to the lookup — every match was skipped and `news_matches` stayed empty.
+
+The articles commit at the end of the run, so running the step a *second* time did load the matches.
+That masked the bug in manual testing while leaving a one-shot `main.py all` with zero matches.
+
+Fixed with `session.flush()` between the two phases — inside the existing transaction, so rollback
+semantics are unchanged. Covered by `tests/test_news_match_loading.py`.
+
+### 8. BORIS has no acquisition step — **RESOLVED** (data acquired manually)
 
 The pipeline exposes `boris-transform` and `boris-enricher` but nothing that *fetches* BORIS data.
 `boris-transform` fails immediately:
@@ -226,8 +280,24 @@ The pipeline exposes `boris-transform` and `boris-enricher` but nothing that *fe
 FileNotFoundError: BORIS shapefile not found: data/raw/boris/BRW_2026.shp
 ```
 
-The repo ships no such shapefile and no step downloads one, so `land_values` is unreachable without
-manually obtaining `BRW_2026.shp` from the NRW BORIS land-value portal. **Ask Amauri for this file.**
+The repo ships no such shapefile and no step downloads one. **Resolved without Amauri:** BORIS NRW is
+open data under *Datenlizenz Deutschland – Zero – 2.0* (unrestricted use, including commercial).
+
+```bash
+curl -O https://www.opengeodata.nrw.de/produkte/infrastruktur_bauen_wohnen/boris/BRW/BRW_EPSG25832_Shape.zip
+unzip -d data/raw/boris/ BRW_EPSG25832_Shape.zip
+cd data/raw/boris && for e in shp dbf shx prj cpg; do mv BRW_2026_Polygon.$e BRW_2026.$e; done
+```
+
+Two gotchas worth recording:
+
+- The year-stamped archives stop at **`BRW_2025`**. The 2026 data lives only in the rolling
+  `BRW_EPSG25832_Shape.zip`, which contains `BRW_2026_Polygon.*`.
+- NRW names it **`BRW_2026_Polygon.shp`**, the transformer expects **`BRW_2026.shp`** — hence the rename.
+  The original author evidently did this by hand; nothing in the repo records it.
+
+A real fix would add a `boris` acquisition step, or make `FILENAME` tolerate the `_Polygon` suffix.
+Deliberately not done — it is new functionality, not a defect, and the data is now in place.
 
 ### 9. MaStR scraper is capped at 100 records — **OPEN, by design?**
 
@@ -304,19 +374,25 @@ phase fails. Individual commands run without a RunContext and use the flat `data
 
 ## Next steps
 
-Direction A (fix the defects as the deliverable) is **complete**. What remains:
+**Data: done.** All 7 tables are populated and the stack runs end to end. What remains is replacing the
+substitute facilities with the real ones.
 
-**Get data flowing**
-- [x] ~~Try Phases 2–4 independently~~ — **done 2026-10-24.** Overpass worked end to end (45,363 power
-      + 481 telecom rows in the DB). MaStR acquired but unloadable (Issue 7). BORIS blocked (Issue 8).
-      News acquired but blocked behind `facilities`.
-- [x] ~~Wire `energy-asset-load` (Issue 7)~~ — **done**, and it exposed Issue 10 underneath
-- [ ] **Ask Amauri for `BRW_2026.shp`** (Issue 8) to unlock `land_values`
-- [ ] Ask Amauri for a DB dump, or a cached `data/raw/datacentermap/de.json` to seed past the 429
-- [ ] Retry Phase 1 later — the 429 was still active 7.6 h after the first hit, so the window is long
-      (possibly 24 h). Once facilities land, `entity-matcher` → `news-load` unblocks too.
-- [ ] Put a real `OPENAI_API_KEY` in `.env` — required for the AI Advisor
-- [ ] Once facilities exist, confirm the dashboard renders end to end with real data
+- [ ] **Replace OSM facilities with datacentermap** once the 429 lifts. Probe with the one-second curl in
+      Issue 4; when it returns 200, run `country` → `markets` → `facilities` → `merge` → `transform` →
+      `facility-geo-transform` → `facility-load`, then re-run Phase 3 and the news chain. The loader
+      upserts and the id spaces are disjoint, so nothing needs deleting first.
+- [ ] Put a real `OPENAI_API_KEY` in `.env` — still the literal placeholder `sk-...`, so the AI Advisor
+      cannot run at all.
+- [ ] Consider a fresh (non-self) code review before submitting — `/code-review`.
+
+**README accuracy — unreported findings.** The README's status list is wrong in both directions:
+- Overclaims **RAG as complete** — there is no retrieval machinery anywhere (no embeddings, vectors,
+  pgvector, FAISS, cosine similarity), only SQL results stuffed into a prompt.
+- Underclaims **Intent Detection** and **Tool Routing** as "In Progress" — both are fully implemented
+  (12-member `AIIntent` enum, keyword scoring, a 12-branch dispatch at
+  `app/services/ai_advisor_service.py:436-545`).
+- Contradicts itself: line 91 marks "Context-aware Responses" complete, line 518 lists it In Progress.
+- **LangGraph** is listed In Progress but is entirely absent — not in `pyproject.toml`, not installed.
 
 **Deferred minors (deliberately not done)**
 - [ ] README doesn't mention `uv run pytest -m "not integration"` for running without a database
@@ -324,12 +400,11 @@ Direction A (fix the defects as the deliverable) is **complete**. What remains:
 - [ ] `app/commands/load_facilities.py` is a dead near-duplicate wrapper around `FacilityLoader`
 
 **Decide**
-- [ ] **Confirm the submission channel with Amauri** — the repo contains no submission instructions, and
-      the brief lives outside it. This is time-sensitive against the 48h window.
-- [ ] Whether a fresh (non-self) code review is wanted before submitting
-- [ ] How to report the migration bug and missing docs to Amauri. A PR requires a **fork** —
-      `upstream` grants READ only, so no branch can be pushed there. Note a fork of a public repo
-      cannot be made private, which is why the private copy was chosen over forking.
+- [ ] How to submit. **Amauri is not reachable** (user's call, 2026-10-24), so the blockers were resolved
+      independently rather than by asking. The repo carries no submission instructions and `upstream`
+      grants READ only, so a PR would require a fork — and a fork of a public repo cannot be made
+      private, which is why the private copy was chosen.
+- [ ] Whether to surface the README-accuracy findings above as part of the deliverable.
 
 **Always**
 - [ ] Update this file at the end of each session: refresh the "Last verified" date, move items between
