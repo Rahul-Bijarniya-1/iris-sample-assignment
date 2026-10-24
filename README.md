@@ -11,16 +11,14 @@ Built with **Python**, **PostgreSQL/PostGIS**, **GeoPandas**, **PyDeck**, **Stre
 ## Table of Contents
 
 - [Overview](#overview)
-- [Dashboard Preview](#dashboard-preview)
 - [Key Features](#key-features)
 - [System Architecture](#system-architecture)
-- [How It Works](#how-it-works)
 - [Dashboard Modules](#dashboard-modules)
 - [AI Advisor](#ai-advisor)
 - [Technology Stack](#technology-stack)
 - [Project Structure](#project-structure)
 - [Installation](#installation)
-- [Running the Dashboard](#running-the-dashboard)
+- [Data Pipeline](#data-pipeline)
 - [Project Status](#current-project-status)
 - [Roadmap](#roadmap)
 - [Vision](#vision)
@@ -148,54 +146,6 @@ H --> I
 
 I --> J
 ```
-```
-
-┌──────────────────────┐
-│ External Data Sources│
-└──────────┬───────────┘
-           │
-           ▼
-┌──────────────────────┐
-│    ETL Pipelines     │
-└──────────┬───────────┘
-           ▼
-┌──────────────────────┐
-│ PostgreSQL + PostGIS │
-└──────────┬───────────┘
-           ▼
-┌──────────────────────┐
-│ Repository Layer     │
-└──────────┬───────────┘
-           ▼
-┌──────────────────────┐
-│ Business Services    │
-└──────────┬───────────┘
-           ▼
-      ┌────┴────┐
-      ▼         ▼
-┌──────────┐ ┌──────────┐
-│ GIS Map  │ │ News BI  │
-└────┬─────┘ └────┬─────┘
-     │            │
-     └────┬───────┘
-          ▼
-┌──────────────────────┐
-│ Site Intelligence    │
-└──────────┬───────────┘
-           ▼
-┌──────────────────────┐
-│ AI Advisor           │
-└──────────┬───────────┘
-           ▼
-┌──────────────────────┐
-│ OpenAI GPT           │
-└──────────┬───────────┘
-           ▼
-┌──────────────────────┐
-│ Executive Insights   │
-└──────────────────────┘
-```
-```                  
 
 # Dashboard Modules
 
@@ -292,25 +242,46 @@ Upcoming
 - JSON
 - GeoJSON
 
+# Project Structure
+
+```
 nrw-dc-bi/
 │
 ├── app/
-│   ├── services/
-│   ├── repositories/
-│   ├── database/
+│   ├── ai/              # OpenAI advisor and prompts
+│   ├── commands/        # Thin use-case entry points
+│   ├── config/          # DataPaths, external data source definitions
+│   ├── database/        # Session, models, repositories
+│   ├── enrichers/       # Spatial enrichment (power, land value)
+│   ├── exporters/       # Factsheets and map renders
+│   ├── extractors/
+│   ├── intelligence/    # News and market intelligence
+│   ├── loaders/         # Cleaned JSON -> PostgreSQL
+│   ├── mergers/
+│   ├── news/
+│   ├── parsers/         # Raw payloads -> entities
+│   ├── runners/         # One runner per pipeline step
+│   ├── scorers/         # Site scoring
+│   ├── scrapers/        # DataCenterMap, Overpass, MaStR, BORIS
+│   ├── services/        # Dashboard-facing services
 │   ├── spatial/
-│   ├── intelligence/
-│   └── ai/
+│   └── transformers/    # Cleaning and normalisation
 │
-├── ui/
-│
+├── alembic/             # Migration chain
 ├── data/
-│
-├── scripts/
-│
-├── tests/
-│
+│   ├── runs/<run_id>/   # One isolated directory per `main.py all` run
+│   └── current/         # Last successfully promoted run
+├── scripts/             # Ad-hoc inspection and verification scripts
+├── tests/               # pytest suite
+├── ui/
+│   ├── assets/
+│   ├── components/
+│   └── app.py           # Streamlit entry point
+├── main.py              # Pipeline CLI entry point
 └── README.md
+```
+
+Repositories live under `app/database/repositories/`, not `app/repositories/`.
 
 
 # Installation
@@ -381,20 +352,61 @@ uv pip install -r requirements.txt
 
 ---
 
+## Create the Database
+
+PostGIS has to be enabled in the database before migrations run.
+
+```bash
+createdb -h localhost -p 5433 -U postgres nrw_dc_bi
+psql -h localhost -p 5433 -U postgres -d nrw_dc_bi \
+  -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+```
+
+Adjust the port to match your server — Postgres.app on macOS commonly serves
+on 5433, a default Linux install on 5432.
+
+---
+
 ## Configure Environment
 
 ```bash
 cp .env.example .env
 ```
 
-Update the database connection and OpenAI API key.
+The application (`app/database/session.py`) and Alembic (`alembic/env.py`)
+both read a single `DATABASE_URL`. There are no separate `POSTGRES_*`
+variables.
+
+```
+DATABASE_URL=postgresql://postgres:postgres@localhost:5433/nrw_dc_bi
+OPENAI_API_KEY=sk-...
+```
+
+`OPENAI_API_KEY` is needed only by the AI Advisor panel; the rest of the
+dashboard runs without it.
 
 ---
 
 ## Run Database Migrations
 
 ```bash
-alembic upgrade head
+uv run alembic upgrade head
+```
+
+This creates the `iris_core` schema and its seven tables, and needs no
+manual schema preparation.
+
+---
+
+## Load the Data
+
+**The dashboard reads everything from the database, and the repository ships
+with no data.** A fresh install has to run the ETL pipeline before the
+dashboard shows anything — see [Data Pipeline](#data-pipeline) for what this
+does, how long it takes, and how it can fail.
+
+```bash
+uv run python main.py all
 ```
 
 ---
@@ -402,28 +414,91 @@ alembic upgrade head
 ## Start the Dashboard
 
 ```bash
-streamlit run ui/app.py
+uv run streamlit run ui/app.py
 ```
 
-The application will be available at:
+Available at http://localhost:8501. Against an empty database the panels
+render their "no data" states rather than failing.
 
-```
-http://localhost:8501
-```
+---
 
-## Requirements
-
-- Python 3.12+
-- PostgreSQL 17
-- PostGIS
-- Git
-- uv
-
-# Running the Dashboard
+## Run the Tests
 
 ```bash
-streamlit run ui/app.py
+uv run pytest
 ```
+
+Database tests create and drop their own uniquely-named scratch databases on
+the local server and never touch the project database. They skip when no
+server is reachable.
+
+---
+
+# Data Pipeline
+
+The dashboard is a read-only view over PostgreSQL. Everything it displays is
+produced by the ETL pipeline in `app/runners/`, driven by `main.py`.
+
+## Running the whole pipeline
+
+```bash
+uv run python main.py all
+```
+
+`all` runs four phases in order, and is the only mode that isolates its
+output — see [Staged runs](#staged-runs).
+
+| Phase | Steps | External sources |
+|---|---|---|
+| 1 — Data Acquisition | `country` → `markets` → `facilities` → `merge` → `transform` → `facility-geo-transform` → `facility-load` | datacentermap.com |
+| 2 — Infrastructure | `overpass` → `overpass-parse` → `overpass-transform` → `mastr` → `mastr-parse` → `mastr-transform` → `boris-transform` | OpenStreetMap Overpass, MaStR registry, BORIS |
+| 3 — Spatial Intelligence | `power-enricher` → `boris-enricher` → `site-score` | none — operates on loaded data |
+| 4 — Business Intelligence | `news` → `entity-matcher` → `news-load` → `news-intelligence` → `land-values` → `power-infrastructure` → `osm-infrastructure` | RSS feeds |
+
+The country code defaults to `DE` and is overridable with `--country`.
+
+## Running a single step
+
+Every step can be run on its own:
+
+```bash
+uv run python main.py overpass
+uv run python main.py facility-load
+uv run python main.py --help      # lists every step
+```
+
+A single step runs without a RunContext, so it reads and writes the flat
+`data/` workspace rather than a run directory.
+
+## Staged runs
+
+`all` creates `data/runs/<run_id>/` and writes everything beneath it. On
+full success the run is promoted to `data/current/`; on any failure nothing
+is promoted and `data/runs/<run_id>/run_status.json` records the error. The
+existing `data/current/` is never modified until a run succeeds.
+
+Database writes are not part of that staging — they happen inside the
+individual load steps (`facility-load`, `news-load`, `land-values`,
+`power-infrastructure`, `osm-infrastructure`).
+
+ETL components resolve paths through `DataPaths` (`app/config/paths.py`)
+rather than hardcoding `data/raw` or `data/processed`.
+
+## External sources and rate limits
+
+The acquisition steps make live requests to public sources, so a full run
+takes a long time and can fail for reasons that are not bugs:
+
+- **datacentermap.com rate-limits aggressively.** Phase 1's `country` step
+  has returned `429 Too Many Requests`; `HttpClient` retries with backoff
+  and then aborts the run without promoting it.
+- `country` reuses data where it can: the run directory first, then a legacy
+  cache at `data/raw/datacentermap/<country>.json`, and only then a fresh
+  request. Seeding that file skips the external call entirely.
+- `facilities` caches per market and waits 8–15 seconds between fresh
+  external requests.
+- Phases 2 and 4 use different hosts (Overpass, MaStR, BORIS, RSS) and are
+  unaffected by a datacentermap.com rate limit.
 # Current Project Status
 
 ## Completed

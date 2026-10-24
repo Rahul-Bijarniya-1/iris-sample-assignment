@@ -1,4 +1,13 @@
-
+> **STALE — do not use as a reference.**
+>
+> This file is a generated snapshot of a few source files, not documentation,
+> and it has drifted badly from the code. `pipeline_runner.py` appears here at
+> ~290 lines against ~1180 live; `facility_runner` appears as a bare function
+> where the live version is a class with per-market caching and request
+> pacing; the paths are Windows-style from another machine.
+>
+> For how the pipeline works, read the "Data Pipeline" section of README.md.
+> For the authoritative behaviour of any step, read `app/runners/`.
 
 ==============================
 FILE: app\runners\pipeline_runner.py
