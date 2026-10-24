@@ -2,38 +2,91 @@
 Shared test fixtures.
 
 Database tests create and drop their own uniquely-named scratch databases on
-the local PostgreSQL server. They never touch the project database.
+the server named in DATABASE_URL. They never touch the project database.
+
+The server details are derived from DATABASE_URL rather than hardcoded, so
+the suite follows whatever the project is configured against instead of
+skipping on any machine that does not happen to use the same port.
 """
 
 import os
 import subprocess
 import uuid
 from pathlib import Path
+from urllib.parse import quote, unquote, urlsplit
 
 import psycopg
 import pytest
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
-PG_HOST = "localhost"
-PG_PORT = 5433
-PG_USER = "postgres"
-PG_PASSWORD = "postgres"
+# Mirrors app/database/session.py and alembic/env.py, which both read
+# DATABASE_URL after loading .env.
+load_dotenv()
 
-ADMIN_URL = (
-    f"postgresql://{PG_USER}:{PG_PASSWORD}"
-    f"@{PG_HOST}:{PG_PORT}/postgres"
-)
+DEFAULT_PG_PORT = 5432
+
+
+def server_params(url: str | None) -> dict | None:
+    """
+    Connection details for the server a DATABASE_URL points at.
+
+    Returns None when there is no URL to read, so the database fixtures can
+    skip instead of guessing a host and port.
+    """
+
+    if not url:
+        return None
+
+    parsed = urlsplit(url)
+
+    return {
+        "host": parsed.hostname or "localhost",
+        "port": parsed.port or DEFAULT_PG_PORT,
+        "user": unquote(parsed.username) if parsed.username else "postgres",
+        "password": (
+            unquote(parsed.password) if parsed.password else ""
+        ),
+    }
+
+
+def server_url(database: str) -> str | None:
+    """
+    A URL for `database` on the configured server, or None if unconfigured.
+    """
+
+    params = server_params(os.getenv("DATABASE_URL"))
+
+    if params is None:
+        return None
+
+    # Re-encode: credentials were decoded by server_params, and a password
+    # containing reserved characters would otherwise produce a broken URL.
+    user = quote(params["user"], safe="")
+    password = quote(params["password"], safe="")
+
+    return (
+        "postgresql://"
+        f"{user}:{password}"
+        f"@{params['host']}:{params['port']}/{database}"
+    )
+
+
+def require_server_url(database: str) -> str:
+    url = server_url(database)
+
+    if url is None:
+        pytest.skip("DATABASE_URL is not set, so there is no server to test")
+
+    return url
 
 
 def scratch_url(database: str) -> str:
-    return (
-        f"postgresql://{PG_USER}:{PG_PASSWORD}"
-        f"@{PG_HOST}:{PG_PORT}/{database}"
-    )
+    return require_server_url(database)
 
 
 def run_alembic_upgrade(database: str) -> subprocess.CompletedProcess:
@@ -59,10 +112,16 @@ def scratch_database():
     An empty PostGIS-enabled database. No migrations applied.
     """
 
+    admin_url = require_server_url("postgres")
+
     try:
-        admin = psycopg.connect(ADMIN_URL, autocommit=True)
+        admin = psycopg.connect(admin_url, autocommit=True)
     except psycopg.OperationalError as exc:
-        pytest.skip(f"No PostgreSQL server at {PG_HOST}:{PG_PORT} ({exc})")
+        params = server_params(os.getenv("DATABASE_URL"))
+        pytest.skip(
+            f"No reachable PostgreSQL server at "
+            f"{params['host']}:{params['port']} ({exc})"
+        )
 
     name = f"nrw_dc_bi_migtest_{uuid.uuid4().hex[:8]}"
 
@@ -76,7 +135,7 @@ def scratch_database():
         yield name
 
     finally:
-        with psycopg.connect(ADMIN_URL, autocommit=True) as cleanup:
+        with psycopg.connect(admin_url, autocommit=True) as cleanup:
             cleanup.execute(f'DROP DATABASE IF EXISTS "{name}" WITH (FORCE)')
 
 
@@ -94,6 +153,15 @@ def migrated_database(scratch_database):
     )
 
     return scratch_database
+
+
+@pytest.fixture
+def server_params_from_url():
+    """
+    Callable: parse server connection details out of a DATABASE_URL.
+    """
+
+    return server_params
 
 
 @pytest.fixture
