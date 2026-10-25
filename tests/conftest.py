@@ -196,6 +196,22 @@ def schema_tables():
 
 
 @pytest.fixture
+def pg_query():
+    """
+    Callable: run a read-only SQL query against a named scratch database
+    and return its rows. A thin general-purpose sibling to schema_tables,
+    for the one-off checks (extensions, columns, indexes) a single
+    migration test needs without a dedicated fixture each.
+    """
+
+    def _pg_query(database: str, sql: str, params: tuple = ()):
+        with psycopg.connect(scratch_url(database)) as conn:
+            return conn.execute(sql, params).fetchall()
+
+    return _pg_query
+
+
+@pytest.fixture
 def db_session(migrated_database):
     """
     A SQLAlchemy session bound to a freshly migrated scratch database.
