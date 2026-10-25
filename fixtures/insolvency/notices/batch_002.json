@@ -1,0 +1,83 @@
+{
+  "_fixture": "Synthetic insolvency notices, batch 2 of 2. Replays every notice from batch 1 unchanged except NOT-2026-000105, whose status advances, plus one withdrawal and one new notice. Re-running batch 1 then batch 2 must never duplicate a notice.",
+  "retrieved_at": "2026-10-25T08:00:00+02:00",
+  "source_reference": "synthetic-fixture://insolvenzbekanntmachungen/batch_002",
+  "bekanntmachungen": [
+    {
+      "_control": "REPLAY — byte-identical to batch 1; must not create a second record or a new version",
+      "id": "NOT-2026-000101",
+      "gericht": "Amtsgericht Hamburg",
+      "aktenzeichen": "67 IN 123/26",
+      "schuldner": {
+        "name": "Nordlicht Rechenzentrum GmbH",
+        "registernummer": "HRB 12345",
+        "anschrift": {
+          "strasse": "Hafenstrasse 12",
+          "plz": "20095",
+          "ort": "Hamburg"
+        }
+      },
+      "bekanntmachung_am": "2026-10-21",
+      "ereignis_am": "2026-10-20",
+      "status": "eroeffnet",
+      "quelle": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000101"
+    },
+    {
+      "_control": "UPDATED — status advances from eroeffnet to aufgehoben; the earlier version must be kept as history",
+      "id": "NOT-2026-000105",
+      "gericht": "Amtsgericht Koeln",
+      "aktenzeichen": "71 IN 46/26",
+      "schuldner": {
+        "name": "Suedwind Energie AG",
+        "registernummer": "HRB 67890",
+        "anschrift": {
+          "strasse": "Lindenallee 5",
+          "plz": "50667",
+          "ort": "Koeln"
+        }
+      },
+      "bekanntmachung_am": "2026-10-25",
+      "ereignis_am": "2026-10-24",
+      "status": "aufgehoben",
+      "quelle": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000105"
+    },
+    {
+      "_control": "WITHDRAWN — a withdrawn notice must not yield an active match",
+      "id": "NOT-2026-000106",
+      "gericht": "Amtsgericht Muenchen",
+      "aktenzeichen": "1503 IN 100/26",
+      "schuldner": {
+        "name": "Alpenblick Datentechnik GmbH",
+        "registernummer": "HRB 33333",
+        "anschrift": {
+          "strasse": "Bergweg 44",
+          "plz": "80331",
+          "ort": "Muenchen"
+        }
+      },
+      "bekanntmachung_am": "2026-10-25",
+      "ereignis_am": "2026-10-25",
+      "status": "zurueckgenommen",
+      "quelle": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000106"
+    },
+    {
+      "_control": "NEW — unseen notice id, appears only in batch 2",
+      "id": "NOT-2026-000107",
+      "gericht": "Amtsgericht Hamburg",
+      "aktenzeichen": "67 IN 130/26",
+      "schuldner": {
+        "name": "Nordlicht Rechenzentrum GmbH",
+        "registernummer": "HRB 12345",
+        "anschrift": {
+          "strasse": "Hafenstrasse 12",
+          "plz": "20095",
+          "ort": "Hamburg"
+        }
+      },
+      "bekanntmachung_am": "2026-10-25",
+      "ereignis_am": "2026-10-25",
+      "status": "eroeffnet",
+      "quelle": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000107"
+    }
+  ]
+}

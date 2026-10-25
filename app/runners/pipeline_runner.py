@@ -136,6 +136,14 @@ from app.runners.osm_infrastructure_runner import (
     run as run_osm_infrastructure,
 )
 
+# ==========================================================
+# INSOLVENCY
+# ==========================================================
+
+from app.runners.insolvency_runner import (
+    run as run_insolvency,
+)
+
 
 class PipelineRunner:
     """
@@ -256,6 +264,15 @@ class PipelineRunner:
 
             "osm-infrastructure": (
                 self.osm_infrastructure
+            ),
+
+            # Deliberately not referenced by any phase() method — a
+            # fixture-only slice with no database or network dependency.
+            # Running it is an explicit choice (`main.py insolvency`),
+            # never a side effect of `main.py all`.
+            # See test_insolvency_wiring.py.
+            "insolvency": (
+                self.insolvency
             ),
 
             "all": self.run_all,
@@ -905,6 +922,25 @@ class PipelineRunner:
         )
 
         return result
+
+    # ======================================================
+    # INSOLVENCY
+    # ======================================================
+
+    def insolvency(self):
+        """
+        Fixture-only slice: ingest notices, resolve entities, write audit.
+
+        Takes no DataPaths — it reads `fixtures/` and writes `artifacts/`,
+        independent of the staged-run workspace, and touches neither the
+        database nor the network.
+        """
+
+        print(
+            "▶ Running Insolvency Notice Matching..."
+        )
+
+        return run_insolvency()
 
     # ======================================================
     # COMPLETE PIPELINE

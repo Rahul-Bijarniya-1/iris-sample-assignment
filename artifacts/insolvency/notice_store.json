@@ -1,0 +1,190 @@
+{
+  "notices": {
+    "NOT-2026-000101": {
+      "first_seen_at": "2026-10-25T22:37:20.271321+00:00",
+      "last_seen_at": "2026-10-25T22:37:21.254441+00:00",
+      "versions": [
+        {
+          "notice_id": "NOT-2026-000101",
+          "court": "Amtsgericht Hamburg",
+          "case_number": "67 IN 123/26",
+          "entity_name": "Nordlicht Rechenzentrum GmbH",
+          "entity_registry_id": "HRB 12345",
+          "entity_address": {
+            "street": "Hafenstrasse 12",
+            "postal_code": "20095",
+            "city": "Hamburg"
+          },
+          "published_on": "2026-10-21",
+          "event_on": "2026-10-20",
+          "status": "opened",
+          "source_reference": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000101",
+          "retrieved_at": "2026-10-24T08:00:00+02:00",
+          "content_fingerprint": "6993f7aab6639535e5141c75ac1055a8ab4110c9c3c27d49d6452aacac443449"
+        }
+      ]
+    },
+    "NOT-2026-000102": {
+      "first_seen_at": "2026-10-25T22:37:20.271321+00:00",
+      "last_seen_at": "2026-10-25T22:37:21.254037+00:00",
+      "versions": [
+        {
+          "notice_id": "NOT-2026-000102",
+          "court": "Amtsgericht Koeln",
+          "case_number": "71 IN 45/26",
+          "entity_name": "Rheinmetall Logistik GmbH",
+          "entity_registry_id": null,
+          "entity_address": {
+            "street": "Industriestrasse 3",
+            "postal_code": "50829",
+            "city": "Koeln"
+          },
+          "published_on": "2026-10-21",
+          "event_on": "2026-10-19",
+          "status": "opened",
+          "source_reference": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000102",
+          "retrieved_at": "2026-10-24T08:00:00+02:00",
+          "content_fingerprint": "423ac5576a20ff3b37a5a785efff5e63cd62b40be1226bf6357a9e71c8adacc9"
+        }
+      ]
+    },
+    "NOT-2026-000103": {
+      "first_seen_at": "2026-10-25T22:37:20.271321+00:00",
+      "last_seen_at": "2026-10-25T22:37:21.254037+00:00",
+      "versions": [
+        {
+          "notice_id": "NOT-2026-000103",
+          "court": "Amtsgericht Muenchen",
+          "case_number": "1503 IN 99/26",
+          "entity_name": "Rheinmetall Logistik GmbH",
+          "entity_registry_id": null,
+          "entity_address": {
+            "street": null,
+            "postal_code": null,
+            "city": null
+          },
+          "published_on": "2026-10-22",
+          "event_on": "2026-10-22",
+          "status": "opened",
+          "source_reference": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000103",
+          "retrieved_at": "2026-10-24T08:00:00+02:00",
+          "content_fingerprint": "4809f4ddba08503255da976daa331fbe13b2ae0b64092860fdf4e37af9211468"
+        }
+      ]
+    },
+    "NOT-2026-000104": {
+      "first_seen_at": "2026-10-25T22:37:20.271321+00:00",
+      "last_seen_at": "2026-10-25T22:37:21.254037+00:00",
+      "versions": [
+        {
+          "notice_id": "NOT-2026-000104",
+          "court": "Amtsgericht Charlottenburg",
+          "case_number": "36a IN 7/26",
+          "entity_name": "Nordlicht Rechenzentrum GmbH",
+          "entity_registry_id": null,
+          "entity_address": {
+            "street": "Unter den Linden 90",
+            "postal_code": "10117",
+            "city": "Berlin"
+          },
+          "published_on": "2026-10-22",
+          "event_on": "2026-10-21",
+          "status": "opened",
+          "source_reference": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000104",
+          "retrieved_at": "2026-10-24T08:00:00+02:00",
+          "content_fingerprint": "2e749e351ee3ea073b314a70c8d47fff6f0acd4bfdd3475790d6506964c6a9de"
+        }
+      ]
+    },
+    "NOT-2026-000105": {
+      "first_seen_at": "2026-10-25T22:37:20.271321+00:00",
+      "last_seen_at": "2026-10-25T22:37:21.254441+00:00",
+      "versions": [
+        {
+          "notice_id": "NOT-2026-000105",
+          "court": "Amtsgericht Koeln",
+          "case_number": "71 IN 46/26",
+          "entity_name": "Suedwind Energie AG",
+          "entity_registry_id": "HRB 67890",
+          "entity_address": {
+            "street": "Lindenallee 5",
+            "postal_code": "50667",
+            "city": "Koeln"
+          },
+          "published_on": "2026-10-23",
+          "event_on": "2026-10-23",
+          "status": "opened",
+          "source_reference": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000105",
+          "retrieved_at": "2026-10-24T08:00:00+02:00",
+          "content_fingerprint": "4c0cbad331e6c5956a4bb159e2f9d2a1547ed91c259072899cc3eb23edeb71ac"
+        },
+        {
+          "notice_id": "NOT-2026-000105",
+          "court": "Amtsgericht Koeln",
+          "case_number": "71 IN 46/26",
+          "entity_name": "Suedwind Energie AG",
+          "entity_registry_id": "HRB 67890",
+          "entity_address": {
+            "street": "Lindenallee 5",
+            "postal_code": "50667",
+            "city": "Koeln"
+          },
+          "published_on": "2026-10-25",
+          "event_on": "2026-10-24",
+          "status": "lifted",
+          "source_reference": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000105",
+          "retrieved_at": "2026-10-25T08:00:00+02:00",
+          "content_fingerprint": "9ed7ef1617f913c859e4847cff8047593b00154562e4d33ef4f05c7f3b01d7b9"
+        }
+      ]
+    },
+    "NOT-2026-000106": {
+      "first_seen_at": "2026-10-25T22:37:20.271801+00:00",
+      "last_seen_at": "2026-10-25T22:37:21.254441+00:00",
+      "versions": [
+        {
+          "notice_id": "NOT-2026-000106",
+          "court": "Amtsgericht Muenchen",
+          "case_number": "1503 IN 100/26",
+          "entity_name": "Alpenblick Datentechnik GmbH",
+          "entity_registry_id": "HRB 33333",
+          "entity_address": {
+            "street": "Bergweg 44",
+            "postal_code": "80331",
+            "city": "Muenchen"
+          },
+          "published_on": "2026-10-25",
+          "event_on": "2026-10-25",
+          "status": "withdrawn",
+          "source_reference": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000106",
+          "retrieved_at": "2026-10-25T08:00:00+02:00",
+          "content_fingerprint": "8b34bc4e4c2921bcdbc2811bd6bb6099f991e380cd63ede8e2e19351c4d46ba2"
+        }
+      ]
+    },
+    "NOT-2026-000107": {
+      "first_seen_at": "2026-10-25T22:37:20.271801+00:00",
+      "last_seen_at": "2026-10-25T22:37:21.254441+00:00",
+      "versions": [
+        {
+          "notice_id": "NOT-2026-000107",
+          "court": "Amtsgericht Hamburg",
+          "case_number": "67 IN 130/26",
+          "entity_name": "Nordlicht Rechenzentrum GmbH",
+          "entity_registry_id": "HRB 12345",
+          "entity_address": {
+            "street": "Hafenstrasse 12",
+            "postal_code": "20095",
+            "city": "Hamburg"
+          },
+          "published_on": "2026-10-25",
+          "event_on": "2026-10-25",
+          "status": "opened",
+          "source_reference": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000107",
+          "retrieved_at": "2026-10-25T08:00:00+02:00",
+          "content_fingerprint": "b79969cc75ce68a9c64af97d1e320241328ed32d2e3da03fbdb2d2f0645169dd"
+        }
+      ]
+    }
+  }
+}

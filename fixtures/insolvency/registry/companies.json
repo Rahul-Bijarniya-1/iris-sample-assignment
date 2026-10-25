@@ -1,0 +1,56 @@
+{
+  "_fixture": "Synthetic corporate registry. Invented companies; any resemblance to real entities is unintended. No coordinates are present by design.",
+  "as_of": "2026-10-20",
+  "companies": [
+    {
+      "registry_id": "HRB 12345",
+      "name": "Nordlicht Rechenzentrum GmbH",
+      "legal_form": "GmbH",
+      "address": {
+        "street": "Hafenstrasse 12",
+        "postal_code": "20095",
+        "city": "Hamburg"
+      }
+    },
+    {
+      "registry_id": "HRB 67890",
+      "name": "Suedwind Energie AG",
+      "legal_form": "AG",
+      "address": {
+        "street": "Lindenallee 5",
+        "postal_code": "50667",
+        "city": "Koeln"
+      }
+    },
+    {
+      "registry_id": "HRB 11111",
+      "name": "Rheinmetall Logistik GmbH",
+      "legal_form": "GmbH",
+      "address": {
+        "street": "Industriestrasse 3",
+        "postal_code": "50829",
+        "city": "Koeln"
+      }
+    },
+    {
+      "registry_id": "HRB 22222",
+      "name": "Rheinmetall Logistik GmbH",
+      "legal_form": "GmbH",
+      "address": {
+        "street": "Bahnhofplatz 7",
+        "postal_code": "80335",
+        "city": "Muenchen"
+      }
+    },
+    {
+      "registry_id": "HRB 33333",
+      "name": "Alpenblick Datentechnik GmbH",
+      "legal_form": "GmbH",
+      "address": {
+        "street": "Bergweg 44",
+        "postal_code": "80331",
+        "city": "Muenchen"
+      }
+    }
+  ]
+}

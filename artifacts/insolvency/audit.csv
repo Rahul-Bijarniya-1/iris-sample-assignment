@@ -1,0 +1,8 @@
+notice_id,entity_name,registry_id,method,confidence,auto_matched,human_review,address_agreement,notice_status,notice_is_active,as_of,candidate_count,rationale
+NOT-2026-000101,Nordlicht Rechenzentrum GmbH,HRB 12345,registry_id,1.00,True,False,True,opened,True,2026-10-21,1,"Matched on registry identifier HRB 12345, published in the notice."
+NOT-2026-000102,Rheinmetall Logistik GmbH,HRB 11111,name_address,0.95,True,False,True,opened,True,2026-10-21,2,"Name similarity 1.00 against HRB 11111, corroborated by an identical postal code."
+NOT-2026-000103,Rheinmetall Logistik GmbH,,none,0.40,False,True,,opened,True,2026-10-22,2,Name matches 2 registry companies and the notice gives no address that separates them. Left for review rather than guessing between them.
+NOT-2026-000104,Nordlicht Rechenzentrum GmbH,,none,0.00,False,True,False,opened,True,2026-10-22,1,"Name matches 1 registry company/companies, but every one is registered at a different address than the notice gives. A matching name at a conflicting address is not evidence of the same legal entity."
+NOT-2026-000105,Suedwind Energie AG,HRB 67890,registry_id,1.00,True,False,True,lifted,False,2026-10-25,1,"Matched on registry identifier HRB 67890, published in the notice."
+NOT-2026-000106,Alpenblick Datentechnik GmbH,HRB 33333,registry_id,1.00,True,False,True,withdrawn,False,2026-10-25,1,"Matched on registry identifier HRB 33333, published in the notice."
+NOT-2026-000107,Nordlicht Rechenzentrum GmbH,HRB 12345,registry_id,1.00,True,False,True,opened,True,2026-10-25,1,"Matched on registry identifier HRB 12345, published in the notice."

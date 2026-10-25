@@ -1,0 +1,208 @@
+{
+  "generated_at": "2026-10-25T22:37:21.257705+00:00",
+  "sources": {
+    "notices": [
+      "fixtures/insolvency/notices/batch_001.json",
+      "fixtures/insolvency/notices/batch_002.json"
+    ],
+    "registry": "fixtures/insolvency/registry/companies.json",
+    "registry_companies": 5
+  },
+  "summary": {
+    "total": 7,
+    "auto_matched": 5,
+    "human_review": 2,
+    "unmatched": 2,
+    "active_notices": 5
+  },
+  "matches": [
+    {
+      "notice_id": "NOT-2026-000101",
+      "entity_name": "Nordlicht Rechenzentrum GmbH",
+      "registry_id": "HRB 12345",
+      "method": "registry_id",
+      "confidence": 1.0,
+      "auto_matched": true,
+      "human_review": false,
+      "address_agreement": true,
+      "notice_is_active": true,
+      "notice_status": "opened",
+      "rationale": "Matched on registry identifier HRB 12345, published in the notice.",
+      "as_of": "2026-10-21",
+      "resolved_at": "2026-10-25T22:37:21.257316+00:00",
+      "candidates": [
+        {
+          "registry_id": "HRB 12345",
+          "name": "Nordlicht Rechenzentrum GmbH",
+          "name_similarity": 1.0,
+          "address_agreement": true,
+          "address_conflict": false
+        }
+      ]
+    },
+    {
+      "notice_id": "NOT-2026-000102",
+      "entity_name": "Rheinmetall Logistik GmbH",
+      "registry_id": "HRB 11111",
+      "method": "name_address",
+      "confidence": 0.95,
+      "auto_matched": true,
+      "human_review": false,
+      "address_agreement": true,
+      "notice_is_active": true,
+      "notice_status": "opened",
+      "rationale": "Name similarity 1.00 against HRB 11111, corroborated by an identical postal code.",
+      "as_of": "2026-10-21",
+      "resolved_at": "2026-10-25T22:37:21.257346+00:00",
+      "candidates": [
+        {
+          "registry_id": "HRB 11111",
+          "name": "Rheinmetall Logistik GmbH",
+          "name_similarity": 1.0,
+          "address_agreement": true,
+          "address_conflict": false
+        },
+        {
+          "registry_id": "HRB 22222",
+          "name": "Rheinmetall Logistik GmbH",
+          "name_similarity": 1.0,
+          "address_agreement": false,
+          "address_conflict": true
+        }
+      ]
+    },
+    {
+      "notice_id": "NOT-2026-000103",
+      "entity_name": "Rheinmetall Logistik GmbH",
+      "registry_id": null,
+      "method": "none",
+      "confidence": 0.4,
+      "auto_matched": false,
+      "human_review": true,
+      "address_agreement": null,
+      "notice_is_active": true,
+      "notice_status": "opened",
+      "rationale": "Name matches 2 registry companies and the notice gives no address that separates them. Left for review rather than guessing between them.",
+      "as_of": "2026-10-22",
+      "resolved_at": "2026-10-25T22:37:21.257427+00:00",
+      "candidates": [
+        {
+          "registry_id": "HRB 11111",
+          "name": "Rheinmetall Logistik GmbH",
+          "name_similarity": 1.0,
+          "address_agreement": null,
+          "address_conflict": false
+        },
+        {
+          "registry_id": "HRB 22222",
+          "name": "Rheinmetall Logistik GmbH",
+          "name_similarity": 1.0,
+          "address_agreement": null,
+          "address_conflict": false
+        }
+      ]
+    },
+    {
+      "notice_id": "NOT-2026-000104",
+      "entity_name": "Nordlicht Rechenzentrum GmbH",
+      "registry_id": null,
+      "method": "none",
+      "confidence": 0.0,
+      "auto_matched": false,
+      "human_review": true,
+      "address_agreement": false,
+      "notice_is_active": true,
+      "notice_status": "opened",
+      "rationale": "Name matches 1 registry company/companies, but every one is registered at a different address than the notice gives. A matching name at a conflicting address is not evidence of the same legal entity.",
+      "as_of": "2026-10-22",
+      "resolved_at": "2026-10-25T22:37:21.257485+00:00",
+      "candidates": [
+        {
+          "registry_id": "HRB 12345",
+          "name": "Nordlicht Rechenzentrum GmbH",
+          "name_similarity": 1.0,
+          "address_agreement": false,
+          "address_conflict": true
+        }
+      ]
+    },
+    {
+      "notice_id": "NOT-2026-000105",
+      "entity_name": "Suedwind Energie AG",
+      "registry_id": "HRB 67890",
+      "method": "registry_id",
+      "confidence": 1.0,
+      "auto_matched": true,
+      "human_review": false,
+      "address_agreement": true,
+      "notice_is_active": false,
+      "notice_status": "lifted",
+      "rationale": "Matched on registry identifier HRB 67890, published in the notice.",
+      "as_of": "2026-10-25",
+      "resolved_at": "2026-10-25T22:37:21.257558+00:00",
+      "candidates": [
+        {
+          "registry_id": "HRB 67890",
+          "name": "Suedwind Energie AG",
+          "name_similarity": 1.0,
+          "address_agreement": true,
+          "address_conflict": false
+        }
+      ]
+    },
+    {
+      "notice_id": "NOT-2026-000106",
+      "entity_name": "Alpenblick Datentechnik GmbH",
+      "registry_id": "HRB 33333",
+      "method": "registry_id",
+      "confidence": 1.0,
+      "auto_matched": true,
+      "human_review": false,
+      "address_agreement": true,
+      "notice_is_active": false,
+      "notice_status": "withdrawn",
+      "rationale": "Matched on registry identifier HRB 33333, published in the notice.",
+      "as_of": "2026-10-25",
+      "resolved_at": "2026-10-25T22:37:21.257567+00:00",
+      "candidates": [
+        {
+          "registry_id": "HRB 33333",
+          "name": "Alpenblick Datentechnik GmbH",
+          "name_similarity": 1.0,
+          "address_agreement": true,
+          "address_conflict": false
+        }
+      ]
+    },
+    {
+      "notice_id": "NOT-2026-000107",
+      "entity_name": "Nordlicht Rechenzentrum GmbH",
+      "registry_id": "HRB 12345",
+      "method": "registry_id",
+      "confidence": 1.0,
+      "auto_matched": true,
+      "human_review": false,
+      "address_agreement": true,
+      "notice_is_active": true,
+      "notice_status": "opened",
+      "rationale": "Matched on registry identifier HRB 12345, published in the notice.",
+      "as_of": "2026-10-25",
+      "resolved_at": "2026-10-25T22:37:21.257576+00:00",
+      "candidates": [
+        {
+          "registry_id": "HRB 12345",
+          "name": "Nordlicht Rechenzentrum GmbH",
+          "name_similarity": 1.0,
+          "address_agreement": true,
+          "address_conflict": false
+        }
+      ]
+    }
+  ],
+  "ingest": {
+    "inserted": 0,
+    "updated": 0,
+    "unchanged": 9,
+    "total": 9
+  }
+}

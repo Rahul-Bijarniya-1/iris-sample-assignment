@@ -1,0 +1,94 @@
+{
+  "_fixture": "Synthetic insolvency notices, batch 1 of 2. Source field names deliberately mirror a German notice portal so normalisation does real work. No coordinates by design.",
+  "retrieved_at": "2026-10-24T08:00:00+02:00",
+  "source_reference": "synthetic-fixture://insolvenzbekanntmachungen/batch_001",
+  "bekanntmachungen": [
+    {
+      "_control": "POSITIVE — carries a registry id, must match on the identifier alone",
+      "id": "NOT-2026-000101",
+      "gericht": "Amtsgericht Hamburg",
+      "aktenzeichen": "67 IN 123/26",
+      "schuldner": {
+        "name": "Nordlicht Rechenzentrum GmbH",
+        "registernummer": "HRB 12345",
+        "anschrift": {
+          "strasse": "Hafenstrasse 12",
+          "plz": "20095",
+          "ort": "Hamburg"
+        }
+      },
+      "bekanntmachung_am": "2026-10-21",
+      "ereignis_am": "2026-10-20",
+      "status": "eroeffnet",
+      "quelle": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000101"
+    },
+    {
+      "_control": "POSITIVE — no registry id, but name and postal code both agree with HRB 11111",
+      "id": "NOT-2026-000102",
+      "gericht": "Amtsgericht Koeln",
+      "aktenzeichen": "71 IN 45/26",
+      "schuldner": {
+        "name": "Rheinmetall Logistik GmbH",
+        "anschrift": {
+          "strasse": "Industriestrasse 3",
+          "plz": "50829",
+          "ort": "Koeln"
+        }
+      },
+      "bekanntmachung_am": "2026-10-21",
+      "ereignis_am": "2026-10-19",
+      "status": "eroeffnet",
+      "quelle": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000102"
+    },
+    {
+      "_control": "AMBIGUOUS — name matches two registry entries and no address is given; must flag for review, never auto-match",
+      "id": "NOT-2026-000103",
+      "gericht": "Amtsgericht Muenchen",
+      "aktenzeichen": "1503 IN 99/26",
+      "schuldner": {
+        "name": "Rheinmetall Logistik GmbH"
+      },
+      "bekanntmachung_am": "2026-10-22",
+      "ereignis_am": "2026-10-22",
+      "status": "eroeffnet",
+      "quelle": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000103"
+    },
+    {
+      "_control": "FALSE POSITIVE — exact name of HRB 12345 at a different address; must not auto-match",
+      "id": "NOT-2026-000104",
+      "gericht": "Amtsgericht Charlottenburg",
+      "aktenzeichen": "36a IN 7/26",
+      "schuldner": {
+        "name": "Nordlicht Rechenzentrum GmbH",
+        "anschrift": {
+          "strasse": "Unter den Linden 90",
+          "plz": "10117",
+          "ort": "Berlin"
+        }
+      },
+      "bekanntmachung_am": "2026-10-22",
+      "ereignis_am": "2026-10-21",
+      "status": "eroeffnet",
+      "quelle": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000104"
+    },
+    {
+      "_control": "POSITIVE — registry id present; status changes in batch 2, so history must be retained",
+      "id": "NOT-2026-000105",
+      "gericht": "Amtsgericht Koeln",
+      "aktenzeichen": "71 IN 46/26",
+      "schuldner": {
+        "name": "Suedwind Energie AG",
+        "registernummer": "HRB 67890",
+        "anschrift": {
+          "strasse": "Lindenallee 5",
+          "plz": "50667",
+          "ort": "Koeln"
+        }
+      },
+      "bekanntmachung_am": "2026-10-23",
+      "ereignis_am": "2026-10-23",
+      "status": "eroeffnet",
+      "quelle": "synthetic-fixture://insolvenzbekanntmachungen/NOT-2026-000105"
+    }
+  ]
+}

@@ -19,6 +19,7 @@ Built with **Python**, **PostgreSQL/PostGIS**, **GeoPandas**, **PyDeck**, **Stre
 - [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Data Pipeline](#data-pipeline)
+- [Insolvency Notices](#insolvency-notices-iris-48h-13)
 - [Project Status](#current-project-status)
 - [Roadmap](#roadmap)
 - [Vision](#vision)
@@ -499,6 +500,29 @@ takes a long time and can fail for reasons that are not bugs:
   external requests.
 - Phases 2 and 4 use different hosts (Overpass, MaStR, BORIS, RSS) and are
   unaffected by a datacentermap.com rate limit.
+
+# Insolvency Notices (IRIS-48H-13)
+
+A self-contained slice that ingests insolvency notices, deduplicates them
+across repeated batches, and matches them to a corporate registry with
+explainable confidence. It runs against fixtures with **no database and no
+network access**, and is not part of `main.py all`.
+
+```bash
+uv run python main.py insolvency
+```
+
+Audit artefacts are written to `artifacts/insolvency/` (`audit.csv`,
+`audit.json`, `notice_store.json`). Re-running is safe — ingestion is
+idempotent on content.
+
+The governing rule is that legal insolvency is never inferred from name
+similarity alone: a name match without corroborating address evidence is
+capped below the auto-match threshold and held for human review.
+
+Full design notes, trade-offs, source/licence limitations and integration
+plan: **[INSOLVENCY.md](INSOLVENCY.md)**.
+
 # Current Project Status
 
 ## Completed
