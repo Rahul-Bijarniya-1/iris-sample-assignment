@@ -9,12 +9,13 @@ NRW BI Platform
 
 from __future__ import annotations
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.database.models.facility import Facility
 from app.database.models.news_article import NewsArticle
 from app.database.models.news_match import NewsMatch
+from app.database.models.news_signal import NewsSignal
 
 
 class NewsRepository:
@@ -41,6 +42,12 @@ class NewsRepository:
                 )
             )
         )
+
+    def get_signal_count(self) -> int:
+
+        return self.session.scalar(
+            select(func.count()).select_from(NewsSignal)
+        ) or 0
 
     # -----------------------------------------------------
 

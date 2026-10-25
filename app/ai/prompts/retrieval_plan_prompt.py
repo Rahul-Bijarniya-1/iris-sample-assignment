@@ -42,10 +42,14 @@ Available tools: {tools}
 - site_ranking: ranks facilities by a scoring dimension.
 
 Respond with ONLY a JSON object, no other text:
-{{"tools": ["news_search"], "query": "<search query>", "k": 10}}
+{{"tools": ["news_search"], "query": "<search query>", "k": 10,
+  "ranking_type": "overall", "ranking_limit": 10}}
 
 "tools" must be a non-empty list drawn only from the names above.
 "k" must be an integer between 1 and 10.
+"ranking_type" must be one of: overall, grid, transmission,
+transformer, renewable, land, expansion.
+"ranking_limit" must be an integer between 1 and 10.
 
 Question:
 {question}

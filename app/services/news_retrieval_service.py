@@ -54,7 +54,11 @@ class NewsRetrievalService:
             ).label("distance")
 
             stmt = (
-                select(NewsArticle, distance)
+                select(NewsArticle, NewsSignal, distance)
+                .outerjoin(
+                    NewsSignal,
+                    NewsSignal.article_id == NewsArticle.id,
+                )
                 .where(NewsArticle.embedding.is_not(None))
                 .order_by(distance)
                 .limit(k)
@@ -87,8 +91,8 @@ class NewsRetrievalService:
             return []
 
         return [
-            self._to_result(article, dist)
-            for article, dist in rows
+            self._to_result(article, dist, signal)
+            for article, signal, dist in rows
         ]
 
     # =====================================================
@@ -99,6 +103,7 @@ class NewsRetrievalService:
     def _to_result(
         article: NewsArticle,
         distance: float,
+        signal: NewsSignal | None = None,
     ) -> dict:
 
         return {
@@ -111,4 +116,19 @@ class NewsRetrievalService:
             "published_at": article.published_at,
             "source": article.source,
             "score": 1.0 - distance,
+            "signals": (
+                {
+                    "expansion": signal.expansion,
+                    "power": signal.power,
+                    "renewable": signal.renewable,
+                    "retrofit": signal.retrofit,
+                    "investment": signal.investment,
+                    "capacity_mw": signal.capacity_mw,
+                    "confidence": signal.confidence,
+                    "city": signal.city,
+                    "company": signal.company,
+                }
+                if signal is not None
+                else None
+            ),
         }

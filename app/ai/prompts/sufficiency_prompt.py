@@ -9,6 +9,8 @@ Author:
 NRW BI Platform
 """
 
+import json
+
 
 class SufficiencyPrompt:
 
@@ -23,7 +25,8 @@ class SufficiencyPrompt:
         listing = "\n".join(
             f"[{item['id']}] {item['title']} "
             f"({item.get('published_at')}) — "
-            f"{(item.get('summary_en') or '')[:300]}"
+            f"{(item.get('summary_en') or '')[:300]} — signals: "
+            f"{json.dumps(item.get('signals') or {}, default=str, ensure_ascii=False, sort_keys=True)}"
             for item in results
         )
 

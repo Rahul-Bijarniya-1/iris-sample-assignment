@@ -29,6 +29,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 load_dotenv()
 
 
+def _live_tests_requested(marker_expression: str) -> bool:
+    """Only the explicit ``-m live`` invocation opts into paid tests."""
+
+    return marker_expression.strip() == "live"
+
+
 def pytest_collection_modifyitems(config, items):
     """
     `live`-marked tests make a real OpenAI API call. They must never run
@@ -40,7 +46,7 @@ def pytest_collection_modifyitems(config, items):
 
     requested_markers = config.getoption("-m") or ""
 
-    if "live" in requested_markers:
+    if _live_tests_requested(requested_markers):
 
         return
 

@@ -8,6 +8,7 @@ cosine_distance() ordering itself is proven, not assumed.
 import pytest
 
 from app.database.models.news_article import NewsArticle
+from app.database.models.news_signal import NewsSignal
 from app.services.news_retrieval_service import NewsRetrievalService
 
 
@@ -116,6 +117,42 @@ def test_search_returns_provenance_fields(db_session):
     assert "published_at" in result
     assert "score" in result
     assert result["source"] == "Test Feed"
+
+
+@pytest.mark.integration
+def test_search_joins_structured_signals_for_the_prompts(db_session):
+    article_id = "a0000000-0000-0000-0000-000000000008"
+    db_session.add(
+        _article(
+            article_id,
+            "https://news.invalid/signals/",
+            "Signal article",
+            _vector(1.0),
+        )
+    )
+    db_session.add(
+        NewsSignal(
+            article_id=article_id,
+            power=True,
+            investment=True,
+            capacity_mw=50.0,
+            confidence=0.9,
+            city="Essen",
+            company="Example GmbH",
+        )
+    )
+    db_session.commit()
+
+    service = NewsRetrievalService(
+        db_session,
+        embedding_service=_FakeEmbedding(_vector(1.0)),
+    )
+
+    result = service.search("power investment", k=1)[0]
+
+    assert result["signals"]["power"] is True
+    assert result["signals"]["investment"] is True
+    assert result["signals"]["capacity_mw"] == 50.0
 
 
 @pytest.mark.integration

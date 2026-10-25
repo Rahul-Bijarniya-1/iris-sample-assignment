@@ -262,7 +262,6 @@ class ContextBuilderService:
             "nearby": self.build_nearby_context,
             "company": self.build_company_context,
             "city": self.build_city_context,
-            "news": self.build_news_context,
         }
 
         if context_type not in builders:

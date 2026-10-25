@@ -30,7 +30,8 @@ class AgenticAnswerPrompt:
         citations = "\n".join(
             f"[{index + 1}] {article['title']} "
             f"({article.get('published_at')}, {article.get('source')}) "
-            f"— {article.get('summary_en') or ''}"
+            f"— {article.get('summary_en') or ''} — signals: "
+            f"{json.dumps(article.get('signals') or {}, default=str, ensure_ascii=False, sort_keys=True)}"
             for index, article in enumerate(articles)
         )
 
