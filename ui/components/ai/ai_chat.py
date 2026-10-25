@@ -18,43 +18,34 @@ from ui.components.ai.ai_state import messages
 # Chat
 # ==========================================================
 
-def render_ai_chat() -> str | None:
+def render_ai_chat(*, compact: bool = True) -> str | None:
     """
     Render the AI conversation.
+
+    The dashboard uses a bounded, auto-scrolling transcript while the
+    dedicated assistant page lets the conversation grow with its content.
     """
 
     chat_messages = messages()
 
-    user_messages = [
-        message
-        for message in chat_messages
-        if message["role"] == "user"
-    ]
+    container_options = (
+        {
+            "height": 320,
+            "key": "ai_messages",
+            "autoscroll": True,
+        }
+        if compact
+        else {
+            "height": "content",
+            "key": "ai_messages",
+        }
+    )
 
     # ------------------------------------------------------
     # Conversation
     # ------------------------------------------------------
 
-    with st.container(height=320):
-
-        if not user_messages:
-
-            st.markdown(
-                """
-#### 👋 Welcome
-
-Ask me anything about your Data Center Business Intelligence.
-
-**Examples**
-
-- Analyze this site
-- Show data centers in Berlin
-- Compare Microsoft vs Equinix
-- Top 10 data centers
-"""
-            )
-
-            st.divider()
+    with st.container(**container_options):
 
         for message in chat_messages:
 

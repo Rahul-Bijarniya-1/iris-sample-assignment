@@ -12,6 +12,21 @@ body,
     background: #EEF2F7;
 }
 
+/* The app uses a light canvas even when Streamlit inherits a dark theme. */
+[data-testid="stMain"] [data-testid="stHeading"] h1,
+[data-testid="stMain"] [data-testid="stHeading"] h2,
+[data-testid="stMain"] [data-testid="stHeading"] h3,
+[data-testid="stMain"] [data-testid="stHeading"] span,
+[data-testid="stMain"] [data-testid="stMetricValue"] p {
+    color: #0F172A !important;
+}
+
+[data-testid="stMain"] [data-testid="stCaptionContainer"] p,
+[data-testid="stMain"] [data-testid="stMetricLabel"] p,
+[data-testid="stMain"] [data-testid="stWidgetLabel"] p {
+    color: #475569 !important;
+}
+
 /* Streamlit container padding configuration matching the visual design */
 .block-container {
     padding-top: 25px;
@@ -518,6 +533,11 @@ iframe {
     margin-bottom:10px;
 }
 
+.st-key-ai_header [data-testid="stMarkdownContainer"] h5{
+    color:#0F172A !important;
+    margin:0;
+}
+
 /* ==========================================================
    Chat Message Container
    ========================================================== */
@@ -539,7 +559,9 @@ iframe {
 
 /* Assistant */
 
-.st-key-ai_workspace [data-testid="stChatMessage"]:nth-of-type(even){
+.st-key-ai_workspace [data-testid="stChatMessage"]:has(
+    [data-testid="stChatMessageContent"][aria-label="Chat message from assistant"]
+){
 
     border-left:4px solid #2563EB;
 
@@ -550,7 +572,9 @@ iframe {
 
 /* User */
 
-.st-key-ai_workspace [data-testid="stChatMessage"]:nth-of-type(odd){
+.st-key-ai_workspace [data-testid="stChatMessage"]:has(
+    [data-testid="stChatMessageContent"][aria-label="Chat message from user"]
+){
 
     border-left:4px solid #10B981;
 
@@ -561,19 +585,118 @@ iframe {
 
 /* Text */
 
-.st-key-ai_workspace [data-testid="stMarkdownContainer"]{
+.st-key-ai_workspace [data-testid="stChatMessageContent"]
+[data-testid="stMarkdownContainer"]{
 
-    color:#111827 !important;
+    color:#111827;
 
-    font-size:15px;
+    font-size:14px;
 
-    line-height:1.7;
+    line-height:1.55;
 
 }
 
-.st-key-ai_workspace [data-testid="stMarkdownContainer"] *{
+.st-key-ai_workspace [data-testid="stChatMessageContent"]
+[data-testid="stMarkdownContainer"] p{
 
-    color:#111827 !important;
+    margin:0 0 .55rem;
+
+}
+
+.st-key-ai_workspace [data-testid="stChatMessageContent"]
+[data-testid="stMarkdownContainer"] p:last-child{
+
+    margin-bottom:0;
+
+}
+
+.st-key-ai_workspace [data-testid="stChatMessageContent"]
+[data-testid="stMarkdownContainer"] :is(h1,h2,h3,h4,h5,h6){
+
+    color:#111827;
+
+    line-height:1.25;
+
+    margin:.8rem 0 .35rem;
+
+}
+
+.st-key-ai_workspace [data-testid="stChatMessageContent"]
+[data-testid="stMarkdownContainer"] h1{
+
+    font-size:1.3rem;
+
+}
+
+.st-key-ai_workspace [data-testid="stChatMessageContent"]
+[data-testid="stMarkdownContainer"] h2{
+
+    font-size:1.18rem;
+
+}
+
+.st-key-ai_workspace [data-testid="stChatMessageContent"]
+[data-testid="stMarkdownContainer"] :is(h3,h4,h5,h6){
+
+    font-size:1.05rem;
+
+}
+
+.st-key-ai_workspace [data-testid="stChatMessageContent"]
+[data-testid="stMarkdownContainer"] :is(ul,ol){
+
+    margin:.35rem 0 .65rem;
+
+    padding-left:1.25rem;
+
+}
+
+.st-key-ai_workspace [data-testid="stChatMessageContent"]
+[data-testid="stMarkdownContainer"] hr{
+
+    margin:.8rem 0;
+
+}
+
+.st-key-ai_workspace [data-testid="stChatMessageContent"]
+[data-testid="stMarkdownContainer"] table{
+
+    display:block;
+
+    max-width:100%;
+
+    overflow-x:auto;
+
+}
+
+.st-key-ai_workspace [data-testid="stChatMessageContent"]
+[data-testid="stMarkdownContainer"] a{
+
+    color:#2563EB !important;
+
+    overflow-wrap:anywhere;
+
+}
+
+.st-key-ai_messages{
+
+    scrollbar-color:#CBD5E1 transparent;
+
+    scrollbar-width:thin;
+
+}
+
+.st-key-ai_messages::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.st-key-ai_messages::-webkit-scrollbar-thumb{
+
+    background:#CBD5E1;
+
+    border-radius:999px;
 
 }
 

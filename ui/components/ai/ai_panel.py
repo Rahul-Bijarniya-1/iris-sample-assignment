@@ -40,7 +40,7 @@ logger = logging.getLogger(__name__)
 # Public
 # ==========================================================
 
-def render_ai_panel() -> None:
+def render_ai_panel(*, compact: bool = True) -> None:
 
     initialize_ai_state()
 
@@ -51,7 +51,7 @@ def render_ai_panel() -> None:
 
         render_ai_header()
 
-        prompt = render_ai_chat()
+        prompt = render_ai_chat(compact=compact)
 
     # --------------------------------------------
     # New Prompt
