@@ -34,12 +34,9 @@ from __future__ import annotations
 
 import json
 
-import requests
-
+from app.config.data_sources import get_data_source
 from app.config.paths import DataPaths
-
-
-OVERPASS_URL = "https://overpass-api.de/api/interpreter"
+from app.scrapers.base.http_client import HttpClient
 
 # OSM ids are only unique within their element type, and datacentermap uses
 # small sequential ids. These offsets keep every generated source_id distinct
@@ -50,6 +47,11 @@ TYPE_OFFSETS = {
     "relation": 30_000_000_000_000,
 }
 
+# OverpassScraper.build_telecom_point_query() also matches telecom=data_center,
+# but bundles it with six other telecom types into one country-wide query. That
+# combined query timed out four times against overpass-api.de and never produced
+# de_telecom_points.json. Narrowing to the single tag is what makes this one
+# complete, so the overlap is deliberate rather than an oversight.
 QUERY = """
 [out:json][timeout:180];
 area["ISO3166-1"="DE"][admin_level=2]->.de;
@@ -63,18 +65,20 @@ out center tags;
 
 
 def fetch_elements() -> list[dict]:
+    """
+    Query Overpass through the shared HttpClient, which supplies the project
+    User-Agent, retries, 429 handling with Retry-After, and backoff. Overpass
+    returned 502s and read timeouts throughout the run that motivated this
+    script, so a bare unretried POST is not good enough.
+    """
 
-    response = requests.post(
-        OVERPASS_URL,
+    source = get_data_source("overpass")
+
+    response = HttpClient().post(
+        source.urls[0],
         data={"data": QUERY},
-        headers={
-            "Accept": "application/json",
-            "User-Agent": "iris-core-etl/1.0",
-        },
-        timeout=200,
+        headers={"Accept": "application/json"},
     )
-
-    response.raise_for_status()
 
     return response.json().get("elements", [])
 
@@ -146,18 +150,13 @@ def main() -> None:
 
     print(f"Elements : {len(elements)}")
 
-    records = []
-    skipped = 0
+    records = [
+        record
+        for record in map(build_record, elements)
+        if record is not None
+    ]
 
-    for element in elements:
-
-        record = build_record(element)
-
-        if record is None:
-            skipped += 1
-            continue
-
-        records.append(record)
+    skipped = len(elements) - len(records)
 
     with_coordinates = sum(
         1
