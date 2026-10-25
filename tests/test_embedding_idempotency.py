@@ -1,11 +1,17 @@
 """
-EmbedNewsCommand must not re-embed unchanged text, must re-embed changed
-text, and must tolerate a partially-embedded table (a row with a stored
-hash but no embedding, e.g. from a run that died mid-batch).
+EmbedNewsCommand must not re-translate or re-embed unchanged text, must
+reprocess changed text, and must tolerate a partially-embedded table
+(a row with a stored hash but no embedding, e.g. from a run that died
+mid-batch).
 
-Re-embed policy is a content hash of the exact embedded text (the English
-translation), not a NULL-check — that catches a re-translated or edited
-summary that a NULL-check would miss.
+The hash gates on the *source* (German title + summary + the
+translation model's name) rather than the translated English output.
+Verified against the live API: even at temperature=0, gpt-4.1-mini does
+not reproduce byte-identical English text run to run (measured 35-36 of
+40 unchanged articles "changed" under a hash of the translated text) —
+hashing the source is what actually makes a re-run a no-op, and a
+translation-model bump is still caught by naming the model in the hash
+input.
 """
 
 import pytest
@@ -16,8 +22,7 @@ from app.services.embedding_service import EmbeddingService
 
 
 class _FakeTranslation:
-    """Returns a fixed English text unless told to return something
-    else, so hash stability is fully controlled by the test."""
+    model = "fake-translation-model-v1"
 
     def __init__(self, title_en="Title EN", summary_en="Summary EN"):
         self.title_en = title_en
@@ -40,8 +45,8 @@ class _FakeEmbedding:
     content_hash = staticmethod(EmbeddingService.content_hash)
 
 
-def _make_article(url="https://news.invalid/embed-test/"):
-    return NewsArticle(
+def _make_article(url="https://news.invalid/embed-test/", **kwargs):
+    defaults = dict(
         id="e1a6b1f0-0000-0000-0000-000000000001",
         source="Test Feed",
         language="de",
@@ -50,6 +55,8 @@ def _make_article(url="https://news.invalid/embed-test/"):
         url=url,
         processed=True,
     )
+    defaults.update(kwargs)
+    return NewsArticle(**defaults)
 
 
 @pytest.mark.integration
@@ -62,15 +69,42 @@ def test_unchanged_text_is_not_re_embedded(db_session):
 
     EmbedNewsCommand(db_session, translation, embedding).execute()
     assert embedding.embed_calls == 1
+    assert translation.calls == 1
 
-    # Second run: translation returns the identical English text, so the
-    # hash matches and the embedding call must be skipped.
+    # Second run: same source, same translation model — must be a
+    # complete no-op, not just skip the embed call.
     EmbedNewsCommand(db_session, translation, embedding).execute()
     assert embedding.embed_calls == 1, "unchanged text was re-embedded"
+    assert translation.calls == 1, "unchanged text was re-translated"
 
 
 @pytest.mark.integration
-def test_changed_translation_is_re_embedded(db_session):
+def test_edited_summary_is_re_embedded(db_session):
+    article = _make_article()
+    db_session.add(article)
+    db_session.commit()
+
+    translation = _FakeTranslation()
+    embedding = _FakeEmbedding()
+
+    EmbedNewsCommand(db_session, translation, embedding).execute()
+    assert embedding.embed_calls == 1
+
+    article.summary = "Eine bearbeitete Zusammenfassung."
+    db_session.commit()
+
+    EmbedNewsCommand(db_session, translation, embedding).execute()
+    assert embedding.embed_calls == 2, "an edited summary was not re-embedded"
+
+
+@pytest.mark.integration
+def test_translation_model_change_forces_re_embedding(db_session):
+    """
+    A deliberate translation-model/prompt upgrade must still be caught
+    even though the German source did not change, since the English
+    text the planner reads would differ.
+    """
+
     db_session.add(_make_article())
     db_session.commit()
 
@@ -80,10 +114,10 @@ def test_changed_translation_is_re_embedded(db_session):
     EmbedNewsCommand(db_session, translation, embedding).execute()
     assert embedding.embed_calls == 1
 
-    translation.summary_en = "A different English summary now"
+    translation.model = "fake-translation-model-v2"
 
     EmbedNewsCommand(db_session, translation, embedding).execute()
-    assert embedding.embed_calls == 2, "changed text was not re-embedded"
+    assert embedding.embed_calls == 2, "a translation model change was not caught"
 
 
 @pytest.mark.integration
@@ -93,16 +127,17 @@ def test_partial_embedding_state_is_tolerated(db_session):
     must still be embedded on the next run, not skipped as 'already done'.
     """
 
+    translation = _FakeTranslation()
+
     article = _make_article()
     article.embedding_hash = EmbeddingService.content_hash(
-        "Title EN\nSummary EN"
+        f"{article.title}\n{article.summary}\n{translation.model}"
     )
     article.embedding = None
 
     db_session.add(article)
     db_session.commit()
 
-    translation = _FakeTranslation()
     embedding = _FakeEmbedding()
 
     result = EmbedNewsCommand(db_session, translation, embedding).execute()

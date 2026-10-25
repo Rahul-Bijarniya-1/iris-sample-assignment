@@ -13,8 +13,8 @@ class _FakeResponsesClient:
         self._output_text = output_text
         self.calls = []
 
-    def create(self, model, input):
-        self.calls.append((model, input))
+    def create(self, model, input, **kwargs):
+        self.calls.append((model, input, kwargs))
 
         class _Response:
             def __init__(self, text):
@@ -79,6 +79,25 @@ def test_translate_falls_back_to_source_on_malformed_json():
         "title_en": "Titel auf Deutsch",
         "summary_en": "Zusammenfassung.",
     }
+
+
+def test_translate_requests_deterministic_output():
+    """
+    Against the real API, sampling noise at the default temperature made
+    the English text for an *unchanged* German article differ run to
+    run, which defeated the embedding content-hash idempotency check
+    (36/40 articles spuriously "changed" on a second run with no source
+    edit). temperature=0 makes repeated translations of the same input
+    stable, which is what idempotency actually depends on.
+    """
+
+    fake_client = _FakeOpenAI('{"title_en": "T", "summary_en": "S"}')
+    service = TranslationService(client=fake_client, model="fake-model")
+
+    service.translate("Titel", "Zusammenfassung.")
+
+    _, _, kwargs = fake_client.responses.calls[0]
+    assert kwargs.get("temperature") == 0
 
 
 def test_translate_handles_missing_summary():

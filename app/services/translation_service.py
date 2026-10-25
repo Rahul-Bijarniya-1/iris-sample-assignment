@@ -56,6 +56,7 @@ class TranslationService:
         response = self.client.responses.create(
             model=self.model,
             input=prompt,
+            temperature=0,
         )
 
         return self._parse(

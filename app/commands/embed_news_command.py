@@ -2,10 +2,18 @@
 Embed News Command
 
 Translates and embeds every news article, resumably: a content hash of
-the exact embedded (English) text decides whether a row needs re-work,
-so an unchanged article is skipped, an edited or re-translated one is
-re-embedded, and a row left partially embedded by a prior failed run is
-picked back up rather than treated as done.
+the source (German title + summary + the translation model's name)
+decides whether a row needs re-work at all, so an unchanged article
+makes no API call of either kind, an edited summary or a deliberate
+translation-model change triggers a fresh translate-and-embed, and a
+row left partially embedded by a prior failed run is picked back up
+rather than treated as done.
+
+Hashing the source rather than the translated output is deliberate:
+measured against the live API, gpt-4.1-mini does not reproduce
+byte-identical English text run to run even at temperature=0, which
+would make "unchanged input" look like "changed output" on almost
+every re-run.
 
 Commits every BATCH_SIZE rows so a later failure does not lose earlier
 progress in the same run.
@@ -53,18 +61,14 @@ class EmbedNewsCommand:
 
         for index, article in enumerate(articles, start=1):
 
-            translated = self.translation.translate(
-                article.title,
-                article.summary,
-            )
-
-            embed_text = (
-                f"{translated['title_en']}\n"
-                f"{translated['summary_en'] or ''}"
+            source_signature = (
+                f"{article.title}\n"
+                f"{article.summary or ''}\n"
+                f"{getattr(self.translation, 'model', '')}"
             )
 
             content_hash = self.embedding.content_hash(
-                embed_text
+                source_signature
             )
 
             already_done = (
@@ -72,14 +76,24 @@ class EmbedNewsCommand:
                 and article.embedding is not None
             )
 
-            article.title_en = translated["title_en"]
-            article.summary_en = translated["summary_en"]
-
             if already_done:
 
                 skipped += 1
 
                 continue
+
+            translated = self.translation.translate(
+                article.title,
+                article.summary,
+            )
+
+            article.title_en = translated["title_en"]
+            article.summary_en = translated["summary_en"]
+
+            embed_text = (
+                f"{translated['title_en']}\n"
+                f"{translated['summary_en'] or ''}"
+            )
 
             article.embedding = self.embedding.embed(
                 embed_text
