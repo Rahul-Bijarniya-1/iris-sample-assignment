@@ -7,9 +7,14 @@ drop-in for EntityExtractor/EntityMatcher. Hermetic: the client is
 injected and stubbed.
 """
 
+import json
+
 import pytest
 
-from app.extractors.openai_extractor import OpenAIExtractor
+from app.extractors.openai_extractor import (
+    ExtractionFailed,
+    OpenAIExtractor,
+)
 
 
 class _FakeResponsesClient:
@@ -79,20 +84,15 @@ def test_extract_strips_markdown_code_fences():
     assert result["expansion_signal"] is False
 
 
-def test_extract_degrades_to_a_safe_default_on_malformed_response():
+def test_extract_raises_on_malformed_response():
     fake_client = _FakeOpenAI("Sorry, I can't help with that.")
     extractor = OpenAIExtractor(client=fake_client, model="fake-model")
 
-    result = extractor.extract(ARTICLE)
-
-    assert result["article_id"] == "a1"
-    assert result["company"] == ""
-    assert result["expansion_signal"] is False
-    assert result["power_signal"] is False
-    assert result["confidence"] == 0.0
+    with pytest.raises(ExtractionFailed):
+        extractor.extract(ARTICLE)
 
 
-def test_extract_degrades_on_client_exception():
+def test_extract_raises_on_client_exception():
     class _ExplodingClient:
         class responses:
             @staticmethod
@@ -101,10 +101,8 @@ def test_extract_degrades_on_client_exception():
 
     extractor = OpenAIExtractor(client=_ExplodingClient(), model="fake-model")
 
-    result = extractor.extract(ARTICLE)
-
-    assert result["article_id"] == "a1"
-    assert result["expansion_signal"] is False
+    with pytest.raises(ExtractionFailed):
+        extractor.extract(ARTICLE)
 
 
 def test_extract_coerces_a_non_numeric_capacity_mw_to_none():
@@ -139,18 +137,57 @@ def test_extract_coerces_a_numeric_string_capacity_mw():
     assert result["confidence"] == 0.8
 
 
+def test_extract_does_not_treat_the_string_false_as_a_true_signal():
+    fake_client = _FakeOpenAI(
+        '{"investment_signal": "false", "expansion_signal": "false", '
+        '"retrofit_signal": "false", "renewable_signal": "false", '
+        '"power_signal": "false"}'
+    )
+    extractor = OpenAIExtractor(client=fake_client, model="fake-model")
+
+    result = extractor.extract(ARTICLE)
+
+    assert result["investment_signal"] is False
+    assert result["expansion_signal"] is False
+    assert result["retrofit_signal"] is False
+    assert result["renewable_signal"] is False
+    assert result["power_signal"] is False
+
+
+@pytest.mark.parametrize(
+    ("capacity", "confidence", "expected_capacity"),
+    [
+        ("NaN", "Infinity", None),
+        ("-5", "1.5", None),
+    ],
+)
+def test_extract_rejects_non_finite_or_out_of_range_numbers(
+    capacity,
+    confidence,
+    expected_capacity,
+):
+    fake_client = _FakeOpenAI(
+        json.dumps(
+            {"capacity_mw": capacity, "confidence": confidence}
+        )
+    )
+    extractor = OpenAIExtractor(client=fake_client, model="fake-model")
+
+    result = extractor.extract(ARTICLE)
+
+    assert result["capacity_mw"] is expected_capacity
+    assert result["confidence"] == 0.0
+
+
 def test_construction_does_not_require_an_api_key(monkeypatch):
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
 
     extractor = OpenAIExtractor()
 
-    # extract() itself degrades gracefully (see
-    # test_extract_degrades_on_client_exception) — this only guards
-    # that __init__ doesn't raise before that path ever runs.
-    result = extractor.extract(ARTICLE)
-
-    assert result["article_id"] == "a1"
-    assert result["expansion_signal"] is False
+    # Construction remains lazy; the first paid call reports failure
+    # explicitly instead of fabricating an all-False extraction.
+    with pytest.raises(ExtractionFailed):
+        extractor.extract(ARTICLE)
 
 
 def test_extract_requests_deterministic_output():

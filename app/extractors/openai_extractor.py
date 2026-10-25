@@ -13,14 +13,17 @@ NRW BI Platform
 
 from __future__ import annotations
 
-import os
-
-from openai import OpenAI
+import math
 
 from app.ai.json_parsing import parse_json_object
+from app.config.openai import LazyOpenAIClient, get_chat_model
 
 
-class OpenAIExtractor:
+class ExtractionFailed(RuntimeError):
+    """The model call did not produce a trustworthy extraction."""
+
+
+class OpenAIExtractor(LazyOpenAIClient):
 
     def __init__(
         self,
@@ -28,23 +31,9 @@ class OpenAIExtractor:
         model: str | None = None,
     ):
 
-        self._client = client
+        super().__init__(client)
 
-        self.model = model or os.getenv(
-            "OPENAI_MODEL",
-            "gpt-4.1-mini",
-        )
-
-    @property
-    def client(self):
-
-        if self._client is None:
-
-            self._client = OpenAI(
-                api_key=os.getenv("OPENAI_API_KEY")
-            )
-
-        return self._client
+        self.model = model or get_chat_model()
 
     # =====================================================
     # Public
@@ -59,7 +48,13 @@ class OpenAIExtractor:
 
         if data is None:
 
-            data = {}
+            raise ExtractionFailed("model returned malformed extraction JSON")
+
+        confidence = self._as_float(
+            data.get("confidence"),
+            minimum=0.0,
+            maximum=1.0,
+        )
 
         return {
             "article_id": article.get("id"),
@@ -68,30 +63,52 @@ class OpenAIExtractor:
             "facility": data.get("facility") or "",
             "city": data.get("city") or "",
             "country": data.get("country") or "Germany",
-            "investment_signal": bool(
+            "investment_signal": self._as_bool(
                 data.get("investment_signal", False)
             ),
-            "expansion_signal": bool(
+            "expansion_signal": self._as_bool(
                 data.get("expansion_signal", False)
             ),
-            "retrofit_signal": bool(
+            "retrofit_signal": self._as_bool(
                 data.get("retrofit_signal", False)
             ),
-            "renewable_signal": bool(
+            "renewable_signal": self._as_bool(
                 data.get("renewable_signal", False)
             ),
-            "power_signal": bool(
+            "power_signal": self._as_bool(
                 data.get("power_signal", False)
             ),
-            "capacity_mw": self._as_float(data.get("capacity_mw")),
-            "confidence": self._as_float(
-                data.get("confidence")
-            ) or 0.0,
+            "capacity_mw": self._as_float(
+                data.get("capacity_mw"), minimum=0.0
+            ),
+            "confidence": confidence if confidence is not None else 0.0,
         }
+
+    @staticmethod
+    def _as_bool(
+        value,
+    ) -> bool:
+
+        if isinstance(value, bool):
+
+            return value
+
+        if isinstance(value, str):
+
+            return value.strip().lower() in {
+                "1",
+                "on",
+                "true",
+                "yes",
+            }
+
+        return False
 
     @staticmethod
     def _as_float(
         value,
+        minimum: float | None = None,
+        maximum: float | None = None,
     ) -> float | None:
         """
         NewsSignal.capacity_mw/confidence are Float columns, and
@@ -100,17 +117,31 @@ class OpenAIExtractor:
         number must not reach the insert and lose the whole batch.
         """
 
-        if value is None:
+        if value is None or isinstance(value, bool):
 
             return None
 
         try:
 
-            return float(value)
+            number = float(value)
 
         except (TypeError, ValueError):
 
             return None
+
+        if not math.isfinite(number):
+
+            return None
+
+        if minimum is not None and number < minimum:
+
+            return None
+
+        if maximum is not None and number > maximum:
+
+            return None
+
+        return number
 
     # =====================================================
     # Internal
@@ -131,9 +162,9 @@ class OpenAIExtractor:
 
             return parse_json_object(response.output_text)
 
-        except Exception:
+        except Exception as exc:
 
-            return None
+            raise ExtractionFailed("news-signal extraction failed") from exc
 
     @staticmethod
     def _prompt(

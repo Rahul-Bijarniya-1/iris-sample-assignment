@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 
 from app.database.models.news_article import NewsArticle
 from app.database.models.news_signal import NewsSignal
-from app.extractors.openai_extractor import OpenAIExtractor
+from app.extractors.openai_extractor import ExtractionFailed, OpenAIExtractor
 
 
 class ExtractNewsSignalsCommand:
@@ -41,17 +41,25 @@ class ExtractNewsSignalsCommand:
         ).all()
 
         loaded = 0
+        failed = 0
 
-        for index, article in enumerate(articles, start=1):
+        for article in articles:
 
-            result = self.extractor.extract(
-                {
-                    "id": article.id,
-                    "title": article.title,
-                    "summary": article.summary,
-                    "url": article.url,
-                }
-            )
+            try:
+
+                result = self.extractor.extract(
+                    {
+                        "id": article.id,
+                        "title": article.title,
+                        "summary": article.summary,
+                        "url": article.url,
+                    }
+                )
+
+            except ExtractionFailed:
+
+                failed += 1
+                continue
 
             self.session.execute(
                 delete(NewsSignal).where(
@@ -69,17 +77,28 @@ class ExtractNewsSignalsCommand:
                     investment=result["investment_signal"],
                     capacity_mw=result["capacity_mw"],
                     confidence=result["confidence"],
-                    city=result["city"] or None,
-                    company=result["company"] or None,
+                    city=self._bounded_text(result.get("city"), 100),
+                    company=self._bounded_text(result.get("company"), 255),
                 )
             )
 
             loaded += 1
 
-            if index % self.BATCH_SIZE == 0:
+            if loaded % self.BATCH_SIZE == 0:
 
                 self.session.commit()
 
         self.session.commit()
 
-        return {"loaded": loaded}
+        return {"loaded": loaded, "failed": failed}
+
+    @staticmethod
+    def _bounded_text(value, limit: int) -> str | None:
+
+        if value is None:
+
+            return None
+
+        text = str(value).strip()
+
+        return text[:limit] or None

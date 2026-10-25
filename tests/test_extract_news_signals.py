@@ -11,6 +11,7 @@ from app.commands.extract_news_signals_command import (
 )
 from app.database.models.news_article import NewsArticle
 from app.database.models.news_signal import NewsSignal
+from app.extractors.openai_extractor import ExtractionFailed
 
 
 class _FakeExtractor:
@@ -51,6 +52,46 @@ def _article(id_="a1"):
         url=f"https://news.invalid/{id_}/",
         processed=True,
     )
+
+
+def test_failed_extraction_does_not_delete_or_replace_existing_signal():
+    class _ScalarResult:
+        def all(self):
+            return [_article()]
+
+    class _Session:
+        def __init__(self):
+            self.executed = []
+            self.added = []
+            self.commits = 0
+
+        def scalars(self, statement):
+            return _ScalarResult()
+
+        def execute(self, statement):
+            self.executed.append(statement)
+
+        def add(self, signal):
+            self.added.append(signal)
+
+        def commit(self):
+            self.commits += 1
+
+    class _FailedExtractor:
+        def extract(self, article):
+            raise ExtractionFailed("model unavailable")
+
+    session = _Session()
+
+    result = ExtractNewsSignalsCommand(
+        session,
+        _FailedExtractor(),
+    ).execute()
+
+    assert result == {"loaded": 0, "failed": 1}
+    assert session.executed == []
+    assert session.added == []
+    assert session.commits == 1
 
 
 @pytest.mark.integration
@@ -173,3 +214,74 @@ def test_a_second_run_replaces_rather_than_duplicates(db_session):
     )
 
     assert count == 1
+
+
+@pytest.mark.integration
+def test_failed_extraction_preserves_existing_signal_and_is_reported(
+    db_session,
+):
+    db_session.add(_article("a1"))
+    db_session.add(
+        NewsSignal(
+            article_id="a1",
+            expansion=True,
+            power=False,
+            renewable=False,
+            retrofit=False,
+            investment=True,
+            capacity_mw=25.0,
+            confidence=0.8,
+            city="Essen",
+            company="Existing Company",
+        )
+    )
+    db_session.commit()
+
+    class _FailedExtractor:
+        def extract(self, article):
+            raise ExtractionFailed("model unavailable")
+
+    result = ExtractNewsSignalsCommand(
+        db_session,
+        _FailedExtractor(),
+    ).execute()
+
+    signal = db_session.query(NewsSignal).filter_by(article_id="a1").one()
+
+    assert result == {"loaded": 0, "failed": 1}
+    assert signal.company == "Existing Company"
+    assert signal.expansion is True
+    assert signal.capacity_mw == 25.0
+
+
+@pytest.mark.integration
+def test_overlong_company_and_city_are_truncated(db_session):
+    db_session.add(_article("a1"))
+    db_session.commit()
+
+    extractor = _FakeExtractor(
+        {
+            "a1": {
+                "article_id": "a1",
+                "article_url": "https://news.invalid/a1/",
+                "company": "C" * 300,
+                "facility": "",
+                "city": "X" * 150,
+                "country": "Germany",
+                "investment_signal": False,
+                "expansion_signal": False,
+                "retrofit_signal": False,
+                "renewable_signal": False,
+                "power_signal": False,
+                "capacity_mw": None,
+                "confidence": 0.5,
+            }
+        }
+    )
+
+    result = ExtractNewsSignalsCommand(db_session, extractor).execute()
+    signal = db_session.query(NewsSignal).filter_by(article_id="a1").one()
+
+    assert result == {"loaded": 1, "failed": 0}
+    assert signal.company == "C" * 255
+    assert signal.city == "X" * 100
