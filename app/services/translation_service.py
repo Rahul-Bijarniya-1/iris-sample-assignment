@@ -11,10 +11,11 @@ NRW BI Platform
 
 from __future__ import annotations
 
-import json
 import os
 
 from openai import OpenAI
+
+from app.ai.json_parsing import parse_json_object
 
 
 class TranslationService:
@@ -87,47 +88,15 @@ Summary:
 """
 
     @staticmethod
-    def _strip_code_fence(
-        text: str,
-    ) -> str:
-        """
-        gpt-4.1-mini wraps its JSON in a ```json ... ``` fence even when
-        told to return only JSON. Strip it if present.
-        """
-
-        stripped = text.strip()
-
-        if stripped.startswith("```"):
-
-            stripped = stripped.removeprefix("```json").removeprefix(
-                "```"
-            )
-
-            stripped = stripped.removesuffix("```")
-
-        return stripped.strip()
-
-    @staticmethod
     def _parse(
         output_text: str,
         fallback_title: str,
         fallback_summary: str | None,
     ) -> dict:
 
-        try:
+        data = parse_json_object(output_text)
 
-            data = json.loads(
-                TranslationService._strip_code_fence(output_text)
-            )
-
-        except (json.JSONDecodeError, AttributeError):
-
-            return {
-                "title_en": fallback_title,
-                "summary_en": fallback_summary,
-            }
-
-        if not isinstance(data, dict):
+        if data is None:
 
             return {
                 "title_en": fallback_title,
