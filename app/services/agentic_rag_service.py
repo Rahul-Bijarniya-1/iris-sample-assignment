@@ -30,7 +30,10 @@ from app.database.repositories.land_value_repository import (
 from app.services.ai_recommendation_service import AIRecommendationService
 from app.services.news_retrieval_service import NewsRetrievalService
 from app.services.site_intelligence_service import SiteIntelligenceService
-from app.services.site_ranking_service import SiteRankingService
+from app.services.site_ranking_service import RankingType, SiteRankingService
+
+
+_TRUTHY_STRINGS = frozenset({"1", "on", "true", "y", "yes"})
 
 
 class AgenticRagService:
@@ -42,6 +45,7 @@ class AgenticRagService:
     )
 
     MAX_REFINEMENTS = 1
+    MAX_QUERY_CHARS = 500
 
     def __init__(
         self,
@@ -108,23 +112,36 @@ class AgenticRagService:
 
         verify = self._verify(question, results)
 
-        if (
+        issued_queries = {self._query_key(plan["query"])}
+
+        while (
             not verify["sufficient"]
             and verify.get("refined_query")
             and len(rounds) <= self.MAX_REFINEMENTS
         ):
 
+            refined_query = self._normalize_query(
+                verify["refined_query"], ""
+            )
+            refined_query_key = self._query_key(refined_query)
+
+            if not refined_query_key or refined_query_key in issued_queries:
+
+                break
+
+            issued_queries.add(refined_query_key)
+
             on_step("Refining")
 
             refined_results = self._retrieve_news(
-                verify["refined_query"], plan["k"]
+                refined_query, plan["k"]
             )
 
             results = self._merge_results(results, refined_results)
 
             rounds.append(
                 {
-                    "query": verify["refined_query"],
+                    "query": refined_query,
                     "k": plan["k"],
                     "result_ids": [r["id"] for r in refined_results],
                 }
@@ -145,7 +162,10 @@ class AgenticRagService:
         if "site_ranking" in plan["tools"]:
 
             ranking = self._safe_call(
-                self.ranking_service.rank_sites
+                lambda: self.ranking_service.rank_sites(
+                    ranking_type=plan["ranking_type"],
+                    limit=plan["ranking_limit"],
+                )
             )
 
         on_step("Answering")
@@ -198,10 +218,17 @@ class AgenticRagService:
 
             return self._default_plan(question)
 
+        raw_tools = data.get("tools") or []
+
+        if not isinstance(raw_tools, (list, tuple, set)):
+
+            raw_tools = []
+
         tools = [
             tool
-            for tool in data.get("tools", [])
-            if tool in self.WHITELISTED_TOOLS
+            for tool in raw_tools
+            if isinstance(tool, str)
+            and tool in self.WHITELISTED_TOOLS
         ]
 
         if not tools:
@@ -218,24 +245,62 @@ class AgenticRagService:
 
         k = max(1, min(10, k))
 
-        query = data.get("query") or question
+        ranking_type = self._as_ranking_type(data.get("ranking_type"))
+
+        try:
+
+            ranking_limit = int(data.get("ranking_limit", 10))
+
+        except (TypeError, ValueError):
+
+            ranking_limit = 10
+
+        ranking_limit = max(1, min(10, ranking_limit))
+
+        query = self._normalize_query(data.get("query"), question)
 
         return {
             "tools": tools,
             "query": query,
             "k": k,
+            "ranking_type": ranking_type,
+            "ranking_limit": ranking_limit,
         }
 
-    @staticmethod
+    @classmethod
     def _default_plan(
+        cls,
         question: str,
     ) -> dict:
 
         return {
             "tools": ["news_search"],
-            "query": question,
+            "query": cls._normalize_query(question, ""),
             "k": 10,
+            "ranking_type": RankingType.OVERALL,
+            "ranking_limit": 10,
         }
+
+    @classmethod
+    def _normalize_query(
+        cls,
+        value,
+        fallback: str,
+    ) -> str:
+
+        query = value if isinstance(value, str) else fallback
+
+        if not isinstance(query, str):
+
+            query = ""
+
+        query = query.strip()
+
+        if not query and isinstance(fallback, str):
+
+            query = fallback.strip()
+
+        return query[: cls.MAX_QUERY_CHARS]
 
     # =====================================================
     # RETRIEVE
@@ -308,9 +373,11 @@ class AgenticRagService:
         return {
             "sufficient": self._as_bool(data.get("sufficient", True)),
             "relevant_ids": self._as_id_list(data.get("relevant_ids")),
-            "rejected": data.get("rejected") or [],
+            "rejected": self._as_rejected_list(data.get("rejected")),
             "missing": data.get("missing") or "",
-            "refined_query": data.get("refined_query") or "",
+            "refined_query": self._normalize_query(
+                data.get("refined_query"), ""
+            ),
         }
 
     @staticmethod
@@ -325,7 +392,7 @@ class AgenticRagService:
 
         if isinstance(value, str):
 
-            return value.strip().lower() not in ("false", "0", "")
+            return value.strip().lower() in _TRUTHY_STRINGS
 
         return bool(value)
 
@@ -352,6 +419,66 @@ class AgenticRagService:
         ]
 
     @staticmethod
+    def _as_rejected_list(
+        value,
+    ) -> list[dict[str, str]]:
+
+        if value is None:
+
+            return []
+
+        if not isinstance(value, list):
+
+            value = [value]
+
+        rejected = []
+
+        for item in value:
+
+            if isinstance(item, dict):
+
+                id_ = item.get("id")
+                reason = item.get("reason")
+
+            elif isinstance(item, (str, int)):
+
+                id_ = item
+                reason = ""
+
+            else:
+
+                continue
+
+            if id_ is None:
+
+                continue
+
+            rejected.append(
+                {
+                    "id": str(id_),
+                    "reason": "" if reason is None else str(reason),
+                }
+            )
+
+        return rejected
+
+    @staticmethod
+    def _as_ranking_type(value) -> RankingType:
+
+        try:
+
+            return RankingType(str(value or RankingType.OVERALL.value).lower())
+
+        except ValueError:
+
+            return RankingType.OVERALL
+
+    @staticmethod
+    def _query_key(value) -> str:
+
+        return str(value or "").strip().casefold()
+
+    @staticmethod
     def _filter_relevant(
         results: list[dict],
         verify: dict,
@@ -361,13 +488,20 @@ class AgenticRagService:
 
         if not relevant_ids:
 
-            return results
+            return [] if verify.get("rejected") else results
 
         by_id = {item["id"]: item for item in results}
 
-        return [
+        relevant = [
             by_id[id_] for id_ in verify["relevant_ids"] if id_ in by_id
         ]
+
+        if not relevant:
+
+            verify["relevance"] = "id_mismatch"
+            return results
+
+        return relevant
 
     # =====================================================
     # Site / place resolution

@@ -8,9 +8,12 @@ plan instead of raising, and a tool failure or empty retrieval degrades
 the answer instead of raising.
 """
 
+import json
+
 import pytest
 
 from app.services.agentic_rag_service import AgenticRagService
+from app.services.site_ranking_service import RankingType
 
 
 def _result(id_, title, score=0.9):
@@ -124,6 +127,49 @@ def test_unknown_tool_names_are_filtered_out(service_factory):
     result = service.answer("question")
 
     assert result["trace"]["plan"]["tools"] == ["news_search"]
+
+
+def test_plan_rejects_non_string_tools_and_query(service_factory):
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            json.dumps(
+                {
+                    "tools": [{"name": "news_search"}, "news_search"],
+                    "query": ["grid", "capacity"],
+                    "k": 5,
+                }
+            ),
+            SUFFICIENT_VERIFY,
+            "Answer.",
+        ],
+        retrieval_responses=[[_result("a1", "Article")]],
+    )
+
+    result = service.answer("raw planner question")
+
+    assert retrieval.calls[0]["query"] == "raw planner question"
+    assert result["trace"]["plan"]["tools"] == ["news_search"]
+
+
+def test_plan_bounds_an_oversized_model_query(service_factory):
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            json.dumps(
+                {
+                    "tools": ["news_search"],
+                    "query": "q" * 2_000,
+                    "k": 5,
+                }
+            ),
+            SUFFICIENT_VERIFY,
+            "Answer.",
+        ],
+        retrieval_responses=[[_result("a1", "Article")]],
+    )
+
+    service.answer("raw planner question")
+
+    assert retrieval.calls[0]["query"] == "q" * 500
 
 
 def test_k_is_clamped_to_the_one_to_ten_range(service_factory):
@@ -340,7 +386,7 @@ def test_site_ranking_result_actually_reaches_the_answer_prompt(
             "_FakeRanking",
             (),
             {
-                "rank_sites": lambda self: [
+                "rank_sites": lambda self, ranking_type=None, limit=10: [
                     {"facility": "DISTINCTIVE_RANKED_FACILITY"}
                 ]
             },
@@ -353,20 +399,13 @@ def test_site_ranking_result_actually_reaches_the_answer_prompt(
     assert "DISTINCTIVE_RANKED_FACILITY" in answer_prompt
 
 
-def test_filter_relevant_falls_back_to_retrieved_articles_when_empty(
+def test_filter_relevant_drops_articles_the_verifier_rejected(
     service_factory,
 ):
     """
-    Plan decision ("Thin evidence"): "Name the gap and what was
-    searched, then give the national context that does exist." When
-    verify finds nothing it can specifically confirm (relevant_ids=[]),
-    the answer step must still receive what was actually retrieved —
-    _filter_relevant already falls back to the raw results in this
-    case (confirmed here); the real gap turned out to be in the answer
-    prompt's wording, not this filtering logic — see
-    AgenticAnswerPrompt's "Place-specific vs. thematic evidence"
-    section, added after running the real eval set and finding the
-    model declined to use available thematic evidence anyway.
+    An explicit rejected list is a model judgement that none of the
+    retrieved articles is usable. Those articles must not be cited as
+    though the verifier accepted them.
     """
 
     service, ai, retrieval = service_factory(
@@ -388,9 +427,260 @@ def test_filter_relevant_falls_back_to_retrieved_articles_when_empty(
 
     result = service.answer("question about Dortmund")
 
-    assert len(result["citations"]) == 1
-    assert result["citations"][0]["id"] == "a1"
+    assert result["citations"] == []
     assert result["answer"] == "Answer using the national context [1]."
+
+
+def test_filter_relevant_keeps_results_when_verifier_cannot_classify_them(
+    service_factory,
+):
+    service, _, _ = service_factory(
+        ai_responses=[
+            '{"tools": ["news_search"], "query": "q", "k": 10}',
+            (
+                '{"sufficient": true, "relevant_ids": [], '
+                '"rejected": [], "missing": "", "refined_query": ""}'
+            ),
+            "Best-effort answer [1].",
+        ],
+        retrieval_responses=[[_result("a1", "Article")]],
+    )
+
+    result = service.answer("question")
+
+    assert [citation["id"] for citation in result["citations"]] == ["a1"]
+
+
+def test_verify_treats_the_string_no_as_false(service_factory):
+    """
+    _as_bool's deny-list covered "false"/"0"/"" but not the equally
+    common "no"/"none"/"null", so `"sufficient": "no"` read as True and
+    silently suppressed the refinement round the model had asked for by
+    supplying a refined_query.
+    """
+
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            '{"tools": ["news_search"], "query": "q1", "k": 10}',
+            (
+                '{"sufficient": "no", "relevant_ids": [], '
+                '"rejected": [], "missing": "x", "refined_query": "q2"}'
+            ),
+            SUFFICIENT_VERIFY,
+            "Refined answer.",
+        ],
+        retrieval_responses=[
+            [_result("old", "Old article")],
+            [_result("a1", "New article")],
+        ],
+    )
+
+    service.answer("question")
+
+    assert [c["query"] for c in retrieval.calls] == ["q1", "q2"]
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        ("true", True),
+        ("YES", True),
+        ("on", True),
+        ("1", True),
+        ("false", False),
+        ("no", False),
+        ("none", False),
+        ("null", False),
+        ("off", False),
+        ("n", False),
+        ("", False),
+        ("unexpected", False),
+    ],
+)
+def test_as_bool_uses_an_explicit_truthy_allow_list(value, expected):
+    assert AgenticRagService._as_bool(value) is expected
+
+
+def test_plan_tolerates_tools_as_an_explicit_null(service_factory):
+    """
+    data.get("tools", []) does not protect against an explicit JSON
+    null, and the comprehension sits outside _safe_call, so a model
+    answering `"tools": null` raised TypeError straight out of answer().
+    """
+
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            '{"tools": null, "query": "q", "k": 10}',
+            SUFFICIENT_VERIFY,
+            "Answer [1].",
+        ],
+        retrieval_responses=[[_result("a1", "Article")]],
+    )
+
+    result = service.answer("question")
+
+    assert result["trace"]["plan"]["tools"] == ["news_search"]
+    assert result["answer"] == "Answer [1]."
+
+
+def test_relevant_ids_matching_no_retrieved_article_fall_back(
+    service_factory,
+):
+    """
+    The empty-relevant_ids fallback only fires on an empty list. Ids are
+    String(36) UUIDs but _as_id_list admits ints, so a model answering
+    with 1-based indices — plausible, since the citation convention is
+    [n] markers — produced a non-empty list matching nothing, and the
+    comprehension silently returned no evidence at all.
+
+    Falling back is the same choice as the empty case; the mismatch is
+    recorded in the trace so it is visible rather than silent.
+    """
+
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            '{"tools": ["news_search"], "query": "q", "k": 10}',
+            (
+                '{"sufficient": true, "relevant_ids": [1, 2], '
+                '"rejected": [], "missing": "", "refined_query": ""}'
+            ),
+            "Answer [1].",
+        ],
+        retrieval_responses=[[_result("a1", "Article")]],
+    )
+
+    result = service.answer("question")
+
+    assert [c["id"] for c in result["citations"]] == ["a1"]
+    assert result["trace"]["verify"]["relevance"] == "id_mismatch"
+
+
+def test_rejected_entries_are_coerced_to_id_reason_dicts(service_factory):
+    """
+    _verify passed `rejected` through uncoerced while relevant_ids was
+    sanitized. A model returning the common simplification
+    `"rejected": ["a1", "a2"]` then reached the trace renderer, which
+    calls .get() on each entry — crashing the AI panel, and crashing it
+    again on every rerun because the bad trace was already persisted
+    into session state.
+    """
+
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            '{"tools": ["news_search"], "query": "q", "k": 10}',
+            (
+                '{"sufficient": true, "relevant_ids": ["a1"], '
+                '"rejected": ["a2", "a3"], "missing": "", '
+                '"refined_query": ""}'
+            ),
+            "Answer [1].",
+        ],
+        retrieval_responses=[[_result("a1", "Article")]],
+    )
+
+    result = service.answer("question")
+
+    rejected = result["trace"]["verify"]["rejected"]
+
+    assert [entry["id"] for entry in rejected] == ["a2", "a3"]
+    assert all(
+        isinstance(entry.get("reason"), str) for entry in rejected
+    )
+
+
+def test_a_refined_query_identical_to_the_first_skips_the_round(
+    service_factory,
+):
+    """
+    A mini model echoing the original query back as refined_query cost a
+    second embedding, a second search returning the same rows, and a
+    second verify call — three round trips for zero new evidence.
+    """
+
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            '{"tools": ["news_search"], "query": "q1", "k": 10}',
+            (
+                '{"sufficient": false, "relevant_ids": [], '
+                '"rejected": [], "missing": "x", "refined_query": "q1"}'
+            ),
+            "Best-effort answer.",
+        ],
+        retrieval_responses=[[_result("a1", "Article")]],
+    )
+
+    service.answer("question")
+
+    assert len(retrieval.calls) == 1, (
+        "the refined query repeated the original; no round should be spent"
+    )
+    assert len(ai.calls) == 3, "expected plan+verify+answer only"
+
+
+def test_the_plans_ranking_dimension_reaches_rank_sites(service_factory):
+    """
+    rank_sites() was called bare, so RankingType.OVERALL was always used
+    and a question explicitly about renewable readiness got an overall
+    ranking presented as its answer.
+    """
+
+    class _RecordingRanking:
+        def __init__(self):
+            self.calls = []
+
+        def rank_sites(self, ranking_type=None, limit=10):
+            self.calls.append(
+                {"ranking_type": ranking_type, "limit": limit}
+            )
+            return [{"facility": "ranked"}]
+
+    ranking = _RecordingRanking()
+
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            '{"tools": ["news_search", "site_ranking"], "query": "q", '
+            '"k": 10, "ranking_type": "renewable", '
+            '"ranking_limit": 3}',
+            SUFFICIENT_VERIFY,
+            "Answer [1].",
+        ],
+        retrieval_responses=[[_result("a1", "Article")]],
+        ranking_service=ranking,
+    )
+
+    service.answer("question")
+
+    assert ranking.calls[0]["ranking_type"] == RankingType.RENEWABLE
+    assert ranking.calls[0]["limit"] == 3
+
+
+def test_an_unknown_ranking_dimension_falls_back_to_overall(
+    service_factory,
+):
+    class _RecordingRanking:
+        def __init__(self):
+            self.calls = []
+
+        def rank_sites(self, ranking_type=None, limit=10):
+            self.calls.append({"ranking_type": ranking_type})
+            return []
+
+    ranking = _RecordingRanking()
+
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            '{"tools": ["news_search", "site_ranking"], "query": "q", '
+            '"k": 10, "ranking_type": "vibes"}',
+            SUFFICIENT_VERIFY,
+            "Answer [1].",
+        ],
+        retrieval_responses=[[_result("a1", "Article")]],
+        ranking_service=ranking,
+    )
+
+    service.answer("question")
+
+    assert ranking.calls[0]["ranking_type"] == RankingType.OVERALL
 
 
 def test_a_failing_tool_does_not_raise(service_factory):
