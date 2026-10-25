@@ -159,3 +159,40 @@ NEWS_TERMS = [
     "headline",
     "headlines",
 ]
+
+
+# Function words that should never make a full-question news search match.
+# Kept with the rest of the advisor vocabulary so intent and search terms
+# have one source of truth.
+NEWS_SEARCH_STOPWORDS = {
+    "what",
+    "whats",
+    "the",
+    "and",
+    "for",
+    "are",
+    "was",
+    "has",
+    "about",
+    "near",
+    "with",
+    "from",
+    "that",
+    "this",
+    "there",
+    "should",
+    "know",
+    "happening",
+    "recent",
+    "activity",
+    "have",
+    "were",
+    "die",
+    "der",
+    "das",
+    "und",
+    "ist",
+    "sind",
+    "mit",
+    "fuer",
+}

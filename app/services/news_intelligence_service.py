@@ -14,22 +14,13 @@ import re
 
 from sqlalchemy.orm import Session
 
+from app.ai.ai_keywords import NEWS_SEARCH_STOPWORDS
 from app.database.repositories.news_repository import (
     NewsRepository,
 )
 
 
 class NewsIntelligenceService:
-
-    # Short function words in the two languages the advisor sees
-    # questions in (English and German, since the corpus is German).
-    # Excluding them keeps a one-word match from firing on "what"/"die".
-    _STOPWORDS = {
-        "what", "whats", "about", "near", "with", "from", "that", "this",
-        "there", "should", "know", "happening", "recent", "activity",
-        "the", "and", "for", "are", "was", "were", "have", "has",
-        "die", "der", "das", "und", "ist", "sind", "mit", "fuer",
-    }
 
     def __init__(
         self,
@@ -64,19 +55,10 @@ class NewsIntelligenceService:
         self,
     ) -> int:
         """
-        Return the total number of news intelligence
-        signals stored in PostgreSQL.
-
-        Each NewsMatch represents a detected
-        relationship between a news article and
-        a known facility.
+        Return the total number of structured news-signal rows.
         """
 
-        matches = (
-            self.repository.get_matches()
-        )
-
-        return len(matches)
+        return self.repository.get_signal_count()
 
     # =====================================================
     # Company
@@ -158,9 +140,9 @@ class NewsIntelligenceService:
 
             return []
 
-        articles = []
+        ranked_articles = []
 
-        for article in (
+        for source_index, article in enumerate(
             self.repository.get_articles()
         ):
 
@@ -170,14 +152,29 @@ class NewsIntelligenceService:
                 + (article.summary or "")
             ).lower()
 
-            if any(token in text for token in tokens):
+            hit_count = sum(
+                bool(
+                    re.search(
+                        rf"\b{re.escape(token)}\b",
+                        text,
+                        flags=re.IGNORECASE,
+                    )
+                )
+                for token in tokens
+            )
 
-                articles.append(
-                    article,
+            if hit_count:
+
+                ranked_articles.append(
+                    (hit_count, source_index, article)
                 )
 
+        ranked_articles.sort(
+            key=lambda item: (-item[0], item[1])
+        )
+
         return self._merge(
-            articles,
+            [item[2] for item in ranked_articles[:10]],
         )
 
     @classmethod
@@ -186,21 +183,36 @@ class NewsIntelligenceService:
         question: str,
     ) -> list[str]:
         """
-        Significant words from a question: lower-cased, split on
-        non-alphanumerics, short function words and anything under 4
-        characters dropped.
+        Significant words from a question. Short all-caps and dotted
+        names (RWE, E.ON) are retained while ordinary short words drop.
         """
 
         words = re.findall(
-            r"[\wäöüß]+",
-            question.lower(),
+            r"[\wäöüß]+(?:\.[\wäöüß]+)*",
+            question,
+            flags=re.IGNORECASE,
         )
 
-        return [
-            word
-            for word in words
-            if len(word) >= 4 and word not in cls._STOPWORDS
-        ]
+        keywords = []
+
+        for word in words:
+
+            normalized = word.lower()
+            looks_like_name = word.isupper() or "." in word
+
+            if normalized in NEWS_SEARCH_STOPWORDS:
+
+                continue
+
+            if len(normalized) < 4 and not looks_like_name:
+
+                continue
+
+            if normalized not in keywords:
+
+                keywords.append(normalized)
+
+        return keywords
 
     # =====================================================
     # Merge Articles
