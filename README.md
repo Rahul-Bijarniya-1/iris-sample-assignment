@@ -520,8 +520,10 @@ The governing rule is that legal insolvency is never inferred from name
 similarity alone: a name match without corroborating address evidence is
 capped below the auto-match threshold and held for human review.
 
-Full design notes, trade-offs, source/licence limitations and integration
-plan: **[INSOLVENCY.md](INSOLVENCY.md)**.
+- **[UPDATES.md](UPDATES.md)** — what changed, how to run and verify it,
+  acceptance tests and limitations.
+- **[INSOLVENCY.md](INSOLVENCY.md)** — design rationale, trade-offs,
+  source/licence limitations and the integration plan.
 
 # Current Project Status
 
