@@ -74,3 +74,37 @@ def test_published_at_set_on_update(db_session, staged_article):
     ).one()
 
     assert article.published_at is not None
+
+
+@pytest.mark.integration
+def test_missing_date_on_reload_preserves_existing_value(
+    db_session,
+    staged_article,
+):
+    NewsLoader(db_session, paths=staged_article).execute()
+
+    article_without_date = {key: value for key, value in ARTICLE.items()}
+    article_without_date.pop("published")
+    (staged_article.news_processed / "news.json").write_text(
+        json.dumps([article_without_date], ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    NewsLoader(db_session, paths=staged_article).execute()
+
+    article = db_session.query(NewsArticle).filter_by(
+        url=ARTICLE["url"]
+    ).one()
+
+    assert article.published_at == datetime(
+        2026, 10, 23, 14, 21, 0, tzinfo=timezone(timedelta(hours=2)),
+    )
+
+
+def test_unknown_rfc822_timezone_is_treated_as_utc():
+    parsed = NewsLoader._parse_published(
+        "Fri, 23 Oct 2026 14:21:00 -0000"
+    )
+
+    assert parsed == datetime(2026, 10, 23, 14, 21, tzinfo=timezone.utc)
+    assert parsed.tzinfo is not None

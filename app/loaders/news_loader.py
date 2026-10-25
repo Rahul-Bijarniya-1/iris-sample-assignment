@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 
@@ -195,7 +196,13 @@ class NewsLoader:
 
         try:
 
-            return parsedate_to_datetime(published)
+            parsed = parsedate_to_datetime(published)
+
+            if parsed.tzinfo is None:
+
+                parsed = parsed.replace(tzinfo=timezone.utc)
+
+            return parsed
 
         except (TypeError, ValueError):
 
@@ -266,9 +273,13 @@ class NewsLoader:
                     "summary"
                 )
 
-                existing.published_at = self._parse_published(
+                published_at = self._parse_published(
                     data.get("published")
                 )
+
+                if published_at is not None:
+
+                    existing.published_at = published_at
 
                 existing.processed = data.get(
                     "processed",

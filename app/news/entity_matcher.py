@@ -220,15 +220,14 @@ class EntityMatcher:
 
         for article in self.news:
 
-            company = (
-                article.get(
-                    "company"
-                )
-                or ""
-            ).strip().lower()
+            company = self._clean_text(
+                article.get("company")
+            )
 
             if not company:
                 continue
+
+            company = company.strip().lower()
 
             facility_matches = (
                 self.facilities[
@@ -257,19 +256,15 @@ class EntityMatcher:
                             )
                         ),
 
-                        "company": (
-                            facility[
-                                "company"
-                            ]
+                        "company": self._clean_text(
+                            facility["company"]
                         ),
 
-                        "facility_name": (
-                            facility[
-                                "name"
-                            ]
+                        "facility_name": self._clean_text(
+                            facility["name"]
                         ),
 
-                        "city": self._clean_city(
+                        "city": self._clean_text(
                             facility.get(
                                 "city"
                             )
@@ -291,25 +286,24 @@ class EntityMatcher:
         return matches
 
     # =====================================================
-    # CITY
+    # NULLABLE TEXT
     # =====================================================
 
     @staticmethod
-    def _clean_city(
-        city,
+    def _clean_text(
+        value,
     ):
         """
-        A facility row with no `city` property carries a pandas NaN float
-        there instead of a missing key. json.dump writes that as the bare
-        token `NaN`, which loads back as a float and lands in the VARCHAR
-        `city` column as the literal string "NaN".
+        GeoDataFrame rows carry pandas NaN values for missing text fields.
+        Normalize those values before matching or serializing them so they
+        cannot become the literal string "NaN" in VARCHAR columns.
         """
 
-        if pd.isna(city):
+        if pd.isna(value):
 
             return None
 
-        return city
+        return value
 
     # =====================================================
     # SAVE
