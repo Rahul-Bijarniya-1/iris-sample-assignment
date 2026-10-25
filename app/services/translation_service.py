@@ -11,14 +11,20 @@ NRW BI Platform
 
 from __future__ import annotations
 
-import os
-
-from openai import OpenAI
-
 from app.ai.json_parsing import parse_json_object
+from app.config.openai import LazyOpenAIClient, get_chat_model
 
 
-class TranslationService:
+class TranslationResult(dict):
+    """Translation payload with out-of-band fallback provenance."""
+
+    def __init__(self, *args, succeeded: bool, **kwargs):
+
+        super().__init__(*args, **kwargs)
+        self.succeeded = succeeded
+
+
+class TranslationService(LazyOpenAIClient):
 
     def __init__(
         self,
@@ -26,33 +32,19 @@ class TranslationService:
         model: str | None = None,
     ):
 
-        self._client = client
+        super().__init__(client)
 
-        self.model = model or os.getenv(
-            "OPENAI_MODEL",
-            "gpt-4.1-mini",
-        )
+        self.model = model or get_chat_model()
 
     # =====================================================
     # Public
     # =====================================================
 
-    @property
-    def client(self):
-
-        if self._client is None:
-
-            self._client = OpenAI(
-                api_key=os.getenv("OPENAI_API_KEY")
-            )
-
-        return self._client
-
     def translate(
         self,
         title: str,
         summary: str | None,
-    ) -> dict:
+    ) -> TranslationResult:
         """
         Translate title/summary to English.
 
@@ -101,18 +93,38 @@ Summary:
         output_text: str,
         fallback_title: str,
         fallback_summary: str | None,
-    ) -> dict:
+    ) -> TranslationResult:
 
         data = parse_json_object(output_text)
 
         if data is None:
 
-            return {
-                "title_en": fallback_title,
-                "summary_en": fallback_summary,
-            }
+            return TranslationResult(
+                {
+                    "title_en": fallback_title,
+                    "summary_en": fallback_summary,
+                },
+                succeeded=False,
+            )
 
-        return {
-            "title_en": data.get("title_en") or fallback_title,
-            "summary_en": data.get("summary_en", fallback_summary),
-        }
+        title_en = data.get("title_en")
+        summary_en = data.get("summary_en")
+
+        title_succeeded = isinstance(title_en, str) and bool(
+            title_en.strip()
+        )
+        summary_succeeded = (
+            not fallback_summary
+            or (
+                isinstance(summary_en, str)
+                and bool(summary_en.strip())
+            )
+        )
+
+        return TranslationResult(
+            {
+                "title_en": title_en or fallback_title,
+                "summary_en": summary_en or fallback_summary,
+            },
+            succeeded=title_succeeded and summary_succeeded,
+        )

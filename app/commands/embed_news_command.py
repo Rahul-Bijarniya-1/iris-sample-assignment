@@ -25,7 +25,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, undefer
 
 from app.database.models.news_article import NewsArticle
 from app.services.embedding_service import EmbeddingService
@@ -54,13 +54,17 @@ class EmbedNewsCommand:
     def execute(self) -> dict:
 
         articles = self.session.scalars(
-            select(NewsArticle)
+            select(NewsArticle).options(
+                undefer(NewsArticle.embedding)
+            )
         ).all()
 
         embedded = 0
         skipped = 0
+        failed = 0
+        work_since_commit = 0
 
-        for index, article in enumerate(articles, start=1):
+        for article in articles:
 
             source_signature = (
                 f"{article.title}\n"
@@ -84,42 +88,63 @@ class EmbedNewsCommand:
 
                 continue
 
-            translated = self.translation.translate(
-                article.title,
-                article.summary,
-            )
+            try:
 
-            article.title_en = translated["title_en"]
-            article.summary_en = translated["summary_en"]
+                # A savepoint contains partial per-article mutations without
+                # rolling back successful paid work since the last batch.
+                with self.session.begin_nested():
 
-            embed_text = (
-                f"{translated['title_en']}\n"
-                f"{translated['summary_en'] or ''}"
-            )
+                    translated = self.translation.translate(
+                        article.title,
+                        article.summary,
+                    )
 
-            article.embedding = self.embedding.embed(
-                embed_text
-            )
+                    article.title_en = translated["title_en"]
+                    article.summary_en = translated["summary_en"]
 
-            article.embedding_model = getattr(
-                self.embedding, "model", None
-            )
+                    embed_text = (
+                        f"{translated['title_en']}\n"
+                        f"{translated['summary_en'] or ''}"
+                    )
 
-            article.embedding_hash = content_hash
+                    article.embedding = self.embedding.embed(
+                        embed_text
+                    )
 
-            article.embedded_at = datetime.now(
-                timezone.utc
-            )
+                    article.embedding_model = getattr(
+                        self.embedding, "model", None
+                    )
+
+                    translation_succeeded = getattr(
+                        translated,
+                        "succeeded",
+                        True,
+                    )
+                    article.embedding_hash = (
+                        content_hash if translation_succeeded else None
+                    )
+
+                    article.embedded_at = datetime.now(
+                        timezone.utc
+                    )
+
+            except Exception:
+
+                failed += 1
+                continue
 
             embedded += 1
+            work_since_commit += 1
 
-            if index % self.BATCH_SIZE == 0:
+            if work_since_commit >= self.BATCH_SIZE:
 
                 self.session.commit()
+                work_since_commit = 0
 
         self.session.commit()
 
         return {
             "embedded": embedded,
             "skipped": skipped,
+            "failed": failed,
         }

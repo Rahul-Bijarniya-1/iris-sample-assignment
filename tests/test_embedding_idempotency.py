@@ -14,7 +14,10 @@ translation-model bump is still caught by naming the model in the hash
 input.
 """
 
+from contextlib import nullcontext
+
 import pytest
+from sqlalchemy.dialects import postgresql
 
 from app.commands.embed_news_command import EmbedNewsCommand
 from app.database.models.news_article import NewsArticle
@@ -46,6 +49,43 @@ class _FakeEmbedding:
     content_hash = staticmethod(EmbeddingService.content_hash)
 
 
+class _Rows:
+    def __init__(self, articles):
+        self.articles = articles
+
+    def all(self):
+        return self.articles
+
+
+class _RecordingSession:
+    """Small hermetic stand-in for batch-boundary tests."""
+
+    def __init__(self, articles):
+        self.articles = articles
+        self.commits = 0
+
+    def scalars(self, statement):
+        return _Rows(self.articles)
+
+    def begin_nested(self):
+        return nullcontext()
+
+    def commit(self):
+        self.commits += 1
+
+
+class _StatementCapturingSession:
+    def __init__(self):
+        self.statement = None
+
+    def scalars(self, statement):
+        self.statement = statement
+        return _Rows([])
+
+    def commit(self):
+        pass
+
+
 def _make_article(url="https://news.invalid/embed-test/", **kwargs):
     defaults = dict(
         id="e1a6b1f0-0000-0000-0000-000000000001",
@@ -58,6 +98,25 @@ def _make_article(url="https://news.invalid/embed-test/", **kwargs):
     )
     defaults.update(kwargs)
     return NewsArticle(**defaults)
+
+
+def test_embedding_is_deferred_but_explicitly_loaded_by_embed_command():
+    assert NewsArticle.__mapper__.attrs.embedding.deferred is True
+
+    session = _StatementCapturingSession()
+    EmbedNewsCommand(
+        session,
+        _FakeTranslation(),
+        _FakeEmbedding(),
+    ).execute()
+
+    sql = str(
+        session.statement.compile(
+            dialect=postgresql.dialect(),
+        )
+    )
+
+    assert "iris_core.news_articles.embedding," in sql
 
 
 @pytest.mark.integration
@@ -169,3 +228,114 @@ def test_partial_embedding_state_is_tolerated(db_session):
 
     assert embedding.embed_calls == 1
     assert result["embedded"] == 1
+
+
+def test_batch_commit_counts_work_not_skipped_loop_positions():
+    translation = _FakeTranslation()
+    embedding = _FakeEmbedding()
+
+    skipped = _make_article(
+        url="https://news.invalid/skipped/",
+        id="e1a6b1f0-0000-0000-0000-000000000010",
+        embedding=[0.1] * 1536,
+    )
+    skipped.embedding_hash = EmbeddingService.content_hash(
+        f"{skipped.title}\n{skipped.summary}\n"
+        f"{translation.model}\n{embedding.model}"
+    )
+
+    first = _make_article(
+        url="https://news.invalid/first-work/",
+        id="e1a6b1f0-0000-0000-0000-000000000011",
+    )
+    second = _make_article(
+        url="https://news.invalid/second-work/",
+        id="e1a6b1f0-0000-0000-0000-000000000012",
+    )
+    # Put the skipped row exactly on the old loop-index boundary. An
+    # index-based implementation would miss the commit at position 2 and only
+    # commit once at the end; work-based batching commits after ``second``.
+    session = _RecordingSession([first, skipped, second])
+    command = EmbedNewsCommand(session, translation, embedding)
+    command.BATCH_SIZE = 2
+
+    result = command.execute()
+
+    assert result == {"embedded": 2, "skipped": 1, "failed": 0}
+    assert session.commits == 2, "expected one batch commit plus the final commit"
+
+
+def test_degraded_translation_is_retried_on_the_next_run():
+    class _TranslationPayload(dict):
+        def __init__(self, *args, succeeded, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.succeeded = succeeded
+
+    class _DegradesOnce:
+        model = "fake-translation-model-v1"
+
+        def __init__(self):
+            self.calls = 0
+
+        def translate(self, title, summary):
+            self.calls += 1
+            if self.calls == 1:
+                return _TranslationPayload(
+                    {"title_en": title, "summary_en": summary},
+                    succeeded=False,
+                )
+            return _TranslationPayload(
+                {"title_en": "Title EN", "summary_en": "Summary EN"},
+                succeeded=True,
+            )
+
+    article = _make_article()
+    session = _RecordingSession([article])
+    translation = _DegradesOnce()
+    embedding = _FakeEmbedding()
+    command = EmbedNewsCommand(session, translation, embedding)
+
+    first = command.execute()
+    assert first["embedded"] == 1
+    assert article.embedding_hash is None
+
+    second = command.execute()
+
+    assert second["embedded"] == 1
+    assert translation.calls == 2
+    assert article.embedding_hash is not None
+
+
+def test_one_article_failure_does_not_abort_later_articles():
+    class _FailsFirst:
+        model = "fake-translation-model-v1"
+
+        def __init__(self):
+            self.calls = 0
+
+        def translate(self, title, summary):
+            self.calls += 1
+            if self.calls == 1:
+                raise RuntimeError("rate limited")
+            return {"title_en": "Title EN", "summary_en": "Summary EN"}
+
+    articles = [
+        _make_article(
+            url="https://news.invalid/fails/",
+            id="e1a6b1f0-0000-0000-0000-000000000020",
+        ),
+        _make_article(
+            url="https://news.invalid/succeeds/",
+            id="e1a6b1f0-0000-0000-0000-000000000021",
+        ),
+    ]
+    session = _RecordingSession(articles)
+
+    result = EmbedNewsCommand(
+        session,
+        _FailsFirst(),
+        _FakeEmbedding(),
+    ).execute()
+
+    assert result == {"embedded": 1, "skipped": 0, "failed": 1}
+    assert articles[1].embedding is not None

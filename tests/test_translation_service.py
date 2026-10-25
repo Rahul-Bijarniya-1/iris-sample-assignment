@@ -46,6 +46,7 @@ def test_translate_parses_json_response():
         "title_en": "AI boom meets power shortage",
         "summary_en": "Data centers feel the power shortage.",
     }
+    assert result.succeeded is True
 
 
 def test_translate_strips_markdown_code_fences():
@@ -81,6 +82,7 @@ def test_translate_falls_back_to_source_on_malformed_json():
         "title_en": "Titel auf Deutsch",
         "summary_en": "Zusammenfassung.",
     }
+    assert result.succeeded is False
 
 
 def test_translate_requests_deterministic_output():
@@ -112,6 +114,19 @@ def test_translate_handles_missing_summary():
 
     assert result["title_en"] == "Title"
     assert result["summary_en"] is None
+
+
+def test_translate_null_summary_falls_back_to_the_source_summary():
+    fake_client = _FakeOpenAI(
+        '{"title_en": "Title", "summary_en": null}'
+    )
+    service = TranslationService(client=fake_client, model="fake-model")
+
+    result = service.translate("Titel", "Zusammenfassung.")
+
+    assert result["title_en"] == "Title"
+    assert result["summary_en"] == "Zusammenfassung."
+    assert result.succeeded is False
 
 
 def test_construction_does_not_require_an_api_key(monkeypatch):

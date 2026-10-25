@@ -126,6 +126,7 @@ class NewsArticle(Base):
     embedding: Mapped[list[float] | None] = mapped_column(
         Vector(1536),
         nullable=True,
+        deferred=True,
     )
 
     embedding_model: Mapped[str | None] = mapped_column(
