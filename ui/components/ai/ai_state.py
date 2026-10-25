@@ -73,6 +73,8 @@ def add_user_message(
 def add_assistant_message(
     content: str,
     sources: list[str] | None = None,
+    trace: dict | None = None,
+    citations: list | None = None,
 ) -> None:
 
     message = {
@@ -82,6 +84,12 @@ def add_assistant_message(
 
     if sources:
         message["sources"] = sources
+
+    if trace:
+        message["trace"] = trace
+
+    if citations:
+        message["citations"] = citations
 
     st.session_state.ai_messages.append(
         message

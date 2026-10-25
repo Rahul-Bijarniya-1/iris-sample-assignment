@@ -80,21 +80,15 @@ def render_ai_panel() -> None:
         "selected_facility_id"
     )
 
-    if facility_id is None:
-
-        add_assistant_message(
-            "⚠️ Please select a Data Center on the map first."
-        )
-
-        st.session_state.ai_current_prompt = None
-
-        set_pending(False)
-
-        st.rerun()
+    # No blanket gate here: a selected facility is required for site
+    # intelligence questions, but a news question can name a place
+    # instead — ask() already handles facility_id=None gracefully for
+    # every intent (e.g. _site_analysis's own "please select a Data
+    # Center" message), so the UI no longer needs to pre-empt it.
 
     prompt = st.session_state.ai_current_prompt
 
-    response = _call_ai(
+    response, trace, citations = _call_ai(
         question=prompt,
         facility_id=facility_id,
     )
@@ -102,6 +96,8 @@ def render_ai_panel() -> None:
     add_assistant_message(
         response,
         ["AI Infrastructure Advisor"],
+        trace=trace,
+        citations=citations,
     )
 
     st.session_state.ai_current_prompt = None
@@ -117,8 +113,8 @@ def render_ai_panel() -> None:
 
 def _call_ai(
     question: str,
-    facility_id: int,
-) -> str:
+    facility_id: int | None,
+) -> tuple[str, dict | None, list | None]:
 
     session = SessionLocal()
 
@@ -128,15 +124,40 @@ def _call_ai(
             session,
         )
 
-        return advisor.ask(
-            question=question,
-            selected_facility_id=facility_id,
+        with st.status(
+            "Thinking...",
+            expanded=False,
+        ) as status:
+
+            def on_step(stage: str) -> None:
+
+                status.update(
+                    label=f"{stage}..."
+                )
+
+            answer = advisor.ask(
+                question=question,
+                selected_facility_id=facility_id,
+                on_step=on_step,
+            )
+
+            status.update(
+                label="Done",
+                state="complete",
+            )
+
+        return (
+            answer,
+            advisor.last_trace,
+            advisor.last_citations,
         )
 
     except Exception as exc:
 
         return (
-            f"AI Error: {exc}"
+            f"AI Error: {exc}",
+            None,
+            None,
         )
 
     finally:
