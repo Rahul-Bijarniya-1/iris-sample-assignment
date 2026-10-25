@@ -482,8 +482,11 @@ uv run python main.py news-signals  # extract structured signals (expansion/powe
                                      # renewable/retrofit/investment) per article
 ```
 
-Both are idempotent — re-running either is a no-op for articles whose underlying
-text hasn't changed.
+`news-embed` is idempotent in cost as well as effect — re-running it is a true
+no-op (zero API calls) for articles whose underlying text hasn't changed.
+`news-signals` is idempotent in effect only: each run replaces rather than
+duplicates a given article's row, but it re-extracts (and re-pays for) every
+article on every run.
 
 ## Running a single step
 

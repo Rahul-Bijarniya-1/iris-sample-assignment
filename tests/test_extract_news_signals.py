@@ -98,6 +98,65 @@ def test_loads_signals_for_every_article(db_session):
 
 
 @pytest.mark.integration
+def test_a_failure_partway_through_does_not_lose_earlier_progress(
+    db_session,
+):
+    """
+    ExtractNewsSignalsCommand previously committed once at the very
+    end: one bad extraction on article 40 of 40 would lose all 39 paid
+    calls that came before it. Batching commits (same pattern as
+    EmbedNewsCommand) means earlier rows survive a later failure.
+    """
+
+    db_session.add_all(
+        [_article("a1"), _article("a2"), _article("a3")]
+    )
+    db_session.commit()
+
+    class _FailsOnThird:
+        calls = 0
+
+        def extract(self, article):
+            self.calls += 1
+
+            if article["id"] == "a3":
+                raise RuntimeError("rate limited")
+
+            return {
+                "article_id": article["id"],
+                "article_url": article.get("url"),
+                "company": "",
+                "facility": "",
+                "city": "",
+                "country": "Germany",
+                "investment_signal": False,
+                "expansion_signal": False,
+                "retrofit_signal": False,
+                "renewable_signal": False,
+                "power_signal": False,
+                "capacity_mw": None,
+                "confidence": 0.0,
+            }
+
+    command = ExtractNewsSignalsCommand(
+        db_session, _FailsOnThird()
+    )
+    command.BATCH_SIZE = 2
+
+    with pytest.raises(RuntimeError):
+        command.execute()
+
+    # a1 landed in the first batch commit; a3's failure must not have
+    # rolled it back.
+    assert (
+        db_session.query(NewsSignal)
+        .filter_by(article_id="a1")
+        .count()
+        == 1
+    )
+
+
+@pytest.mark.integration
 def test_a_second_run_replaces_rather_than_duplicates(db_session):
     db_session.add(_article("a1"))
     db_session.commit()

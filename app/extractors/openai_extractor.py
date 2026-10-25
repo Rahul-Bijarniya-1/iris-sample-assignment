@@ -83,9 +83,34 @@ class OpenAIExtractor:
             "power_signal": bool(
                 data.get("power_signal", False)
             ),
-            "capacity_mw": data.get("capacity_mw"),
-            "confidence": data.get("confidence", 0.0) or 0.0,
+            "capacity_mw": self._as_float(data.get("capacity_mw")),
+            "confidence": self._as_float(
+                data.get("confidence")
+            ) or 0.0,
         }
+
+    @staticmethod
+    def _as_float(
+        value,
+    ) -> float | None:
+        """
+        NewsSignal.capacity_mw/confidence are Float columns, and
+        ExtractNewsSignalsCommand commits once at the end of a 40-article
+        run — a model answering "50 MW" or "high" instead of a bare
+        number must not reach the insert and lose the whole batch.
+        """
+
+        if value is None:
+
+            return None
+
+        try:
+
+            return float(value)
+
+        except (TypeError, ValueError):
+
+            return None
 
     # =====================================================
     # Internal

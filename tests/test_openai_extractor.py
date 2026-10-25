@@ -107,6 +107,38 @@ def test_extract_degrades_on_client_exception():
     assert result["expansion_signal"] is False
 
 
+def test_extract_coerces_a_non_numeric_capacity_mw_to_none():
+    """
+    A model answering "capacity_mw": "50 MW" (prose instead of a bare
+    number) must not reach the caller as a string — NewsSignal.capacity_mw
+    is a Float column, and ExtractNewsSignalsCommand commits once at the
+    end of a 40-article run, so one bad value there would lose every
+    extraction in that run.
+    """
+
+    fake_client = _FakeOpenAI(
+        '{"company": "", "capacity_mw": "50 MW", "confidence": "high"}'
+    )
+    extractor = OpenAIExtractor(client=fake_client, model="fake-model")
+
+    result = extractor.extract(ARTICLE)
+
+    assert result["capacity_mw"] is None
+    assert result["confidence"] == 0.0
+
+
+def test_extract_coerces_a_numeric_string_capacity_mw():
+    fake_client = _FakeOpenAI(
+        '{"company": "", "capacity_mw": "50", "confidence": "0.8"}'
+    )
+    extractor = OpenAIExtractor(client=fake_client, model="fake-model")
+
+    result = extractor.extract(ARTICLE)
+
+    assert result["capacity_mw"] == 50.0
+    assert result["confidence"] == 0.8
+
+
 def test_construction_does_not_require_an_api_key(monkeypatch):
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
 

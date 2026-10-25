@@ -5,6 +5,10 @@ Runs an extractor (normally OpenAIExtractor) over every news article
 and loads the result into news_signals — idempotently: each run
 replaces a given article's row rather than duplicating it, so this is
 safe to re-run after an extraction-prompt change.
+
+Commits every BATCH_SIZE rows, same pattern as EmbedNewsCommand, so a
+failure partway through (one bad model value, a rate limit) does not
+discard the paid extractions that already succeeded in that run.
 """
 
 from __future__ import annotations
@@ -18,6 +22,8 @@ from app.extractors.openai_extractor import OpenAIExtractor
 
 
 class ExtractNewsSignalsCommand:
+
+    BATCH_SIZE = 10
 
     def __init__(
         self,
@@ -36,7 +42,7 @@ class ExtractNewsSignalsCommand:
 
         loaded = 0
 
-        for article in articles:
+        for index, article in enumerate(articles, start=1):
 
             result = self.extractor.extract(
                 {
@@ -69,6 +75,10 @@ class ExtractNewsSignalsCommand:
             )
 
             loaded += 1
+
+            if index % self.BATCH_SIZE == 0:
+
+                self.session.commit()
 
         self.session.commit()
 
