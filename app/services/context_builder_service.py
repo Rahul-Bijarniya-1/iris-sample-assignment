@@ -246,21 +246,6 @@ class ContextBuilderService:
         }
 
     # =====================================================
-    # News
-    # =====================================================
-
-    def build_news_context(
-        self,
-        articles: list[dict],
-        question: str,
-    ) -> dict:
-
-        return {
-            "question": question,
-            "articles": articles,
-        }
-
-    # =====================================================
     # Generic
     # =====================================================
 
