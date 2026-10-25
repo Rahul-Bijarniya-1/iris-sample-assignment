@@ -86,6 +86,27 @@ Summary:
 """
 
     @staticmethod
+    def _strip_code_fence(
+        text: str,
+    ) -> str:
+        """
+        gpt-4.1-mini wraps its JSON in a ```json ... ``` fence even when
+        told to return only JSON. Strip it if present.
+        """
+
+        stripped = text.strip()
+
+        if stripped.startswith("```"):
+
+            stripped = stripped.removeprefix("```json").removeprefix(
+                "```"
+            )
+
+            stripped = stripped.removesuffix("```")
+
+        return stripped.strip()
+
+    @staticmethod
     def _parse(
         output_text: str,
         fallback_title: str,
@@ -94,7 +115,9 @@ Summary:
 
         try:
 
-            data = json.loads(output_text.strip())
+            data = json.loads(
+                TranslationService._strip_code_fence(output_text)
+            )
 
         except (json.JSONDecodeError, AttributeError):
 

@@ -46,6 +46,29 @@ def test_translate_parses_json_response():
     }
 
 
+def test_translate_strips_markdown_code_fences():
+    """
+    The real gpt-4.1-mini response wraps JSON in a ```json ... ``` fence
+    even when explicitly told to return only JSON. That must still parse,
+    not fall back to the untranslated source text.
+    """
+
+    fake_client = _FakeOpenAI(
+        '```json\n{\n  "title_en": "AI Boom Meets Power Shortages",\n'
+        '  "summary_en": "Data centers under pressure."\n}\n```'
+    )
+    service = TranslationService(client=fake_client, model="fake-model")
+
+    result = service.translate(
+        "KI-Boom trifft auf Stromengpaesse", "Rechenzentren unter Druck."
+    )
+
+    assert result == {
+        "title_en": "AI Boom Meets Power Shortages",
+        "summary_en": "Data centers under pressure.",
+    }
+
+
 def test_translate_falls_back_to_source_on_malformed_json():
     fake_client = _FakeOpenAI("Sorry, I cannot help with that.")
     service = TranslationService(client=fake_client, model="fake-model")
