@@ -124,6 +124,10 @@ from app.runners.news_embed_runner import (
     run as run_news_embed,
 )
 
+from app.runners.news_signals_runner import (
+    run as run_news_signals,
+)
+
 # ==========================================================
 # BUSINESS INTELLIGENCE
 # ==========================================================
@@ -256,6 +260,12 @@ class PipelineRunner:
             # `main.py all`. See test_news_embed_wiring.py.
             "news-embed": (
                 self.news_embed
+            ),
+
+            # Same reasoning as news-embed: paid OpenAI calls, explicit
+            # opt-in only. See test_news_signals_wiring.py.
+            "news-signals": (
+                self.news_signals
             ),
 
             "land-values": (
@@ -835,6 +845,20 @@ class PipelineRunner:
         )
 
         run_news_embed()
+
+    # ======================================================
+
+    def news_signals(self):
+        """
+        Extract structured signals (OpenAIExtractor) for every news
+        article. Makes paid OpenAI calls — not part of any phase().
+        """
+
+        print(
+            "▶ Extracting News Signals..."
+        )
+
+        run_news_signals()
 
     # ======================================================
 
