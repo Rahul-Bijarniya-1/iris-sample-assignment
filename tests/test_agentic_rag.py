@@ -221,6 +221,25 @@ def test_degrades_gracefully_on_empty_retrieval(service_factory):
     assert result["answer"] == "No coverage found for this area."
 
 
+def test_on_step_reports_each_stage_for_a_live_status_display(
+    service_factory,
+):
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            '{"tools": ["news_search"], "query": "q", "k": 10}',
+            SUFFICIENT_VERIFY,
+            "Answer [1].",
+        ],
+        retrieval_responses=[[_result("a1", "Article")]],
+    )
+
+    stages = []
+
+    service.answer("question", on_step=stages.append)
+
+    assert stages == ["Planning", "Retrieving", "Verifying", "Answering"]
+
+
 def test_a_failing_tool_does_not_raise(service_factory):
     class _ExplodingSiteService:
         def analyze_facility(self, facility_id):

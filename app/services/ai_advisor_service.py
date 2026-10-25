@@ -32,6 +32,7 @@ from app.services.context_builder_service import ContextBuilderService
 from app.ai.prompts.site_analysis_prompt import SiteAnalysisPrompt
 from app.ai.prompts.city_search_prompt import CitySearchPrompt
 from app.ai.prompts.news_prompt import NewsPrompt
+from app.services.agentic_rag_service import AgenticRagService
 
 from app.services.intelligence_search_service import (
     IntelligenceSearchService,
@@ -187,6 +188,13 @@ class AIAdvisorService:
         self.news_service = NewsIntelligenceService(
             session,
         )
+
+        self.agentic_rag = AgenticRagService(
+            session,
+        )
+
+        self.last_trace: dict | None = None
+        self.last_citations: list | None = None
 
     # ======================================================
     # Intent Detection
@@ -420,6 +428,7 @@ class AIAdvisorService:
         self,
         question: str,
         selected_facility_id: int | None,
+        on_step=None,
     ) -> str:
         """
         Main entry point for the AI Advisor.
@@ -536,8 +545,10 @@ class AIAdvisorService:
         # ----------------------------------------------
 
         if intent == AIIntent.NEWS:
-            return self._news(
+            return self._agentic_news(
                 question,
+                selected_facility_id,
+                on_step,
             )
 
         return self._unknown()
@@ -990,6 +1001,53 @@ class AIAdvisorService:
         return self.ai.generate(
             prompt
         )
+
+    # ======================================================
+    # Agentic News
+    # ======================================================
+
+    def _agentic_news(
+        self,
+        question: str,
+        facility_id: int | None,
+        on_step=None,
+    ) -> str:
+        """
+        Route AIIntent.NEWS through the agentic retrieval loop, letting
+        the planner name a place instead of selecting a facility.
+
+        Degradation path: an empty first retrieval round means
+        NewsRetrievalService itself degraded (missing OPENAI_API_KEY,
+        no embeddings yet, or no pgvector extension) — not that the
+        corpus legitimately lacks coverage for a real question, which
+        the agentic answer already states explicitly. Only the former
+        falls back to the pre-RAG keyword/match path, so the dashboard
+        is never worse than before.
+        """
+
+        parsed = self.parser.parse(question)
+
+        result = self.agentic_rag.answer(
+            question,
+            facility_id=facility_id,
+            place=parsed["city"],
+            on_step=on_step,
+        )
+
+        self.last_trace = result["trace"]
+        self.last_citations = result["citations"]
+
+        first_round = (
+            result["trace"]["rounds"][0]["result_ids"]
+            if result["trace"]["rounds"]
+            else []
+        )
+
+        if not first_round:
+
+            return self._news(question)
+
+        return result["answer"]
 
     # ======================================================
     # News Signals

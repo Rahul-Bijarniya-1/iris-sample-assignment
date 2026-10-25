@@ -83,9 +83,16 @@ class AgenticRagService:
         question: str,
         facility_id: int | None = None,
         place: str | None = None,
+        on_step=None,
     ) -> dict:
 
+        on_step = on_step or (lambda stage: None)
+
+        on_step("Planning")
+
         plan = self._plan(question)
+
+        on_step("Retrieving")
 
         results = self._retrieve_news(plan["query"], plan["k"])
 
@@ -97,6 +104,8 @@ class AgenticRagService:
             }
         ]
 
+        on_step("Verifying")
+
         verify = self._verify(question, results)
 
         if (
@@ -104,6 +113,8 @@ class AgenticRagService:
             and verify.get("refined_query")
             and len(rounds) <= self.MAX_REFINEMENTS
         ):
+
+            on_step("Refining")
 
             refined_results = self._retrieve_news(
                 verify["refined_query"], plan["k"]
@@ -136,6 +147,8 @@ class AgenticRagService:
             ranking = self._safe_call(
                 self.ranking_service.rank_sites
             )
+
+        on_step("Answering")
 
         answer_text = self._answer(
             question,
