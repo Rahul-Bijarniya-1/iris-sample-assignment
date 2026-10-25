@@ -8,7 +8,7 @@ question as one literal substring) for comparison.
 Not part of the test suite (makes real paid API calls on every run,
 deliberately). Run by hand:
 
-    uv run python eval/run_eval.py
+    .venv/bin/python -m eval.run_eval
 
 Writes eval/results.json (raw data) and prints a recall@5 table + the
 literal acceptance-test before/after text to stdout.

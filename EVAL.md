@@ -7,24 +7,20 @@ truth was hand-labeled by reading every article's title/summary against each que
 `eval/results.json`. Nothing here is simulated or stubbed — every "after" row below is a real
 pgvector retrieval plus real `gpt-4.1-mini`/`gpt-4.1` calls.
 
-## A finding from running the eval, and a fix made because of it
+## What the 2026-10-26 hardening rerun showed
 
-The first full run surfaced a real gap against the plan's own "Thin evidence" decision ("name the
-gap and what was searched, then give the national context that does exist"): for place-specific
-questions with no exact place match (q9, q10, q11), the model had the thematically-relevant
-articles in its evidence (confirmed: `AgenticRagService`'s `_filter_relevant` already falls back
-to the raw retrieved set when `verify` finds nothing to specifically confirm — that logic was
-correct) but still answered "no information found," full stop — it had the evidence and declined
-to use it, because the prompt only said "say so plainly instead of guessing," with nothing telling
-it to still summarize the broader theme.
+This report now reflects a full live rerun after the follow-up review fixes and after refreshing
+all 40 translations, embeddings, and structured signals. The earlier prompt fix still asks the
+model to distinguish a local evidence gap from supported national context. The follow-up filter
+fix adds an important boundary: `relevant_ids: []` plus a non-empty `rejected` list means the
+verifier rejected every candidate, so those articles are no longer forwarded as answer evidence.
 
-Fixed by rewording `AgenticAnswerPrompt` (`app/ai/prompts/agentic_answer_prompt.py`) to explicitly
-separate "say plainly there's no place-specific coverage" from "then still summarize what the
-evidence says about the same theme nationally, with its own citations." Re-ran q9/q10/q11 live
-before and after the wording change — before: bare "no information" with zero citations on two of
-three; after: all three lead with the honest gap, then correctly surface real national context
-with proper `[n]` citations. The numbers in this report are from the full re-run after the fix.
-See `FINDINGS.md` for the complete writeup (this is defect-class #12 there).
+That explicit-rejection branch fired for q9, q10, and q11. Each answer correctly carries zero
+citations rather than citing rejected sources. Their retrieval recall was 0.33, 0.67, and 0.00;
+there was no q9–q11 recall improvement. This is expected conceptually because recall@5 is measured
+before verification, but it contradicts the hardening plan's prediction and is recorded honestly.
+The answer model still emits broad, uncited contextual statements when its evidence list is empty;
+those statements should be treated as framing, not evidence-backed findings.
 
 ## Recall@5
 
@@ -44,14 +40,14 @@ against the actual answer text (see "none / out-of-scope questions" below).
 | q2 | Hamm projects? | none | 0 | 5 | — | No |
 | q3 | Paderborn developments? | none | 0 | 5 | — | No |
 | q4 | Mönchengladbach? | none | 0 | 5 | — | No |
-| q5 | grid/power bottleneck signals | coverage | 0 | 5 | 0.67 | No |
-| q6 | permitting/regulatory delays | coverage | 0 | 5 | 0.67 | No |
+| q5 | grid/power bottleneck signals | coverage | 0 | 5 | 0.67 | Yes |
+| q6 | permitting/regulatory delays | coverage | 0 | 5 | 0.67 | Yes |
 | q7 | big capacity investments | coverage | 0 | 5 | 0.50 | Yes |
-| q8 | hyperscaler accel/pullback in DE | coverage | 0 | 5 | 0.67 | Yes |
+| q8 | hyperscaler accel/pullback in DE | coverage | 0 | 5 | 0.33 | Yes |
 | q9 | grid risk near Dortmund | partial | 0 | 5 | 0.33 | No |
 | q10 | permitting problems in Wuppertal | partial | 0 | 5 | 0.67 | No |
-| q11 | investment signals for Bonn | partial | 0 | 5 | 0.25 | No |
-| q12 | power/land/authority bottlenecks | coverage | 0 | 5 | 0.57 | Yes |
+| q11 | investment signals for Bonn | partial | 0 | 5 | 0.00 | No |
+| q12 | power/land/authority bottlenecks | coverage | 0 | 5 | 0.43 | Yes |
 | q13 | business-case signal vs. noise | coverage | 0 | 5 | 0.40 | Yes |
 | q14 | Digital Realty, Northern Virginia | none | 0 | 5 | — | No |
 
@@ -62,17 +58,16 @@ inside a 227-character article summary. This is the empirical demonstration of w
 essentially never match") was a real, severe defect, not a theoretical one.
 
 **After — aggregate recall@5:**
-- `coverage` questions (q5-q8, q12, q13): **0.58** average (6 questions)
-- `partial` questions (q9-q11): **0.42** average (3 questions) — lower by design: these test
+
+- `coverage` questions (q5-q8, q12, q13): **0.50** average (6 questions)
+- `partial` questions (q9-q11): **0.33** average (3 questions) — lower by design: these test
   retrieval under a place-name mismatch, where the question's dominant terms (the place name) don't
-  match anything, diluting the embedding's similarity to the thematically-relevant articles. The
-  system still correctly surfaces them (see below) — the lower number here is retrieval working
-  against a harder case, not a wrong answer.
+  match anything, diluting the embedding's similarity to the thematically relevant articles.
 
 `verify said sufficient: No` on most rows does not mean the system failed — it means the
-verification step correctly recognized that what it found didn't fully confirm the question as
-asked, and (per the fix above) the answer step still used that evidence to give an honest,
-contextualized response rather than nothing.
+verification step recognized that what it found did not fully confirm the question as asked. When
+it also supplied explicit rejections, the answer step now receives no article evidence and produces
+no citations.
 
 ## `none` / out-of-scope questions — correctness is binary, not recall@5
 
@@ -83,8 +78,7 @@ anywhere in the 40 articles. Every one of the 5 answers:
 
 1. States plainly and correctly that no article covers the named place/entity.
 2. Does **not** invent or imply local coverage.
-3. (q1-q4, and partially q14) Still offers relevant national-market context, correctly labeled as
-   not place-specific.
+3. Carries no citations when all retrieved candidates were explicitly rejected.
 
 This is the acceptance test's own framing, generalized across 5 independent control questions
 rather than the single example the plan named.
@@ -105,31 +99,29 @@ one of these 14 real questions — the pre-fix system's actual output for any of
 
 **After** (real output, this session's branch, captured in `eval/results.json`):
 
-> "Keine der vorliegenden Evidenzquellen erwähnt Duisburg oder berichtet über
-> Rechenzentrumsnachrichten aus Duisburg in den letzten zwei Wochen. Es existiert somit keine
-> lokale Berichterstattung zu diesem Thema.
+> "Es gibt keine Berichterstattung über relevante Rechenzentrumsnachrichten aus Duisburg in den
+> letzten zwei Wochen; keine der vorliegenden Quellen nennt Duisburg explizit.
 >
-> Im nationalen bzw. regionalen Kontext werden jedoch einige relevante Themen für den
-> Rechenzentrumsmarkt in Deutschland behandelt, zum Beispiel: Große Investitionen namhafter
-> Unternehmen wie Amazon, Nvidia und Siemens in Cloud-, KI- und Datenzentrumsinfrastruktur [...]"
+> Auf nationaler Ebene thematisieren verfügbare Berichte häufig Themen wie Netzkapazität,
+> Genehmigungsprozesse und Investitionsdynamik für Rechenzentren, jedoch ohne konkreten Bezug zu
+> Duisburg. Konkrete Aussagen zu dieser Stadt können daher aktuell nicht gemacht werden."
 
 No facility selection required; the gap is stated honestly and specifically (not a generic
-boilerplate string); real national context is surfaced with citations instead of nothing.
+boilerplate string). Because the verifier rejected every candidate, the response intentionally has
+no citations; its general national framing is not counted as an evidence-backed result.
 
 ## Observed characteristic, not a defect
 
-q14 (the deliberately out-of-scope US question) also receives the "national context" treatment —
-German market trends in response to a question about Northern Virginia pricing. This isn't wrong
-(it correctly declines the specific question first), but it's less sharp than for the NRW-town
-questions, where national German context is genuinely useful to the same planner. A future
-refinement could have `_plan()` recognize a clearly non-German/non-corpus location and skip the
-national-context framing entirely for that case; not done here — a polish item, not a defect.
+q14 (the deliberately out-of-scope US question) correctly declines to invent campus capacity or
+megawatt pricing and has no citations. The live answer did leak the prompt label `Evidence list:`
+into its final sentence. That is a presentation-quality limitation, not a retrieval or grounding
+failure; a future output sanitizer or deterministic no-evidence response could remove it.
 
 ## Reproducing
 
 ```bash
 cd ~/Assignment/iris-sample
-PYTHONPATH=. uv run python eval/run_eval.py
+.venv/bin/python -m eval.run_eval
 ```
 
 Makes real OpenAI calls (14 questions × up to 4 calls each); not part of the test suite, not run

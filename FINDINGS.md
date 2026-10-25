@@ -13,6 +13,38 @@ implementation" below).
 
 ---
 
+## 2026-10-26 follow-up hardening pass
+
+The subsequent 25-finding review was implemented in dependency order and guarded by focused
+tests. The review grouped related symptoms at the same trust boundary; this table records the
+completed outcome without renumbering the historical findings below.
+
+| Group | Completed fixes |
+|---|---|
+| Model output | Truthy allow-list; `tools: null`; rejected-entry coercion; empty-relevant and ID-mismatch semantics; bounded non-duplicate refinement; planner ranking type/limit propagation; string-only, length-bounded search queries |
+| Trace/routing | Defensive trace rendering; per-turn trace clearing; publish metadata only for the returned path; consider every retrieval round; skip the answer-model call when retrieval is entirely empty |
+| Session/degradation | Roll back failed retrieval transactions; expose the dedicated `EmbeddingDimensionMismatch`; reject invalid embedding inputs before a paid call; log internal errors while showing a plain availability message |
+| Keyword fallback | Whole-word matching; distinct-hit ranking; 10-result cap; `RWE`/`E.ON` support; shared stopword vocabulary |
+| Signal extraction | Explicit `ExtractionFailed`; per-article preservation and failure counts; bounded company/city strings; strict booleans and finite, range-checked numeric values |
+| Loader/matcher | Preserve a valid existing date on malformed reloads; normalize unknown RFC-822 timezones to UTC; normalize nullable company/facility/city text |
+| Translation/embed | Commit by successful work; retry degraded translations; null-summary fallback; per-article savepoints and failure counts |
+| Signal consumption | Outer-join `news_signals` into retrieval; include signals in verify/answer prompts; count actual signal rows in the dashboard KPI; remove the incompatible generic news dispatcher |
+
+The green-suite-only cleanup also centralized lazy OpenAI configuration and deferred the 1,536
+element embedding column for ordinary article queries. `EmbedNewsCommand` explicitly undefer-loads
+the vector, avoiding an N+1 regression. Embedding-call batching and broad shared-test-fixture
+refactors remain deliberately deferred because they change failure isolation or add churn without
+changing correctness.
+
+Verification after the complete pass: `176 passed, 2 skipped` in the database-enabled default suite,
+`136 passed, 2 skipped, 40 deselected` without integration tests, and
+`176 passed, 2 deselected` with live tests excluded. The live commands also completed:
+`news-load` preserved 40/40 dates, a second `news-embed` run returned
+`{'embedded': 0, 'skipped': 40, 'failed': 0}`, `news-signals` returned
+`{'loaded': 40, 'failed': 0}`, and the bare UI exited successfully.
+
+---
+
 ## Pre-existing defects (all eight from the original investigation)
 
 ### 1. Matching is exact company-name containment only
@@ -101,8 +133,8 @@ Python float that landed in the `VARCHAR` `city` column as the literal string `"
 Live evidence before the fix: `select city from iris_core.news_matches` → `NaN` (confirmed
 `pg_typeof(city) = character varying`, not an actual null).
 
-**Fix:** `EntityMatcher._clean_city()` converts a pandas-NaN city to `None` before it enters
-the match dict.
+**Fix:** `EntityMatcher._clean_text()` converts pandas-NaN company, facility-name, and city
+values to `None` before matching or serialization.
 **Test:** `tests/test_news_match_city.py`.
 **Data cleanup:** the one pre-existing row (predating this fix) was updated directly —
 `update news_matches set city = NULL where city = 'NaN'` — since the loader only inserts
@@ -270,66 +302,68 @@ opt-in pattern as `news-embed`: registered in `PipelineRunner.commands`, called 
 `tests/test_news_signals_wiring.py` is the deliberate inverse of the Issue 1/7 wiring tests,
 mirroring `tests/test_news_embed_wiring.py`.
 
+The free path therefore remains intentionally offline-safe, but its company/city extraction is
+weak on German prose because `MockExtractor` uses simple keywords. Accurate structured signals
+require the explicit paid `news-signals` step; this is a known product limitation, not an implicit
+claim that the free extractor is equivalent.
+
 ## Degradation path
 
-`NewsRetrievalService.search()` returns `[]` on any failure — missing `OPENAI_API_KEY`, no
-embeddings yet, a missing `vector` extension — rather than raising
-(`app/services/news_retrieval_service.py`). This claim is now verified end-to-end, not just
-in the happy path: see #11c above, and `test_search_degrades_to_empty_list_with_no_api_key_at_all`.
-`AgenticRagService` itself still produces an answer in that case (naming the gap), but
-`AIAdvisorService._agentic_news()` distinguishes two situations: an **empty first retrieval
-round** (retrieval infrastructure itself failed) falls back to the pre-RAG keyword path
+`NewsRetrievalService.search()` returns `[]` on recoverable failures — a missing
+`OPENAI_API_KEY`, no embeddings yet, or a missing `vector` extension — rather than raising
+(`app/services/news_retrieval_service.py`). A dedicated `EmbeddingDimensionMismatch` is the
+deliberate exception because it identifies a persistent model/column configuration defect. These
+paths are verified end-to-end; see #11c above and
+`test_search_degrades_to_empty_list_with_no_api_key_at_all`.
+`AgenticRagService` now returns before site/ranking work and the paid answer-model call when
+every retrieval round is empty. `AIAdvisorService._agentic_news()` distinguishes two situations:
+an **all-empty retrieval trace** (retrieval infrastructure itself failed) falls back to the pre-RAG keyword path
 (`_news()`, defect #5/#6 above) so the dashboard is never worse than before; a **non-empty
 retrieval that the verify step judged mostly irrelevant** (a real question the 40-article,
 single-feed corpus genuinely doesn't cover) keeps the agentic answer, which states the gap
 explicitly instead of discarding a true answer in favor of "no matching news signals."
 
-## `news_signals` is extracted but not yet joined into retrieval or the answer
+## `news_signals` is consumed by retrieval, prompts, and the KPI — FIXED
 
-Flagged by the code review, and accurate: `ExtractNewsSignalsCommand` loads real,
-German-aware signals into `news_signals` (verified: 5 expansion, 10 power, 2 renewable, 7
-retrofit, 8 investment across 40 real articles — see defect #4), but no code path currently
-*reads* that table back out. `NewsRetrievalService._to_result()` doesn't join it;
-`AgenticAnswerPrompt` never mentions it. The plan's Intended Outcome says the answer "states
-which signals it found" — today it states what the *verify step* judged relevant, not these
-structured signals specifically.
+`ExtractNewsSignalsCommand` still keeps the paid step opt-in, while `NewsRetrievalService` now
+outer-joins the resulting row onto each semantic result. Both sufficiency and answer prompts receive
+the structured signal object, and the dashboard's “News Signals” KPI counts `NewsSignal` rows rather
+than article–facility matches. The post-fix live extraction loaded all 40 rows with 5 expansion,
+9 power, 3 renewable, 8 retrofit, and 7 investment flags.
 
-This is a real, honestly-disclosed gap rather than a claim this document makes falsely: the
-data asset exists and is correctly populated, but surfacing it in retrieval/the answer is
-unimplemented. Treated as out of scope for this fix pass (it's a feature addition, not a
-defect fix) — recorded here so a reader of this document knows not to assume otherwise.
+**Tests:** `tests/test_news_retrieval.py`, `tests/test_news_signal_consumption.py`.
 
-### 12. "Thin evidence" wasn't actually surfacing national context — FIXED
+## Final security/code review disposition
 
-Found by running the real 14-question planner eval (`EVAL.md`), not by code review. The plan's
-own Decision names this requirement explicitly: *"Thin evidence: Name the gap and what was
-searched, then give the national context that does exist."* `AgenticRagService._filter_relevant`
-already did the right thing — when `verify` finds nothing it can specifically confirm
-(`relevant_ids: []`), it falls back to the raw retrieved articles rather than an empty list, so the
-answer step did have real evidence available. But for three real eval questions asking about a
-place not in the corpus (Dortmund, Wuppertal, Bonn), the model declined to use that evidence at
-all and answered a bare "no information found" with zero citations on two of the three — the code
-path was correct, the prompt wording wasn't eliciting the behavior the plan called for.
+The final reviews found no blocking issues. Touched-code findings were fixed before the commit
+gate: planner tools and queries are type-checked, search queries are bounded, embedding calls reject
+invalid input before spending money, model booleans and floats are validated strictly, UI errors no
+longer disclose internal exception text, and uppercase function words cannot outrank short company
+names such as `RWE`.
 
-**Fix:** `AgenticAnswerPrompt` (`app/ai/prompts/agentic_answer_prompt.py`) now explicitly
-separates the two things the plan's decision actually asks for: state plainly there's no
-place-specific coverage, **then** separately summarize what the evidence says about the same theme
-at a national/regional level, with its own citations.
+Broader pre-existing hardening remains explicit follow-up work: isolate untrusted article/question
+text more strongly in model prompts; define application-wide request throttling, timeouts and token
+budgets; validate citation Markdown/URLs; and add a migration enforcing one `news_signals` row per
+article. The command currently preserves that one-row invariant operationally with delete-then-add,
+but the database does not enforce it under concurrent writers.
 
-**Verified live, before and after the wording change**, same three questions:
+### 12. Thin-evidence framing and explicit rejection semantics — UPDATED
 
-Before (q11, Bonn investment signals): *"Nach der vorliegenden Evidenz gibt es keine aktuellen
-Investitions- oder Erweiterungssignale für den Raum Bonn... spezifische Informationen... liegen
-nicht vor."* — zero citations, despite 11 articles having been retrieved and passed as evidence.
+The earlier answer-prompt fix remains useful when retrieved evidence is unclassified
+(`relevant_ids: []`, `rejected: []`): it asks for an honest place-specific gap followed by any
+supported national context. The follow-up review identified a different case that must not use that
+fallback: a non-empty `rejected` list is an explicit verifier judgement that none of the retrieved
+articles is evidence. `_filter_relevant()` now returns `[]` in that case. When non-empty IDs match no
+retrieved row, it instead preserves the results and marks `relevance: id_mismatch` in the trace.
 
-After (same question, re-run): states no Bonn-specific signal, then: *"Amazon is investing €2.7
-billion in cloud and AI infrastructure in Germany by 2027 [3]..."* — real national context, with
-citations.
+The 2026-10-26 live eval exercised the explicit-rejection branch for q9–q11. All three correctly
+returned zero citations; retrieval recall was 0.33, 0.67, and 0.00 respectively. This is safer than
+the prior behavior—rejected sources are no longer presented as accepted evidence—but it did not
+produce the recall improvement predicted by the review plan. `EVAL.md` records the observed result.
 
-**Test:** `tests/test_agentic_rag.py::test_filter_relevant_falls_back_to_retrieved_articles_when_empty`
-confirms the filtering logic (which was already correct); the prompt-wording improvement itself
-can only be verified against the live model, not a stub — see `EVAL.md` for the full before/after
-transcripts across all three affected questions.
+**Tests:** `tests/test_agentic_rag.py::test_filter_relevant_drops_articles_the_verifier_rejected`,
+`::test_filter_relevant_keeps_results_when_verifier_cannot_classify_them`, and
+`::test_relevant_ids_matching_no_retrieved_article_fall_back`.
 
 ## Two plan items not implemented (recorded, not silently dropped)
 
