@@ -353,6 +353,46 @@ def test_site_ranking_result_actually_reaches_the_answer_prompt(
     assert "DISTINCTIVE_RANKED_FACILITY" in answer_prompt
 
 
+def test_filter_relevant_falls_back_to_retrieved_articles_when_empty(
+    service_factory,
+):
+    """
+    Plan decision ("Thin evidence"): "Name the gap and what was
+    searched, then give the national context that does exist." When
+    verify finds nothing it can specifically confirm (relevant_ids=[]),
+    the answer step must still receive what was actually retrieved —
+    _filter_relevant already falls back to the raw results in this
+    case (confirmed here); the real gap turned out to be in the answer
+    prompt's wording, not this filtering logic — see
+    AgenticAnswerPrompt's "Place-specific vs. thematic evidence"
+    section, added after running the real eval set and finding the
+    model declined to use available thematic evidence anyway.
+    """
+
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            '{"tools": ["news_search"], "query": "Dortmund grid risk", '
+            '"k": 10}',
+            (
+                '{"sufficient": false, "relevant_ids": [], '
+                '"rejected": [{"id": "a1", "reason": "no Dortmund mention"}], '
+                '"missing": "nothing specific to Dortmund", '
+                '"refined_query": ""}'
+            ),
+            "Answer using the national context [1].",
+        ],
+        retrieval_responses=[
+            [_result("a1", "National grid shortage article")]
+        ],
+    )
+
+    result = service.answer("question about Dortmund")
+
+    assert len(result["citations"]) == 1
+    assert result["citations"][0]["id"] == "a1"
+    assert result["answer"] == "Answer using the national context [1]."
+
+
 def test_a_failing_tool_does_not_raise(service_factory):
     class _ExplodingSiteService:
         def analyze_facility(self, facility_id):

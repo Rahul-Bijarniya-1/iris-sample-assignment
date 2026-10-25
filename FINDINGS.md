@@ -299,6 +299,38 @@ data asset exists and is correctly populated, but surfacing it in retrieval/the 
 unimplemented. Treated as out of scope for this fix pass (it's a feature addition, not a
 defect fix) — recorded here so a reader of this document knows not to assume otherwise.
 
+### 12. "Thin evidence" wasn't actually surfacing national context — FIXED
+
+Found by running the real 14-question planner eval (`EVAL.md`), not by code review. The plan's
+own Decision names this requirement explicitly: *"Thin evidence: Name the gap and what was
+searched, then give the national context that does exist."* `AgenticRagService._filter_relevant`
+already did the right thing — when `verify` finds nothing it can specifically confirm
+(`relevant_ids: []`), it falls back to the raw retrieved articles rather than an empty list, so the
+answer step did have real evidence available. But for three real eval questions asking about a
+place not in the corpus (Dortmund, Wuppertal, Bonn), the model declined to use that evidence at
+all and answered a bare "no information found" with zero citations on two of the three — the code
+path was correct, the prompt wording wasn't eliciting the behavior the plan called for.
+
+**Fix:** `AgenticAnswerPrompt` (`app/ai/prompts/agentic_answer_prompt.py`) now explicitly
+separates the two things the plan's decision actually asks for: state plainly there's no
+place-specific coverage, **then** separately summarize what the evidence says about the same theme
+at a national/regional level, with its own citations.
+
+**Verified live, before and after the wording change**, same three questions:
+
+Before (q11, Bonn investment signals): *"Nach der vorliegenden Evidenz gibt es keine aktuellen
+Investitions- oder Erweiterungssignale für den Raum Bonn... spezifische Informationen... liegen
+nicht vor."* — zero citations, despite 11 articles having been retrieved and passed as evidence.
+
+After (same question, re-run): states no Bonn-specific signal, then: *"Amazon is investing €2.7
+billion in cloud and AI infrastructure in Germany by 2027 [3]..."* — real national context, with
+citations.
+
+**Test:** `tests/test_agentic_rag.py::test_filter_relevant_falls_back_to_retrieved_articles_when_empty`
+confirms the filtering logic (which was already correct); the prompt-wording improvement itself
+can only be verified against the live model, not a stub — see `EVAL.md` for the full before/after
+transcripts across all three affected questions.
+
 ## Two plan items not implemented (recorded, not silently dropped)
 
 Flagged by the code review; both are real gaps against the plan's literal text, neither

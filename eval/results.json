@@ -1,0 +1,412 @@
+[
+  {
+    "id": "q1",
+    "question": "Gab es in den letzten zwei Wochen relevante Rechenzentrumsnachrichten aus Duisburg?",
+    "expectation": "none",
+    "relevant_article_ids": [],
+    "before_matches": [],
+    "after_round1_top5": [
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "9045a3eb-15c4-4ddf-904f-b2b195dda090",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "787497b4-f378-4594-8483-04ce73bf6e1e"
+    ],
+    "after_citation_ids": [
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "9045a3eb-15c4-4ddf-904f-b2b195dda090",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "787497b4-f378-4594-8483-04ce73bf6e1e",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "b19d71e9-f2dc-491e-ae9f-85ecf725ba48",
+      "de2d23bd-0eb8-4a84-a9c4-f79ee937ce56",
+      "32fcb235-1314-44e2-bfda-be578804393f"
+    ],
+    "after_verify_sufficient": false,
+    "after_answer": "Keine der vorliegenden Evidenzquellen erwähnt Duisburg oder berichtet über Rechenzentrumsnachrichten aus Duisburg in den letzten zwei Wochen. Es existiert somit keine lokale Berichterstattung zu diesem Thema.\n\nIm nationalen bzw. regionalen Kontext werden jedoch einige relevante Themen für den Rechenzentrumsmarkt in Deutschland behandelt, zum Beispiel:\n\n- Große Investitionen namhafter Unternehmen wie Amazon, Nvidia und Siemens in Cloud-, KI- und Datenzentrumsinfrastruktur, mit Milliardenbeträgen bis 2027 [8].\n- Innovative Ansätze zur Bewältigung von Herausforderungen im Bereich Energieversorgung, beispielsweise durch Siemens' Investitionen in neue Energiespeichertechnologien für AI-Rechenzentren [10].\n- Projekte zur Verbesserung von Nachhaltigkeit und Wasserverbrauch bei Rechenzentren, wie ein gemeinsames Renaturierungsprojekt von Amazon und Microsoft in Hessen [9].\n- Entwicklungen zu neuen Standorten und zum Ausbau bestehender Rechenzentren, etwa in Gaggenau [1], Trebbin [6], Obertshausen [7] oder Badingen [4].\n- Die Möglichkeit, mithilfe modularer Bürolösungen trotz Verzögerungen bei Netzanschlüssen, andere Projektphasen von Rechenzentrumsprojekten parallel voranzutreiben [2].\n\nDiese nationalen Trends und Projekte geben einen Überblick über typische Themenfelder und Entwicklungen in der deutschen Rechenzentrumsbranche, auch wenn kein aktueller Bezug zu Duisburg vorliegt.",
+    "recall_at_5": null
+  },
+  {
+    "id": "q2",
+    "question": "Wird derzeit über neue Rechenzentrumsprojekte in Hamm berichtet?",
+    "expectation": "none",
+    "relevant_article_ids": [],
+    "before_matches": [],
+    "after_round1_top5": [
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "b19d71e9-f2dc-491e-ae9f-85ecf725ba48",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55"
+    ],
+    "after_citation_ids": [
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "b19d71e9-f2dc-491e-ae9f-85ecf725ba48",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "06a8da1f-0763-403e-bb65-066fd0c6ce77",
+      "787497b4-f378-4594-8483-04ce73bf6e1e",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c"
+    ],
+    "after_verify_sufficient": false,
+    "after_answer": "None of the provided evidence specifically mentions new data center projects in Hamm.\n\nNational context: The evidence discusses multiple data center projects and themes elsewhere in Germany, including new projects in Badingen, Trebbin, Obertshausen, and Gaggenau, as well as broader national trends such as growing investment in cloud and AI infrastructure by companies like Amazon, Nvidia, and Siemens [1][3][5][6][10]. Additionally, the sector faces challenges related to limited power capacity, sustainability requirements, and innovations in modular offices to keep projects moving when network connections are delayed [4][9]. However, none of this information is specific to Hamm.",
+    "recall_at_5": null
+  },
+  {
+    "id": "q3",
+    "question": "Gibt es aktuelle Entwicklungen, die für einen Standort in Paderborn relevant sind?",
+    "expectation": "none",
+    "relevant_article_ids": [],
+    "before_matches": [],
+    "after_round1_top5": [
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2"
+    ],
+    "after_citation_ids": [
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "787497b4-f378-4594-8483-04ce73bf6e1e",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "9045a3eb-15c4-4ddf-904f-b2b195dda090",
+      "de2d23bd-0eb8-4a84-a9c4-f79ee937ce56",
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "b19d71e9-f2dc-491e-ae9f-85ecf725ba48",
+      "8868c1df-5949-4413-bcae-04e12c064bb5"
+    ],
+    "after_verify_sufficient": false,
+    "after_answer": "None of the provided evidence mentions Paderborn by name. Therefore, there is no coverage or reported current development directly related to a data center location in Paderborn in the available sources.\n\nAt the national level, however, there are several relevant trends and themes for data center siting in Germany:\n\n- Power capacity and grid connection are critical issues. Sites with large available network capacities, like Badingen (1.2 GW), are attracting interest from data center developers [1]. Limited power capacity is increasingly a bottleneck nationwide, particularly as AI workloads push demand higher [7].\n- Permitting and local approval can be a challenge, as seen in Trebbin, where permits and city approvals are needed before construction can proceed [2], and in Obertshausen, where public opposition and environmental concerns play a role [4].\n- National and international companies such as Amazon, Nvidia, and Siemens are making significant investments in German cloud and AI infrastructure, with Amazon alone planning €2.7 billion of investment by 2027 [10].\n- Energy efficiency, sustainability (ESG requirements), and water management are becoming mandatory considerations for new projects [7][11].\n- Modular and adaptable project approaches, such as using modular offices, are being deployed to ensure planning progress during delays in network connection [5].\n- Partnerships with municipal utilities for operating and securing data centers are present in other regions, such as Stutensee, potentially serving as a reference for local utilities elsewhere [6].\n\nIn summary, while there is no information specific to Paderborn, the broader national context suggests that power availability, permitting processes, public acceptance, sustainability, and investment trends are key issues for data center projects throughout Germany [1][2][4][5][6][7][10][11].",
+    "recall_at_5": null
+  },
+  {
+    "id": "q4",
+    "question": "Was ist aktuell zur Rechenzentrumsentwicklung in Mönchengladbach bekannt?",
+    "expectation": "none",
+    "relevant_article_ids": [],
+    "before_matches": [],
+    "after_round1_top5": [
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "b19d71e9-f2dc-491e-ae9f-85ecf725ba48"
+    ],
+    "after_citation_ids": [
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "b19d71e9-f2dc-491e-ae9f-85ecf725ba48",
+      "787497b4-f378-4594-8483-04ce73bf6e1e",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "9045a3eb-15c4-4ddf-904f-b2b195dda090",
+      "8868c1df-5949-4413-bcae-04e12c064bb5",
+      "ea5544c9-e533-418d-b376-878468e38af6"
+    ],
+    "after_verify_sufficient": false,
+    "after_answer": "Keine der vorliegenden Evidenzen nennt Mönchengladbach oder berichtet über konkrete Entwicklungen, Projekte oder Planungen zu Rechenzentren in Mönchengladbach.\n\nZum thematischen Kontext auf nationaler Ebene:\nDie Evidenzlage zeigt, dass sich der Rechenzentrumsmarkt in Deutschland aktuell stark entwickelt. Dabei stehen insbesondere folgende Themen im Fokus: Der stark wachsende Bedarf durch KI-Anwendungen, begrenzte Netzkapazitäten, strengere Nachhaltigkeitsanforderungen (ESG), sowie die Möglichkeit, durch modulare Büros Verzögerungen in der Netzanschlussphase abzufangen und andere Projektphasen trotzdem parallel weiterzuführen. Die Energieeffizienz und Umweltauflagen werden zunehmend zur Grundvoraussetzung. Deutschland entwickelt sich zum größten europäischen Markt für Colocation, wobei zahlreiche Städte wie Trebbin, Obertshausen und Gaggenau aktuell im Fokus der Rechenzentrumsbranche stehen, oft begleitet von Herausforderungen bei Genehmigungen und Bürgerbeteiligung [3][4][7][10].",
+    "recall_at_5": null
+  },
+  {
+    "id": "q5",
+    "question": "Welche aktuellen Meldungen weisen auf Engpässe bei Strom und Netzanschlüssen für neue Rechenzentren hin?",
+    "expectation": "coverage",
+    "relevant_article_ids": [
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "8868c1df-5949-4413-bcae-04e12c064bb5",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2"
+    ],
+    "before_matches": [],
+    "after_round1_top5": [
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "de2d23bd-0eb8-4a84-a9c4-f79ee937ce56",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c"
+    ],
+    "after_citation_ids": [
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c"
+    ],
+    "after_verify_sufficient": false,
+    "after_answer": "Es liegen keine Meldungen vor, die explizit aktuelle Engpässe bei Strom oder Netzanschlüssen für neue Rechenzentren an einem bestimmten Ort in Deutschland bestätigen.\n\nAuf nationaler Ebene zeigt eine aktuelle ISG Provider Lens Studie, dass der wachsende Bedarf an Rechenleistung durch KI-Anwendungen auf begrenzte Stromkapazitäten trifft. Die Anforderungen an Energieeffizienz und Nachhaltigkeit steigen, wodurch die deutschen Colocation-Märkte vor Herausforderungen hinsichtlich der Stromversorgung und Netzanschlüsse stehen. Es wird deutlich, dass Energieeffizienz, begrenzte Stromkapazität und Regulatorik zentrale Themen für die Branche sind [1].\n\nEin weiteres Beispiel aus Badingen deutet jedoch an, dass dort derzeit keine Engpässe bestehen, da laut Angaben des Bürgermeisters am Umspannwerk eine Netzkapazität von 1,2 Gigawatt verfügbar sei [2].",
+    "recall_at_5": 0.67
+  },
+  {
+    "id": "q6",
+    "question": "Wo verzögern Genehmigungen oder regulatorische Vorgaben derzeit den Bau von Rechenzentren?",
+    "expectation": "coverage",
+    "relevant_article_ids": [
+      "99044862-e93e-40a1-a154-88503628f910",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf"
+    ],
+    "before_matches": [],
+    "after_round1_top5": [
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55"
+    ],
+    "after_citation_ids": [
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "99044862-e93e-40a1-a154-88503628f910",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf"
+    ],
+    "after_verify_sufficient": false,
+    "after_answer": "Für den spezifischen Ort fragt die Frage nicht, daher folgt eine zusammenfassende nationale/regionalthemenbezogene Antwort:\n\nLokale Berichterstattung:  \nDer Bau eines geplanten 180 MW Rechenzentrums in Trebbin verzögert sich, da die Betriebserlaubnisse sowie die städtische Genehmigung für den Kamin noch fehlen [1]. Außerdem zeigt das Beispiel des geplanten AWS-Rechenzentrums in Obertshausen, dass Bürgerkritik und Opposition gegen das Projekt aufgrund von Umweltfragen, Lärm und mangelnder Transparenz die Planungen erschweren [3].\n\nNationale/regionalthemenbezogene Zusammenfassung:  \nGenehmigungs- und Bauprozesse für Rechenzentren in Deutschland können sich laut vorliegenden Hinweisen erheblich verzögern, wenn erforderliche Gutachten – etwa zu Lärm, Brandschutz, Bodenbeschaffenheit und Emissionskontrolle – zu spät eingebunden werden. Eine frühzeitige Expertenbeteiligung kann Risiken und teure Projektänderungen vermeiden helfen [2]. Zudem können weiterhin offene Betriebsgenehmigungen oder fehlende kommunale Zustimmungen den Baustart verzögern [1]. Umweltaspekte wie Lärmschutz und Emissionskontrolle sowie Kritik aus der Bevölkerung wirken sich ebenfalls negativ auf die Projektgeschwindigkeit aus [2][3]. \n\nEine umfassende konsolidierte Analyse, welche spezifischen Genehmigungen oder Regulierungsauflagen in Deutschland am häufigsten zu Verzögerungen führen, liegt dem Evidenzkorpus nicht vor.",
+    "recall_at_5": 0.67
+  },
+  {
+    "id": "q7",
+    "question": "Welche großen Investitionen in neue Rechenzentrumskapazitäten wurden zuletzt angekündigt?",
+    "expectation": "coverage",
+    "relevant_article_ids": [
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "344d2b34-f39f-489b-9bfa-b8730f86b9c9",
+      "de2d23bd-0eb8-4a84-a9c4-f79ee937ce56",
+      "547c9d2d-6b75-4018-8e41-248d46851ab4"
+    ],
+    "before_matches": [],
+    "after_round1_top5": [
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "de2d23bd-0eb8-4a84-a9c4-f79ee937ce56",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2"
+    ],
+    "after_citation_ids": [
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "547c9d2d-6b75-4018-8e41-248d46851ab4",
+      "f83fee7c-0773-4ac3-970c-fac8ed2e1ab2"
+    ],
+    "after_verify_sufficient": true,
+    "after_answer": "Orts-spezifische Information:  \nFür die Frage nach großen, zuletzt angekündigten Investitionen in neue Rechenzentrumskapazitäten liegen mehrere Hinweise aus Deutschland und Europa vor:\n\n- In Trebbin (Deutschland) ist der Bau eines Rechenzentrums mit einer Gesamtkapazität von 180 MW geplant. Die Vorbereitungen laufen, allerdings fehlen noch Betriebsgenehmigungen und die Zustimmung der Stadt für den Schornstein [1].\n- Amazon hat Investitionen in Höhe von 2,7 Milliarden Euro bis 2027 für Cloud- und KI-Infrastruktur in Deutschland angekündigt [2].\n- Alibaba Cloud plant neue Regionen in der Türkei, Finnland und den Niederlanden sowie Kapazitätserweiterungen in weiteren Märkten [3].\n- In Frankreich investiert Bull 80 Millionen Euro, um die Produktionskapazität in Angers zu verdoppeln und künftig auch den Bau von KI-Infrastrukturen zu ermöglichen [4].\n\nNationale/regionale Kontextinformationen:  \nDie Evidenz berichtet mehrere bedeutende Investitionen in neue und erweiterte Rechenzentrumskapazitäten sowie KI-Infrastruktur auf europäischem Niveau. Investitionsschwerpunkte sind Cloud, künstliche Intelligenz und Infrastrukturmodernisierung durch große Anbieter wie Amazon, Alibaba Cloud, und Bull – jeweils mit Milliardenbeträgen, Standortausbauten und Erweiterungsplänen [1][2][3][4].",
+    "recall_at_5": 0.5
+  },
+  {
+    "id": "q8",
+    "question": "Gibt es Anzeichen dafür, dass Hyperscaler ihre Ausbaupläne in Deutschland beschleunigen oder zurückfahren?",
+    "expectation": "coverage",
+    "relevant_article_ids": [
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "ea5544c9-e533-418d-b376-878468e38af6"
+    ],
+    "before_matches": [],
+    "after_round1_top5": [
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "9045a3eb-15c4-4ddf-904f-b2b195dda090",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf"
+    ],
+    "after_citation_ids": [
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "ea5544c9-e533-418d-b376-878468e38af6"
+    ],
+    "after_verify_sufficient": true,
+    "after_answer": "Keines der vorliegenden Belege nennt explizit, dass Hyperscaler ihre Ausbaupläne in Deutschland aktuell beschleunigen oder zurückfahren.\n\nStattdessen liefert die Evidenz nationale und thematische Einblicke:  \n- Es gibt weiterhin bedeutende Investitionen von Hyperscalern: Amazon investiert 2,7 Milliarden Euro in Cloud- und KI-Infrastruktur in Deutschland bis 2027. Auch Nvidia, Siemens und die Bundesregierung treiben industrielle KI-Initiativen und Satelliteninternet voran [1].\n- Einzelne Projekte treffen auf lokalen Widerstand, insbesondere wegen Umwelt-, Lärm- und Transparenzbedenken, wie das Beispiel eines geplanten AWS-Rechenzentrums auf einem Industrie-Brachgelände zeigt [2].\n- Das nationale Rechenzentrumsumfeld verändert sich infolge wachsender KI-Nachfrage, knapper Stromkapazitäten und strenger werdender Nachhaltigkeits- und Souveränitätsvorgaben. Die Branche erlebt wachsendes Marktvolumen, aber auch steigenden Druck, was Energieeffizienz und ESG-Kriterien betrifft – diese werden zunehmend verpflichtend [3].\n\nZusammenfassend:  \nEs gibt keine direkten Hinweise auf eine allgemeine Beschleunigung oder einen Rückgang der Ausbaupläne der Hyperscaler in Deutschland. Die Investitionstätigkeit bleibt hoch, doch Projekte können durch gesellschaftliche und energetische Rahmenbedingungen beeinflusst werden. National bleibt der Markt dynamisch, allerdings unter wachsenden Anforderungen an Nachhaltigkeit und Energieversorgung [1][2][3].",
+    "recall_at_5": 0.67
+  },
+  {
+    "id": "q9",
+    "question": "Welche Stromnetzrisiken sollte ich bei einem geplanten Standort nahe Dortmund berücksichtigen?",
+    "expectation": "partial",
+    "relevant_article_ids": [
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "8868c1df-5949-4413-bcae-04e12c064bb5",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2"
+    ],
+    "before_matches": [],
+    "after_round1_top5": [
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "787497b4-f378-4594-8483-04ce73bf6e1e",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf"
+    ],
+    "after_citation_ids": [
+      "ea5544c9-e533-418d-b376-878468e38af6"
+    ],
+    "after_verify_sufficient": false,
+    "after_answer": "None of the provided evidence specifically addresses electrical grid risks near Dortmund for data center siting.\n\nAt the national level, the evidence highlights several relevant risks and trends for Germany as a whole: A recent ISG Provider Lens study shows that increasing AI workloads are intensifying the demand for power, yet the available power capacities are limited. This is creating pressure on the German colocation market and shifting the focus from energy efficiency as a nice-to-have to a mandatory requirement. Additionally, there are tightened sovereignty and sustainability requirements that operators must now meet. These trends suggest that limited power grid capacity, increased competition for electricity, and stricter sustainability standards are significant risks for data center projects in Germany generally and should be considered in siting decisions, even if there is no specific information about Dortmund itself [1].",
+    "recall_at_5": 0.33
+  },
+  {
+    "id": "q10",
+    "question": "Gibt es Hinweise auf Genehmigungsprobleme für ein Rechenzentrumsprojekt in Wuppertal?",
+    "expectation": "partial",
+    "relevant_article_ids": [
+      "99044862-e93e-40a1-a154-88503628f910",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf"
+    ],
+    "before_matches": [],
+    "after_round1_top5": [
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55"
+    ],
+    "after_citation_ids": [
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "787497b4-f378-4594-8483-04ce73bf6e1e",
+      "b19d71e9-f2dc-491e-ae9f-85ecf725ba48",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "8868c1df-5949-4413-bcae-04e12c064bb5",
+      "de2d23bd-0eb8-4a84-a9c4-f79ee937ce56"
+    ],
+    "after_verify_sufficient": false,
+    "after_answer": "Keiner der vorliegenden Artikel erwähnt ein Rechenzentrumsprojekt oder Genehmigungsprobleme speziell in Wuppertal. Es gibt also keine Hinweise auf lokale Genehmigungsprobleme in Wuppertal.\n\nIm nationalen Kontext zeigen die Belege, dass Genehmigungsfragen und Netzkapazität immer wieder Themen bei Rechenzentrumsprojekten in Deutschland sind. In Trebbin beispielsweise fehlen derzeit noch Betriebserlaubnisse und städtische Genehmigungen für Elemente wie den Kamin eines geplanten 180-MW-Rechenzentrums [1]. In Obertshausen stößt ein AWS-Projekt auf Kritik aus der Bevölkerung und von der Opposition, die Umweltaspekte, Lärm und mangelnde Transparenz bemängeln [2]. Studien berichten zudem, dass der starke Zuwachs an KI-Workloads vor dem Hintergrund begrenzter Stromkapazitäten und verschärfter Nachhaltigkeitsanforderungen die Entwicklung der Rechenzentrumslandschaft beeinflusst, was die Planung und Genehmigung oft komplexer macht [8]. Auch Verzögerungen bei Netzanschlüssen können den Baufortschritt beeinflussen [4].\n\nZusammenfassend: Für Wuppertal gibt es keinen spezifischen Hinweis auf Genehmigungsprobleme. Auf nationaler Ebene treten solche Herausforderungen jedoch regelmäßig auf [1][2][4][8].",
+    "recall_at_5": 0.67
+  },
+  {
+    "id": "q11",
+    "question": "Sehen Sie aktuelle Investitions- oder Erweiterungssignale für den Raum Bonn?",
+    "expectation": "partial",
+    "relevant_article_ids": [
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "344d2b34-f39f-489b-9bfa-b8730f86b9c9",
+      "de2d23bd-0eb8-4a84-a9c4-f79ee937ce56",
+      "547c9d2d-6b75-4018-8e41-248d46851ab4"
+    ],
+    "before_matches": [],
+    "after_round1_top5": [
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c"
+    ],
+    "after_citation_ids": [
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "de2d23bd-0eb8-4a84-a9c4-f79ee937ce56",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "787497b4-f378-4594-8483-04ce73bf6e1e",
+      "b19d71e9-f2dc-491e-ae9f-85ecf725ba48",
+      "f83fee7c-0773-4ac3-970c-fac8ed2e1ab2"
+    ],
+    "after_verify_sufficient": false,
+    "after_answer": "None of the evidence provided specifically mentions current investment or expansion signals for data centers in the Bonn area. There are no articles addressing data center investments or expansions in Bonn by name.\n\nHowever, at the national level, the evidence indicates significant ongoing activity in the German data center market. For example, Amazon is investing 2.7 billion euros in cloud and AI infrastructure in Germany by 2027 [3], and several large-scale projects (e.g., in Trebbin and Obertshausen) are underway [1][6]. The German colocation market is expanding rapidly due to increased AI workloads and demand, but also faces challenges such as limited power capacities and stricter sustainability requirements [8]. These trends suggest robust interest and investment in data center infrastructure across Germany, though without specific reference to Bonn.",
+    "recall_at_5": 0.25
+  },
+  {
+    "id": "q12",
+    "question": "Wo wird es gerade eng – bei Strom, Flächen oder Behörden – und was davon könnte unseren Zeitplan gefährden?",
+    "expectation": "coverage",
+    "relevant_article_ids": [
+      "99044862-e93e-40a1-a154-88503628f910",
+      "8868c1df-5949-4413-bcae-04e12c064bb5",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c"
+    ],
+    "before_matches": [],
+    "after_round1_top5": [
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "787497b4-f378-4594-8483-04ce73bf6e1e"
+    ],
+    "after_citation_ids": [
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c"
+    ],
+    "after_verify_sufficient": true,
+    "after_answer": "Für Trebbin gibt es derzeit spezifische Hinweise: Der Bau eines 180-MW-Rechenzentrums wird vorbereitet, aber es fehlen noch die Betriebsgenehmigungen und die Zustimmung der Stadt für den Schornstein. Engpässe bestehen hier also klar bei den Behörden und im Genehmigungsverfahren – das könnte den Zeitplan potenziell gefährden [1].\n\nFür Badingen/Zehdenick gibt es keine Hinweise auf behördliche oder kapazitätsbezogene Engpässe im Beweismaterial. Im Gegenteil: Am Umspannwerk Badingen sei laut Bürgermeister eine Netzkapazität von 1,2 Gigawatt verfügbar, was darauf hindeutet, dass zumindest auf der Stromseite aktuell keine Engpässe bestehen [2].\n\nHinweis zum nationalen Kontext: Die vorliegenden Artikel geben keine deutschlandweiten oder allgemeinen Hinweise zu Engpässen bei Strom, Flächen oder Behörden, sie berichten nur lokal bezogen auf die genannten Projekte.\n\n**Fazit:**  \n- In Trebbin ist es konkret bei Behörden und Genehmigungen eng [1].  \n- In Badingen gibt es laut aktueller Information keine offensichtlichen Engpässe, insbesondere nicht beim Strom [2].  \n- Nationaler Kontext kann aus diesen Quellen nicht abgeleitet werden.",
+    "recall_at_5": 0.57
+  },
+  {
+    "id": "q13",
+    "question": "Welche Meldungen verändern gerade den Business Case für einen neuen Campus, und was ist eher allgemeines Branchenrauschen?",
+    "expectation": "coverage",
+    "relevant_article_ids": [
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "99044862-e93e-40a1-a154-88503628f910",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf"
+    ],
+    "before_matches": [],
+    "after_round1_top5": [
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2"
+    ],
+    "after_citation_ids": [
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "8868c1df-5949-4413-bcae-04e12c064bb5",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "b19d71e9-f2dc-491e-ae9f-85ecf725ba48",
+      "cd9c062e-210a-4c6e-b72c-8774619954bd",
+      "de2d23bd-0eb8-4a84-a9c4-f79ee937ce56"
+    ],
+    "after_verify_sufficient": true,
+    "after_answer": "None of the evidence mentions a specific campus or location by name in the question, so there is no place-specific information available. The following is a summary of current national and sectoral developments that are directly affecting the business case for new data center campuses, separated from more general industry news:\n\n**Direct Business Case Influencers:**\n\n- **Grid Capacity & Power Availability:** There is both high local and national attention to grid capacity and power bottlenecks. For example, Zehdenick’s mayor emphasizes the presence of a 1.2 GW network at the Badingen substation, highlighting that available grid capacity remains a critical filter for new sites [3]. Nationally, the ISG Provider Lens study stresses that AI-driven demand is colliding with power shortages, and that energy efficiency and sustainable power supply have shifted from “nice-to-have” to “must-have” for colocation and hyperscale builds in Germany [5].\n\n- **Permitting & Regulation:** The 180 MW Trebbin data center project demonstrates the impact of slow-moving planning processes and uncertainty—permits and city approval remain unresolved, illustrating how permitting bottlenecks can delay or jeopardize large-scale projects [2].\n\n- **Investor Commitments:** Massive new investments, such as Amazon’s €2.7 billion over the next few years and collaborations with Nvidia and Siemens, supply strong signals that the German market remains attractive for new data center development, especially when aligned with AI and industrial cloud demand [6].\n\n- **Anchor Tenant Volatility:** The withdrawal of Microsoft from an AI data center project in England due to long-term uncertainty about network connection in the 2030s signals that lack of secured power and uncertainty over connections can directly undermine the business case, even when significant pre-planning has occurred [4].\n\n- **Sustainability & ESG Requirements:** Evidence shows that being able to guarantee sustainability—including water return and green energy—is now essential. Amazon and Microsoft’s financing of renaturation projects is an example of competitive pressure to couple permitting with environmental stewardship [7].\n\n**General Industry Noise:**\n\n- **Architectural Trends:** The need to rethink data center electrical architecture (e.g., AC to DC conversion) is addressed at a technical level but is a broad sectoral issue rather than a sudden shift that immediately changes individual investment calculations [8].\n\n- **Tech Innovation/Partnerships:** Siemens investing in Skeleton Technologies to address AI-related power supply fluctuations underlines technical challenges, but these are more gradual evolutions shaping the sector rather than trigger events for a specific campus business case [9].\n\n**Summary:**  \nCurrently, the most immediate business case factors for a new campus—based on this evidence—are (1) grid capacity and energy availability, (2) regulatory permitting and approval timelines, (3) the certainty of anchor tenants and investor commitments, and (4) the now-essential nature of ESG and sustainability requirements [2][3][4][5][6][7]. Ongoing technical trends in architecture and new power strategies are important but represent general industry evolution more than immediate business case disruptors [8][9].",
+    "recall_at_5": 0.4
+  },
+  {
+    "id": "q14",
+    "question": "Wie viel freie Leistung hat der Digital-Realty-Campus in Northern Virginia, und was kostet dort aktuell ein Megawatt?",
+    "expectation": "none",
+    "relevant_article_ids": [],
+    "before_matches": [],
+    "after_round1_top5": [
+      "787497b4-f378-4594-8483-04ce73bf6e1e",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2"
+    ],
+    "after_citation_ids": [
+      "787497b4-f378-4594-8483-04ce73bf6e1e",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "60d5b321-7d80-4123-8ce6-ab60e7f3ef55",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "cd9c062e-210a-4c6e-b72c-8774619954bd",
+      "12a2a556-da82-41bb-9b38-68e298c3da01",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "40b03687-a011-4156-bb3d-bc19850c6e20",
+      "8868c1df-5949-4413-bcae-04e12c064bb5",
+      "de2d23bd-0eb8-4a84-a9c4-f79ee937ce56"
+    ],
+    "after_verify_sufficient": false,
+    "after_answer": "None of the provided evidence mentions the Digital-Realty-Campus in Northern Virginia by name. Therefore, there is no place-specific information about its free power capacity (freie Leistung) or the current cost per megawatt at that location.\n\nNational or thematic context:\nThe evidence does discuss broader themes related to data center power and investment, though not specific to Northern Virginia or Digital Realty. For example, there are references to data center power capacity planning and the challenges of meeting rising demand due to AI workloads on the German market, including references to power shortages and the need for more efficient architectures [8][6]. Some articles address the process of bringing new data center capacity online, permitting issues, and investment trends in Germany and other locations, but do not provide data relevant to Northern Virginia or cost per megawatt [2][8][11].\n\nIn summary: There is no information available about the free capacity or MW pricing at the Digital Realty campus in Northern Virginia in the evidence provided. The evidence only covers related grid and cost topics at a general, mostly European, level.",
+    "recall_at_5": null
+  }
+]
