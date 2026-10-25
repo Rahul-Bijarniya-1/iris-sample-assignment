@@ -92,6 +92,13 @@ The platform combines:
 
 ✔ Retrieval-Augmented Generation (RAG)
 
+&nbsp;&nbsp;&nbsp;&nbsp;*Agentic RAG — plan → retrieve → verify → refine → answer over
+pgvector-embedded news, with cited, bilingual (German/English) sources. Scope: the
+corpus is 40 articles from one German feed (DataCenter-Insider), so it answers
+"what regulatory, grid and investment pressures affect data center projects right
+now" well, and says so plainly when a question asks about a specific place the
+feed never covered, rather than inventing local coverage.*
+
 ---
 
 ## Spatial Intelligence
@@ -202,14 +209,14 @@ Current capabilities
 - Renewable Energy Analysis
 - Executive Recommendations
 - News Summaries
-
-Upcoming
-
 - Intent Detection
 - Tool Routing
 - Context Awareness
+- Agentic RAG (see [Artificial Intelligence](#artificial-intelligence) for scope)
+
+Upcoming
+
 - LangGraph Agents
-- Agentic RAG
 
 
 # Technology Stack
@@ -457,6 +464,21 @@ output — see [Staged runs](#staged-runs).
 
 The country code defaults to `DE` and is overridable with `--country`.
 
+## Paid steps (not part of `all`)
+
+Two steps call OpenAI and are deliberately **not** reachable from any phase, so
+`main.py all` stays free and offline-safe. Run them explicitly when you want
+Agentic RAG to have something to retrieve:
+
+```bash
+uv run python main.py news-embed    # translate + embed every news article (pgvector)
+uv run python main.py news-signals  # extract structured signals (expansion/power/
+                                     # renewable/retrofit/investment) per article
+```
+
+Both are idempotent — re-running either is a no-op for articles whose underlying
+text hasn't changed.
+
 ## Running a single step
 
 Every step can be run on its own:
@@ -512,13 +534,14 @@ takes a long time and can fail for reasons that are not bugs:
 - News Intelligence
 - AI Advisor
 - Infrastructure Layers
-
-## In Progress
-
 - Context-aware AI
 - Intent Detection
 - Tool Routing
-- LangGraph Integration
+- Agentic RAG (40-article, single-feed scope — see Key Features)
+
+## In Progress
+
+_(nothing currently in progress)_
 
 ## Planned
 
@@ -526,6 +549,7 @@ takes a long time and can fail for reasons that are not bugs:
 - Predictive Site Recommendations
 - Investment Forecasting
 - Voice Interface
+- LangGraph Integration
 
 
 # Roadmap
@@ -537,19 +561,20 @@ takes a long time and can fail for reasons that are not bugs:
 - Business Intelligence Dashboard
 - AI Advisor
 - News Intelligence
-
-## Next
-
 - Intent Detection
 - Context-aware Responses
 - Agentic RAG
-- LangGraph Workflows
+
+## Next
+
+_(nothing currently in progress)_
 
 ## Future
 
 - Predictive Site Ranking
 - Multi-Agent Decision Support
 - Voice-enabled AI Advisor
+- LangGraph Workflows
 
 
 # Vision
