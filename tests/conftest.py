@@ -28,6 +28,32 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 # DATABASE_URL after loading .env.
 load_dotenv()
 
+
+def pytest_collection_modifyitems(config, items):
+    """
+    `live`-marked tests make a real OpenAI API call. They must never run
+    as a side effect of a plain `pytest` invocation — only an explicit
+    `-m live` opts in. (A plain `-m "not live"` addopts default would
+    conflict with `-m live` on the command line, since pytest ANDs them
+    together into an empty selection — so this is done by hand instead.)
+    """
+
+    requested_markers = config.getoption("-m") or ""
+
+    if "live" in requested_markers:
+
+        return
+
+    skip_live = pytest.mark.skip(
+        reason="live test: opt-in only, run with `pytest -m live`"
+    )
+
+    for item in items:
+
+        if "live" in item.keywords:
+
+            item.add_marker(skip_live)
+
 DEFAULT_PG_PORT = 5432
 
 

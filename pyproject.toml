@@ -52,4 +52,5 @@ testpaths = ["tests"]
 pythonpath = ["."]
 markers = [
     "integration: requires a live PostgreSQL server (the one DATABASE_URL points at)",
+    "live: makes a real OpenAI API call (requires OPENAI_API_KEY); opt-in only, never run by default",
 ]
