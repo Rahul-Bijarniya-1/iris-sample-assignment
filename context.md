@@ -3,7 +3,7 @@
 **Purpose of this file:** a fresh agent session should be able to read only this file and resume work
 without re-deriving anything. Keep it current at the end of every session.
 
-Last updated: **2026-10-25** · Last verified against live code + DB: **2026-10-25**
+Last updated: **2026-10-25** (post-review fix pass) · Last verified against live code + DB: **2026-10-25**
 
 ---
 
@@ -11,19 +11,30 @@ Last updated: **2026-10-25** · Last verified against live code + DB: **2026-10-
 
 1. Read this whole file. It supersedes the README for project *state*; the README was corrected this
    session (see "README corrections" below) and should now be consistent with it.
-2. **Work is on branch `feat/agentic-rag`, 21 commits ahead of `main`**, checked out in place (not a
+2. **Work is on branch `feat/agentic-rag`, 27 commits ahead of `main`**, checked out in place (not a
    worktree — the user has this directory open in their IDE). `main` itself is 15 commits ahead of
    `upstream/main` and pushed to the user's private `origin`. Remotes: `origin` →
    `Rahul-Bijarniya-1/iris-sample-assignment` (private), `upstream` → `amaurisantosjr/iris-sample`
    (public, READ only).
 3. **`feat/agentic-rag` is NOT yet pushed or merged.** Opening a PR needs the user's explicit go-ahead —
    not given yet this session. Don't push without asking.
-4. Re-verify state before acting on it:
+4. **A fresh-context review (Opus) ran on this branch and its fix pass is complete** — 2 Critical + 8
+   Important findings, all fixed except two documented as deliberate rulings (not silent gaps). Full
+   detail: `FINDINGS.md` (#11b-#11d, plus two honest-disclosure sections) and
+   `.superpowers/sdd/a-planner-and-prepare-cosmic-pudding/progress.md` ("Final review" section). The two
+   Criticals were real and would have mattered: `AgenticRagService` could crash on a plausible malformed
+   model response, and all four OpenAI-backed services built their client eagerly, which broke the
+   documented "degrades to [] with no API key" guarantee and failed 5 tests on a machine with no key set
+   (i.e. anyone following the README's own setup). Both fixed and verified live.
+5. Re-verify state before acting on it:
    ```bash
    cd ~/Assignment/iris-sample
-   git log --oneline main..feat/agentic-rag              # expect 21 commits
+   git log --oneline main..feat/agentic-rag              # expect 27 commits
    git status -sb                                        # expect feat/agentic-rag, clean
-   uv run pytest                                          # expect 89 passed
+   uv run pytest                                          # expect 103 passed, 2 skipped
+   env -u OPENAI_API_KEY uv run pytest                    # expect 103 passed, 2 skipped — identical to
+                                                           # with a key; nothing in the default suite
+                                                           # depends on OPENAI_API_KEY being set anymore
    uv run alembic current                                 # expect d88d670b067f (head)
    psql -h localhost -p 5433 -U postgres -d nrw_dc_bi -c "
      select count(*) articles, count(published_at) dated, count(summary_en) translated,
@@ -31,13 +42,14 @@ Last updated: **2026-10-25** · Last verified against live code + DB: **2026-10-
    psql -h localhost -p 5433 -U postgres -d nrw_dc_bi -c "
      select count(*) from iris_core.news_signals;"         # expect 40
    ```
-5. **Guardrail (unchanged):** don't run the full data pipeline (`main.py all`) without asking the user
-   first. `news-embed` and `news-signals` additionally make real (cheap) paid OpenAI calls — see below.
-6. Time constraint: 48-hour take-home, started 2026-10-24. **Amauri is not reachable** — don't plan
+6. **Guardrail (unchanged):** don't run the full data pipeline (`main.py all`) without asking the user
+   first. `news-embed` and `news-signals` additionally make real paid OpenAI calls — see below.
+   `uv run pytest -m live` also makes two small real OpenAI calls (opt-in only, never runs by default).
+7. Time constraint: 48-hour take-home, started 2026-10-24. **Amauri is not reachable** — don't plan
    around asking him; blockers have been resolved independently throughout.
-7. **Blocked on the user:** the eval set (10-15 planner questions, "the one input I should not author"
-   per the plan) has not been received yet. Everything else in the plan is done or in progress without
-   it — see "What's left" below.
+8. **Blocked on the user:** the eval set (10-15 planner questions, "the one input I should not author"
+   per the plan) has not been received yet. The PR also needs the user's explicit go-ahead, not given
+   yet. Everything else in the plan is done — see "What's left" below.
 
 ---
 
@@ -77,7 +89,7 @@ news_retrieval_service.py` (pgvector search), `app/extractors/openai_extractor.p
 | App schema | `iris_core` (8 tables now — `news_signals` added) |
 | Python | 3.12 via `uv`, `.venv` at repo root |
 | Alembic head | `d88d670b067f` — 15 migrations applied |
-| Tests | pytest, **89 tests**, `uv run pytest` |
+| Tests | pytest, **105 tests** (103 default + 2 opt-in `live`), `uv run pytest` |
 
 `.env` at repo root: `DATABASE_URL` + `OPENAI_API_KEY` (a **real key**, confirmed working this session —
 no longer the `sk-...` placeholder noted in the previous handoff) + optionally `OPENAI_MODEL` (mini,
@@ -88,7 +100,7 @@ default `gpt-4.1-mini`) and `OPENAI_ANSWER_MODEL` (default `gpt-4.1`) + `OPENAI_
 
 ## Verified current state (2026-10-25, after this session's work)
 
-- Environment, migrations, tests: **working.** 89/89 passing.
+- Environment, migrations, tests: **working.** 103/103 passing (plus 2 opt-in `live` tests, verified separately).
 - Database: **all 8 tables populated**, including the new `news_signals` (40 rows, real German-aware
   extraction — see table below).
 - `news_articles`: all 40 rows have `published_at`, `title_en`/`summary_en` (real English translations,
@@ -110,14 +122,16 @@ default `gpt-4.1-mini`) and `OPENAI_ANSWER_MODEL` (default `gpt-4.1`) + `OPENAI_
 | `news_signals` | 40 | **new** — real OpenAI-extracted signals: 5 expansion, 10 power, 2 renewable, 7 retrofit, 8 investment |
 
 **The caveat that still matters:** `facilities` is still OpenStreetMap-derived, not datacentermap
-(pre-existing, out of scope this session). **New caveat:** the news corpus is 40 articles from one feed
-— the README now says so explicitly; see "Thin evidence" framing below.
+(pre-existing, out of scope this session). **New caveats, both honestly disclosed in FINDINGS.md:** the
+news corpus is 40 articles from one feed (README now says so explicitly); and `news_signals` is
+populated with real extracted data but **not yet joined into retrieval or the answer** — a future
+session's natural next step, not a silent gap.
 
 ---
 
 ## This session's commits (on `feat/agentic-rag`, `main`..`feat/agentic-rag`)
 
-21 commits. By phase:
+27 commits. By phase (the last 6 are the post-review fix pass, listed separately below):
 
 **Phase A — five pre-existing defects, each its own commit + regression test:**
 `published_at` never parsed · NaN leaking into `news_matches.city` · duplicate dead
@@ -154,12 +168,33 @@ removed the blanket "select a facility first" gate (news questions can now name 
 linked/bold, German muted) with date+source; collapsed "How I got this" trace expander. Verified live
 in a browser.
 
-**Phase F (partial):** README corrections (Agentic RAG + Intent Detection + Tool Routing + Context
+**Phase F:** README corrections (Agentic RAG + Intent Detection + Tool Routing + Context
 Awareness moved to Completed everywhere, with a scope line on the RAG claim; LangGraph moved to
-Planned/Future, the inverse fix) · `FINDINGS.md`.
+Planned/Future, the inverse fix) · `FINDINGS.md` · a fresh-context (Opus) whole-branch review,
+dispatched in the background, then a full fix pass on its findings:
 
-Test suite: 27 pre-existing + 62 new = **89 tests**. No test in the default run touches the network —
-every OpenAI/embedding call is stubbed via an injectable client.
+- **2 Critical, both fixed:** `AgenticRagService._filter_relevant` could crash on a plausible malformed
+  verify response (`relevant_ids` as objects or a bare scalar); all four OpenAI-backed services built
+  their client eagerly in `__init__`, which raised before `NewsRetrievalService.search()`'s own
+  try/except could catch a missing key — breaking the documented degradation guarantee and failing 5
+  tests on any machine without `OPENAI_API_KEY` set. Both reproduced live before fixing, both
+  re-verified live after (`env -u OPENAI_API_KEY uv run pytest` → 103/103, was 5 failed).
+- **8 Important findings:** 6 fixed (site_ranking's result was computed but discarded — now reaches the
+  answer and the trace; `OPENAI_API_KEY` docs corrected; embedding-model name added to the idempotency
+  hash + a dimension guard; `capacity_mw`/`confidence` coercion + batch commits in `news-signals`;
+  README's idempotency claim corrected; the missing `live` marker + `test_live_openai.py` added). 2
+  recorded as deliberate rulings rather than fixed — building real `news_signals` consumption and
+  enriching `_site_analysis()` are feature additions, not defect fixes, out of scope for a review fix
+  pass; both disclosed honestly in FINDINGS.md instead of left as a silent gap.
+- Several Minor findings deferred — listed in the execution ledger, none judged to affect a planner
+  using the dashboard enough to block the submission.
+
+Eval and PR excluded from review scope — both still blocked on the user (see "What's left").
+
+Test suite after the fix pass: 27 pre-existing + 76 new = **103 tests** (plus 2 opt-in `live` tests,
+verified passing against the real API). No test in the default run touches the network or requires
+`OPENAI_API_KEY` — every OpenAI/embedding call is stubbed via an injectable client, and construction of
+every OpenAI-backed class is lazy.
 
 ---
 
@@ -199,14 +234,18 @@ implementation, documented for a reviewer to weigh.
       through `AgenticRagService`, report recall@5 before/after. Capture the literal before/after
       acceptance-test text (`"No matching news signals were found."` vs. the new grounded answer) for
       the submission.
-- [ ] **`context.md` diagram check** — the plan flagged a stale `repositories` reference at the old
-      line 52; the diagram above already reflects the real `app/database/repositories/` layer, so this
-      looks already resolved, but re-verify against the actual directory tree if anything changed.
+- [x] **`context.md` diagram check** — re-verified; `app/database/repositories/` is real and the
+      diagram above is accurate. The plan's stale complaint predates this session.
 - [ ] **Open the PR** — needs the user's explicit go-ahead before any push (not asked yet this
       session). `feat/agentic-rag` → `main`, both on the user's own private `origin`.
-- [ ] **Whole-branch review** — a fresh-context review (not self-review) was dispatched this session on
-      the most capable available model before any PR; check this file's own later revision (or git log
-      on this file) for whether it landed and what it found before treating the branch as done.
+- [x] **Whole-branch review** — done. Opus, fresh context, dispatched in the background, read-only on
+      the checkout. 2 Critical + 8 Important findings; full fix pass complete (see "Phase F" above and
+      the execution ledger's "Final review" section for the complete breakdown of fixed vs. ruled-on vs.
+      deferred). The branch is review-clean as of commit `608191f`.
+- [ ] **Two feature gaps recorded, not fixed** (deliberate rulings, see FINDINGS.md): `news_signals`
+      extracted but not joined into retrieval/the answer; `_site_analysis()` not enriched with news
+      context. Both real, both out of scope for a review fix pass (new feature work). Worth a future
+      session.
 
 **Deferred minors (deliberately not done, from the prior session, still true):**
 - [ ] README doesn't mention `uv run pytest -m "not integration"` for running without a database
