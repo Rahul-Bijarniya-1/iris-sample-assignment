@@ -4,13 +4,13 @@ AIIntent.NEWS through the new service... no 14th intent"), with the
 parsed city as the optional place name and the selected facility as the
 optional facility_id — but fall back to the old keyword/match path
 (_news()) when the new retrieval degraded entirely (missing API key, no
-embeddings, no pgvector all surface as an empty first round), so the
-dashboard is never worse than before.
+embeddings, no pgvector all surface as an all-empty retrieval trace), so
+the dashboard is never worse than before.
 """
 
 import pytest
 
-from app.services.ai_advisor_service import AIAdvisorService
+from app.services.ai_advisor_service import AIAdvisorService, AIIntent
 
 
 def _trace(round_ids):
@@ -142,3 +142,116 @@ def test_falls_back_to_keyword_path_when_retrieval_degrades_entirely(
     result = advisor._agentic_news("Any news?", facility_id=None)
 
     assert "Fallback article" in result
+
+
+def test_keyword_fallback_does_not_publish_an_agentic_trace():
+    advisor = AIAdvisorService.__new__(AIAdvisorService)
+    advisor.last_trace = None
+    advisor.last_citations = None
+    advisor.parser = type(
+        "_Parser",
+        (),
+        {
+            "parse": staticmethod(
+                lambda question: {
+                    "facility": None,
+                    "company": None,
+                    "city": None,
+                }
+            )
+        },
+    )()
+    advisor.agentic_rag = type(
+        "_AgenticRag",
+        (),
+        {
+            "answer": staticmethod(
+                lambda question, **kwargs: {
+                    "answer": "Agentic no-results answer.",
+                    "citations": [],
+                    "trace": _trace([]),
+                }
+            )
+        },
+    )()
+    advisor._news = lambda question: "Keyword fallback answer."
+
+    result = advisor._agentic_news("Any news?", facility_id=None)
+
+    assert result == "Keyword fallback answer."
+    assert advisor.last_trace is None
+    assert advisor.last_citations is None
+
+
+def test_second_retrieval_round_prevents_keyword_fallback():
+    advisor = AIAdvisorService.__new__(AIAdvisorService)
+    advisor.last_trace = None
+    advisor.last_citations = None
+    advisor.parser = type(
+        "_Parser",
+        (),
+        {
+            "parse": staticmethod(
+                lambda question: {
+                    "facility": None,
+                    "company": None,
+                    "city": None,
+                }
+            )
+        },
+    )()
+
+    trace = _trace([])
+    trace["rounds"].append(
+        {"query": "refined q", "k": 10, "result_ids": ["a1"]}
+    )
+    advisor.agentic_rag = type(
+        "_AgenticRag",
+        (),
+        {
+            "answer": staticmethod(
+                lambda question, **kwargs: {
+                    "answer": "Refined answer [1].",
+                    "citations": [{"id": "a1"}],
+                    "trace": trace,
+                }
+            )
+        },
+    )()
+    advisor._news = lambda question: pytest.fail(
+        "A successful refinement must not use the keyword fallback"
+    )
+
+    result = advisor._agentic_news("Any news?", facility_id=None)
+
+    assert result == "Refined answer [1]."
+    assert advisor.last_trace is trace
+    assert advisor.last_citations == [{"id": "a1"}]
+
+
+def test_ask_clears_trace_and_citations_between_turns():
+    advisor = AIAdvisorService.__new__(AIAdvisorService)
+    advisor.last_trace = None
+    advisor.last_citations = None
+    advisor.detect_intent = lambda question: (
+        AIIntent.NEWS if question == "news" else AIIntent.HELP
+    )
+
+    trace = _trace(["a1"])
+
+    def answer_news(question, facility_id, on_step=None):
+        advisor.last_trace = trace
+        advisor.last_citations = [{"id": "a1"}]
+        return "News answer [1]."
+
+    advisor._agentic_news = answer_news
+
+    assert advisor.ask("news", selected_facility_id=None) == "News answer [1]."
+    assert advisor.last_trace is trace
+    assert advisor.last_citations == [{"id": "a1"}]
+
+    result = advisor.ask("help", selected_facility_id=None)
+
+    assert "AI Infrastructure Advisor" in result
+    assert advisor.last_trace is None
+    assert advisor.last_citations is None

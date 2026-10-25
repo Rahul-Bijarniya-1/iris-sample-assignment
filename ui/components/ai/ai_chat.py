@@ -156,23 +156,59 @@ def _render_trace(
 
     with st.expander("🔍 How I got this"):
 
+        if not isinstance(trace, dict):
+
+            trace = {}
+
         plan = trace.get("plan") or {}
 
+        if not isinstance(plan, dict):
+
+            plan = {}
+
+        tools = plan.get("tools") or []
+
+        if isinstance(tools, (str, int, float)):
+
+            tools = [tools]
+
+        elif not isinstance(tools, (list, tuple, set)):
+
+            tools = []
+
         st.markdown(
-            f"**Plan** — tools: `{', '.join(plan.get('tools', []))}`, "
+            f"**Plan** — tools: `{', '.join(str(tool) for tool in tools)}`, "
             f"query: `{plan.get('query', '')}`, k: {plan.get('k', '')}"
         )
 
-        for index, round_ in enumerate(
-            trace.get("rounds") or [], start=1
-        ):
+        rounds = trace.get("rounds") or []
+
+        if not isinstance(rounds, (list, tuple)):
+
+            rounds = []
+
+        for index, round_ in enumerate(rounds, start=1):
+
+            if not isinstance(round_, dict):
+
+                round_ = {}
+
+            result_ids = round_.get("result_ids") or []
+
+            if not isinstance(result_ids, (list, tuple, set)):
+
+                result_ids = []
 
             st.markdown(
                 f"**Round {index}** — query: `{round_.get('query')}`, "
-                f"{len(round_.get('result_ids') or [])} result(s)"
+                f"{len(result_ids)} result(s)"
             )
 
         verify = trace.get("verify") or {}
+
+        if not isinstance(verify, dict):
+
+            verify = {}
 
         st.markdown(
             f"**Verify** — sufficient: {verify.get('sufficient')}"
@@ -182,14 +218,30 @@ def _render_trace(
 
             st.caption(f"Missing: {verify['missing']}")
 
-        if verify.get("rejected"):
+        rejected_items = verify.get("rejected") or []
 
-            for rejected in verify["rejected"]:
+        if isinstance(rejected_items, dict):
 
-                st.caption(
-                    f"Rejected {rejected.get('id')}: "
-                    f"{rejected.get('reason')}"
-                )
+            rejected_items = [rejected_items]
+
+        elif not isinstance(rejected_items, (list, tuple)):
+
+            rejected_items = [rejected_items]
+
+        if rejected_items:
+
+            for rejected in rejected_items:
+
+                if isinstance(rejected, dict):
+
+                    st.caption(
+                        f"Rejected {rejected.get('id')}: "
+                        f"{rejected.get('reason')}"
+                    )
+
+                else:
+
+                    st.caption(f"Rejected: {rejected}")
 
         if trace.get("site"):
 
@@ -198,7 +250,14 @@ def _render_trace(
 
         if trace.get("ranking"):
 
-            st.markdown(
-                f"**Facility ranking used** ({len(trace['ranking'])})"
+            ranking = trace["ranking"]
+            ranking_count = (
+                len(ranking)
+                if isinstance(ranking, (list, tuple, dict, set))
+                else 1
             )
-            st.json(trace["ranking"], expanded=False)
+
+            st.markdown(
+                f"**Facility ranking used** ({ranking_count})"
+            )
+            st.json(ranking, expanded=False)

@@ -244,7 +244,7 @@ def test_never_refines_more_than_once(service_factory):
     assert len(ai.calls) == 4, "expected exactly plan+verify+verify+answer"
 
 
-def test_degrades_gracefully_on_empty_retrieval(service_factory):
+def test_empty_retrieval_returns_before_the_paid_answer_call(service_factory):
     service, ai, retrieval = service_factory(
         ai_responses=[
             '{"tools": ["news_search"], "query": "q1", "k": 10}',
@@ -256,7 +256,6 @@ def test_degrades_gracefully_on_empty_retrieval(service_factory):
                 '{"sufficient": false, "relevant_ids": [], "rejected": [], '
                 '"missing": "still nothing", "refined_query": ""}'
             ),
-            "No coverage found for this area.",
         ],
         retrieval_responses=[[], []],
     )
@@ -264,7 +263,8 @@ def test_degrades_gracefully_on_empty_retrieval(service_factory):
     result = service.answer("question")
 
     assert result["citations"] == []
-    assert result["answer"] == "No coverage found for this area."
+    assert result["answer"] == ""
+    assert len(ai.calls) == 3, "plan + two verifies; no answer-model call"
 
 
 def test_verify_tolerates_relevant_ids_as_objects_instead_of_strings(

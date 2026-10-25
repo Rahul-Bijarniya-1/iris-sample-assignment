@@ -436,6 +436,12 @@ class AIAdvisorService:
         Every question from the UI comes here first.
         """
 
+        # Trace data belongs to one answer only. Clear it before even
+        # detecting intent so an error or a non-news response cannot expose
+        # citations from the preceding turn.
+        self.last_trace = None
+        self.last_citations = None
+
         intent = self.detect_intent(question)
 
         # ----------------------------------------------
@@ -1034,18 +1040,20 @@ class AIAdvisorService:
             on_step=on_step,
         )
 
-        self.last_trace = result["trace"]
-        self.last_citations = result["citations"]
-
-        first_round = (
-            result["trace"]["rounds"][0]["result_ids"]
-            if result["trace"]["rounds"]
-            else []
+        trace = result["trace"]
+        rounds = trace.get("rounds") or []
+        retrieved_anything = any(
+            isinstance(round_, dict) and round_.get("result_ids")
+            for round_ in rounds
         )
 
-        if not first_round:
+        if not retrieved_anything:
 
             return self._news(question)
+
+        # Publish metadata only for the answer the caller actually receives.
+        self.last_trace = trace
+        self.last_citations = result["citations"]
 
         return result["answer"]
 

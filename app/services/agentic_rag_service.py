@@ -151,6 +151,23 @@ class AgenticRagService:
 
         relevant = self._filter_relevant(results, verify)
 
+        if not any(round_["result_ids"] for round_ in rounds):
+
+            # An all-empty retrieval trace is the infrastructure-degradation
+            # signal consumed by AIAdvisor's keyword fallback. Return before
+            # site/ranking work and the paid answer-model call.
+            return {
+                "answer": "",
+                "citations": [],
+                "trace": {
+                    "plan": plan,
+                    "rounds": rounds,
+                    "verify": verify,
+                    "site": None,
+                    "ranking": None,
+                },
+            }
+
         site = None
 
         if "site_intelligence" in plan["tools"]:
