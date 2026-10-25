@@ -50,5 +50,5 @@ dev = [
 testpaths = ["tests"]
 pythonpath = ["."]
 markers = [
-    "integration: requires a live PostgreSQL server on localhost:5433",
+    "integration: requires a live PostgreSQL server (the one DATABASE_URL points at)",
 ]
