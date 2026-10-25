@@ -35,7 +35,8 @@ class _FakeTranslation:
 
 
 class _FakeEmbedding:
-    def __init__(self):
+    def __init__(self, model="fake-embedding-model-v1"):
+        self.model = model
         self.embed_calls = 0
 
     def embed(self, text):
@@ -121,6 +122,30 @@ def test_translation_model_change_forces_re_embedding(db_session):
 
 
 @pytest.mark.integration
+def test_embedding_model_change_forces_re_embedding(db_session):
+    """
+    Changing OPENAI_EMBEDDING_MODEL (e.g. to a differently-dimensioned
+    model) must not leave existing rows looking "unchanged" — the
+    embedding model's name must be part of what decides re-work, the
+    same way the translation model's name already is.
+    """
+
+    db_session.add(_make_article())
+    db_session.commit()
+
+    translation = _FakeTranslation()
+    embedding = _FakeEmbedding()
+
+    EmbedNewsCommand(db_session, translation, embedding).execute()
+    assert embedding.embed_calls == 1
+
+    embedding.model = "fake-embedding-model-v2"
+
+    EmbedNewsCommand(db_session, translation, embedding).execute()
+    assert embedding.embed_calls == 2, "an embedding model change was not caught"
+
+
+@pytest.mark.integration
 def test_partial_embedding_state_is_tolerated(db_session):
     """
     A row with a stored hash but no embedding (a run that died mid-batch)
@@ -128,17 +153,17 @@ def test_partial_embedding_state_is_tolerated(db_session):
     """
 
     translation = _FakeTranslation()
+    embedding = _FakeEmbedding()
 
     article = _make_article()
     article.embedding_hash = EmbeddingService.content_hash(
-        f"{article.title}\n{article.summary}\n{translation.model}"
+        f"{article.title}\n{article.summary}\n"
+        f"{translation.model}\n{embedding.model}"
     )
     article.embedding = None
 
     db_session.add(article)
     db_session.commit()
-
-    embedding = _FakeEmbedding()
 
     result = EmbedNewsCommand(db_session, translation, embedding).execute()
 

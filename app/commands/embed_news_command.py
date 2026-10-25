@@ -2,12 +2,13 @@
 Embed News Command
 
 Translates and embeds every news article, resumably: a content hash of
-the source (German title + summary + the translation model's name)
-decides whether a row needs re-work at all, so an unchanged article
-makes no API call of either kind, an edited summary or a deliberate
-translation-model change triggers a fresh translate-and-embed, and a
-row left partially embedded by a prior failed run is picked back up
-rather than treated as done.
+the source (German title + summary + the translation model's name +
+the embedding model's name) decides whether a row needs re-work at
+all, so an unchanged article makes no API call of either kind, an
+edited summary or a deliberate translation/embedding-model change
+triggers a fresh translate-and-embed, and a row left partially
+embedded by a prior failed run is picked back up rather than treated
+as done.
 
 Hashing the source rather than the translated output is deliberate:
 measured against the live API, gpt-4.1-mini does not reproduce
@@ -64,7 +65,8 @@ class EmbedNewsCommand:
             source_signature = (
                 f"{article.title}\n"
                 f"{article.summary or ''}\n"
-                f"{getattr(self.translation, 'model', '')}"
+                f"{getattr(self.translation, 'model', '')}\n"
+                f"{getattr(self.embedding, 'model', '')}"
             )
 
             content_hash = self.embedding.content_hash(

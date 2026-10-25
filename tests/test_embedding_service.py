@@ -36,12 +36,13 @@ class _FakeOpenAI:
 
 
 def test_embed_returns_the_vector_from_the_api():
-    fake_client = _FakeOpenAI([0.1, 0.2, 0.3])
+    expected = [0.1] * 1536
+    fake_client = _FakeOpenAI(expected)
     service = EmbeddingService(client=fake_client, model="fake-model")
 
     vector = service.embed("hello world")
 
-    assert vector == [0.1, 0.2, 0.3]
+    assert vector == expected
     assert fake_client.embeddings.calls == [("fake-model", "hello world")]
 
 
@@ -55,6 +56,22 @@ def test_content_hash_is_deterministic_sha256():
 
 def test_content_hash_differs_for_different_text():
     assert EmbeddingService.content_hash("a") != EmbeddingService.content_hash("b")
+
+
+def test_embed_raises_on_a_dimension_mismatch():
+    """
+    A wrong-dimension response (e.g. OPENAI_EMBEDDING_MODEL changed to
+    a non-1536-dim model) must fail loudly here, not get bound against
+    the vector(1536) column and silently make cosine_distance() error
+    inside NewsRetrievalService's blanket except-return-[] — which
+    would look exactly like "no results" forever, with nothing logged.
+    """
+
+    fake_client = _FakeOpenAI([0.1, 0.2, 0.3])  # 3 dims, not 1536
+    service = EmbeddingService(client=fake_client, model="fake-model")
+
+    with pytest.raises(ValueError, match="1536"):
+        service.embed("hello world")
 
 
 def test_construction_does_not_require_an_api_key(monkeypatch):
