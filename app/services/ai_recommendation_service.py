@@ -19,13 +19,17 @@ from app.ai.prompts.site_analysis_prompt import SiteAnalysisPrompt
 
 class AIRecommendationService:
 
-    def __init__(self):
+    def __init__(
+        self,
+        client=None,
+        model: str | None = None,
+    ):
 
-        self.client = OpenAI(
+        self.client = client or OpenAI(
             api_key=os.getenv("OPENAI_API_KEY")
         )
 
-        self.model = os.getenv(
+        self.model = model or os.getenv(
             "OPENAI_MODEL",
             "gpt-4.1-mini",
         )
@@ -37,10 +41,11 @@ class AIRecommendationService:
     def generate(
         self,
         prompt: str,
+        model: str | None = None,
     ) -> str:
 
         response = self.client.responses.create(
-            model=self.model,
+            model=model or self.model,
             input=prompt,
         )
 
