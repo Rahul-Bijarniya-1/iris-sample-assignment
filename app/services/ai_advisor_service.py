@@ -1034,46 +1034,6 @@ class AIAdvisorService:
 
             news = self.news_service.latest_news(10)
 
-        # --------------------------------------------------
-        # Facility News
-        # --------------------------------------------------
-
-        if parsed["facility"]:
-
-            news = self.news_service.facility_news(
-                parsed["facility"],
-            )
-
-        # --------------------------------------------------
-        # Company News
-        # --------------------------------------------------
-
-        elif parsed["company"]:
-
-            news = self.news_service.company_news(
-                parsed["company"],
-            )
-
-        # --------------------------------------------------
-        # City News
-        # --------------------------------------------------
-
-        elif parsed["city"]:
-
-            news = self.news_service.city_news(
-                parsed["city"],
-            )
-
-        # --------------------------------------------------
-        # Latest News
-        # --------------------------------------------------
-
-        else:
-
-            news = self.news_service.latest_news(
-                10,
-            )
-
         if not news:
 
             return (
