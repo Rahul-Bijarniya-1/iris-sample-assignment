@@ -62,6 +62,57 @@ class LandValueRepository(BaseRepository[LandValue]):
             self.session.scalars(statement)
         )
 
+    def find_municipality_location(
+        self,
+        municipality: str,
+    ) -> dict | None:
+        """
+        Resolve a place name to a representative point (the centroid of
+        its BORIS parcels, transformed to 4326) plus an average land
+        value — lets the planner ask "near <place>" without a selected
+        facility, which no other lookup in this codebase supports.
+        """
+
+        centroid = func.ST_Transform(
+            func.ST_Centroid(
+                func.ST_Collect(LandValue.geometry)
+            ),
+            4326,
+        )
+
+        statement = (
+            select(
+                func.ST_Y(centroid).label("latitude"),
+                func.ST_X(centroid).label("longitude"),
+                func.avg(
+                    LandValue.land_value_eur_m2
+                ).label("avg_land_value_eur_m2"),
+                func.count().label("parcel_count"),
+            )
+            .where(
+                func.lower(LandValue.municipality)
+                == municipality.lower()
+            )
+        )
+
+        result = self.session.execute(statement).first()
+
+        if result is None or result.latitude is None:
+
+            return None
+
+        return {
+            "municipality": municipality,
+            "latitude": result.latitude,
+            "longitude": result.longitude,
+            "avg_land_value_eur_m2": (
+                round(result.avg_land_value_eur_m2, 2)
+                if result.avg_land_value_eur_m2 is not None
+                else None
+            ),
+            "parcel_count": result.parcel_count,
+        }
+
     def count(self) -> int:
 
         statement = (
