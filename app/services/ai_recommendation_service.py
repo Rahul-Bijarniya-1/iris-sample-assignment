@@ -25,9 +25,7 @@ class AIRecommendationService:
         model: str | None = None,
     ):
 
-        self.client = client or OpenAI(
-            api_key=os.getenv("OPENAI_API_KEY")
-        )
+        self._client = client
 
         self.model = model or os.getenv(
             "OPENAI_MODEL",
@@ -37,6 +35,17 @@ class AIRecommendationService:
     # =====================================================
     # Public
     # =====================================================
+
+    @property
+    def client(self):
+
+        if self._client is None:
+
+            self._client = OpenAI(
+                api_key=os.getenv("OPENAI_API_KEY")
+            )
+
+        return self._client
 
     def generate(
         self,

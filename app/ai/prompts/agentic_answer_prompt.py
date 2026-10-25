@@ -2,12 +2,16 @@
 Agentic Answer Prompt
 
 Builds the final grounded-answer prompt: cited news evidence, optional
-site intelligence, and an explicit statement of what the question asked
-that the evidence could not answer.
+site intelligence and facility ranking, and an explicit statement of
+what the question asked that the evidence could not answer.
 
 Author:
 NRW BI Platform
 """
+
+from __future__ import annotations
+
+import json
 
 
 class AgenticAnswerPrompt:
@@ -20,6 +24,7 @@ class AgenticAnswerPrompt:
         question = context["question"]
         articles = context["articles"]
         site = context.get("site")
+        ranking = context.get("ranking")
         gaps = context.get("gaps") or ""
 
         citations = "\n".join(
@@ -40,7 +45,17 @@ class AgenticAnswerPrompt:
             site_block = f"""
 
 Site / location intelligence:
-{site}
+{AgenticAnswerPrompt._to_json(site)}
+"""
+
+        ranking_block = ""
+
+        if ranking:
+
+            ranking_block = f"""
+
+Facility ranking (top {len(ranking)}):
+{AgenticAnswerPrompt._to_json(ranking)}
 """
 
         return f"""
@@ -56,6 +71,24 @@ Question:
 
 Evidence:
 {citations}
-{site_block}
+{site_block}{ranking_block}
 Known gaps in this corpus: {gaps}
 """
+
+    @staticmethod
+    def _to_json(
+        value,
+    ) -> str:
+        """
+        json.dumps with default=str rather than an f-string
+        interpolation of the raw dict — site/ranking payloads carry
+        datetime and Decimal values whose repr() is noise a model
+        should not have to parse.
+        """
+
+        return json.dumps(
+            value,
+            indent=2,
+            default=str,
+            ensure_ascii=False,
+        )

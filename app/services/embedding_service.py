@@ -24,9 +24,7 @@ class EmbeddingService:
         model: str | None = None,
     ):
 
-        self.client = client or OpenAI(
-            api_key=os.getenv("OPENAI_API_KEY")
-        )
+        self._client = client
 
         self.model = model or os.getenv(
             "OPENAI_EMBEDDING_MODEL",
@@ -36,6 +34,24 @@ class EmbeddingService:
     # =====================================================
     # Public
     # =====================================================
+
+    @property
+    def client(self):
+        """
+        Built lazily: constructing OpenAI() with no API key raises
+        immediately, and callers like NewsRetrievalService.search()
+        rely on that failure happening inside their own try/except
+        (missing key -> degrade to []), not at service-construction
+        time, before there is anything to catch it.
+        """
+
+        if self._client is None:
+
+            self._client = OpenAI(
+                api_key=os.getenv("OPENAI_API_KEY")
+            )
+
+        return self._client
 
     def embed(
         self,

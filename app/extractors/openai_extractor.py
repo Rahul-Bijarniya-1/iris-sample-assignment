@@ -28,14 +28,23 @@ class OpenAIExtractor:
         model: str | None = None,
     ):
 
-        self.client = client or OpenAI(
-            api_key=os.getenv("OPENAI_API_KEY")
-        )
+        self._client = client
 
         self.model = model or os.getenv(
             "OPENAI_MODEL",
             "gpt-4.1-mini",
         )
+
+    @property
+    def client(self):
+
+        if self._client is None:
+
+            self._client = OpenAI(
+                api_key=os.getenv("OPENAI_API_KEY")
+            )
+
+        return self._client
 
     # =====================================================
     # Public

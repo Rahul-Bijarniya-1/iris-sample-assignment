@@ -154,6 +154,7 @@ class AgenticRagService:
             question,
             relevant,
             site,
+            ranking,
             verify.get("missing", ""),
         )
 
@@ -305,12 +306,50 @@ class AgenticRagService:
             }
 
         return {
-            "sufficient": bool(data.get("sufficient", True)),
-            "relevant_ids": data.get("relevant_ids") or [],
+            "sufficient": self._as_bool(data.get("sufficient", True)),
+            "relevant_ids": self._as_id_list(data.get("relevant_ids")),
             "rejected": data.get("rejected") or [],
             "missing": data.get("missing") or "",
             "refined_query": data.get("refined_query") or "",
         }
+
+    @staticmethod
+    def _as_bool(
+        value,
+    ) -> bool:
+        """
+        A mini model occasionally returns the string "false" for a
+        boolean field; bool("false") is True in Python, so that must be
+        handled explicitly rather than trusted to truthiness.
+        """
+
+        if isinstance(value, str):
+
+            return value.strip().lower() not in ("false", "0", "")
+
+        return bool(value)
+
+    @staticmethod
+    def _as_id_list(
+        value,
+    ) -> list:
+        """
+        SufficiencyPrompt shows "relevant_ids": ["..."] directly above
+        "rejected": [{"id": "...", "reason": "..."}] — a model
+        conflating the two shapes and returning objects (or a bare
+        scalar) here must not crash the rest of the pipeline, which
+        treats these as hashable ids.
+        """
+
+        if not isinstance(value, list):
+
+            return []
+
+        return [
+            item
+            for item in value
+            if isinstance(item, (str, int))
+        ]
 
     @staticmethod
     def _filter_relevant(
@@ -376,6 +415,7 @@ class AgenticRagService:
         question: str,
         relevant: list[dict],
         site: dict | None,
+        ranking: list[dict] | None,
         gaps: str,
     ) -> str:
 
@@ -386,6 +426,7 @@ class AgenticRagService:
                         "question": question,
                         "articles": relevant,
                         "site": site,
+                        "ranking": ranking,
                         "gaps": gaps,
                     }
                 ),

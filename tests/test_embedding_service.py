@@ -6,6 +6,8 @@ injected so these tests never touch the network.
 
 import hashlib
 
+import pytest
+
 from app.services.embedding_service import EmbeddingService
 
 
@@ -53,3 +55,21 @@ def test_content_hash_is_deterministic_sha256():
 
 def test_content_hash_differs_for_different_text():
     assert EmbeddingService.content_hash("a") != EmbeddingService.content_hash("b")
+
+
+def test_construction_does_not_require_an_api_key(monkeypatch):
+    """
+    NewsRetrievalService.search() is documented to degrade to [] when
+    OPENAI_API_KEY is missing — but EmbeddingService() previously built
+    the real OpenAI() client in __init__, which raises before search()
+    ever gets a chance to catch anything. The client must be built
+    lazily so a missing key surfaces inside the try/except that is
+    actually meant to catch it.
+    """
+
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+
+    service = EmbeddingService()
+
+    with pytest.raises(Exception):
+        service.embed("text")

@@ -5,6 +5,8 @@ parsing — a model returning prose instead of JSON falls back to the
 original text rather than raising.
 """
 
+import pytest
+
 from app.services.translation_service import TranslationService
 
 
@@ -110,3 +112,12 @@ def test_translate_handles_missing_summary():
 
     assert result["title_en"] == "Title"
     assert result["summary_en"] is None
+
+
+def test_construction_does_not_require_an_api_key(monkeypatch):
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+
+    service = TranslationService()
+
+    with pytest.raises(Exception):
+        service.translate("Titel", "Zusammenfassung")

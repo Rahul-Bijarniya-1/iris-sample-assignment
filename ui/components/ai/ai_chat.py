@@ -190,3 +190,15 @@ def _render_trace(
                     f"Rejected {rejected.get('id')}: "
                     f"{rejected.get('reason')}"
                 )
+
+        if trace.get("site"):
+
+            st.markdown("**Site intelligence used**")
+            st.json(trace["site"], expanded=False)
+
+        if trace.get("ranking"):
+
+            st.markdown(
+                f"**Facility ranking used** ({len(trace['ranking'])})"
+            )
+            st.json(trace["ranking"], expanded=False)

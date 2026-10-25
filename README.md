@@ -389,8 +389,14 @@ DATABASE_URL=postgresql://postgres:postgres@localhost:5433/nrw_dc_bi
 OPENAI_API_KEY=sk-...
 ```
 
-`OPENAI_API_KEY` is needed only by the AI Advisor panel; the rest of the
-dashboard runs without it.
+`OPENAI_API_KEY` is needed by the AI Advisor panel (Agentic RAG news questions
+included) and by the two opt-in pipeline steps `news-embed`/`news-signals` — see
+[Paid steps](#paid-steps-not-part-of-all). The rest of the dashboard runs without
+it; `NewsRetrievalService` degrades to returning no news results rather than
+raising if it's unset, so the AI Advisor still answers other questions.
+`OPENAI_MODEL` (mini, default `gpt-4.1-mini`), `OPENAI_ANSWER_MODEL` (default
+`gpt-4.1`), and `OPENAI_EMBEDDING_MODEL` (default `text-embedding-3-small`,
+must stay 1536-dimension) are all optional overrides — see `.env.example`.
 
 ---
 

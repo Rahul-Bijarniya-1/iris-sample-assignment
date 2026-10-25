@@ -6,6 +6,8 @@ constructing a second service instance per call. The client is
 injectable so this never touches the network.
 """
 
+import pytest
+
 from app.services.ai_recommendation_service import AIRecommendationService
 
 
@@ -47,3 +49,12 @@ def test_generate_uses_an_override_model_when_given():
     service.generate("prompt", model="override-model")
 
     assert fake_client.responses.calls == [("override-model", "prompt")]
+
+
+def test_construction_does_not_require_an_api_key(monkeypatch):
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+
+    service = AIRecommendationService()
+
+    with pytest.raises(Exception):
+        service.generate("prompt")

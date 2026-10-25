@@ -7,6 +7,8 @@ drop-in for EntityExtractor/EntityMatcher. Hermetic: the client is
 injected and stubbed.
 """
 
+import pytest
+
 from app.extractors.openai_extractor import OpenAIExtractor
 
 
@@ -99,6 +101,20 @@ def test_extract_degrades_on_client_exception():
 
     extractor = OpenAIExtractor(client=_ExplodingClient(), model="fake-model")
 
+    result = extractor.extract(ARTICLE)
+
+    assert result["article_id"] == "a1"
+    assert result["expansion_signal"] is False
+
+
+def test_construction_does_not_require_an_api_key(monkeypatch):
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+
+    extractor = OpenAIExtractor()
+
+    # extract() itself degrades gracefully (see
+    # test_extract_degrades_on_client_exception) — this only guards
+    # that __init__ doesn't raise before that path ever runs.
     result = extractor.extract(ARTICLE)
 
     assert result["article_id"] == "a1"

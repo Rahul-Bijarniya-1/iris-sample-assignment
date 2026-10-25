@@ -200,3 +200,22 @@ def test_search_degrades_to_empty_list_on_embedder_failure(db_session):
     )
 
     assert service.search("query text", k=10) == []
+
+
+@pytest.mark.integration
+def test_search_degrades_to_empty_list_with_no_api_key_at_all(
+    db_session, monkeypatch
+):
+    """
+    The claim this guards end-to-end, not via an injected stub: a real
+    EmbeddingService(), with OPENAI_API_KEY genuinely unset, must still
+    make search() degrade to [] rather than raise during construction
+    (OpenAIExtractor() previously built its OpenAI() client eagerly,
+    which raised before search()'s try/except ever ran).
+    """
+
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+
+    service = NewsRetrievalService(db_session)
+
+    assert service.search("query text", k=10) == []

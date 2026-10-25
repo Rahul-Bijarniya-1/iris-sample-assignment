@@ -221,6 +221,83 @@ def test_degrades_gracefully_on_empty_retrieval(service_factory):
     assert result["answer"] == "No coverage found for this area."
 
 
+def test_verify_tolerates_relevant_ids_as_objects_instead_of_strings(
+    service_factory,
+):
+    """
+    SufficiencyPrompt shows "relevant_ids": ["..."] directly above
+    "rejected": [{"id": "...", "reason": "..."}] — a model conflating
+    the two shapes and returning relevant_ids as objects must not crash
+    answer(); found by code review, reproduced against the real
+    _filter_relevant/_verify path.
+    """
+
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            '{"tools": ["news_search"], "query": "q", "k": 10}',
+            (
+                '{"sufficient": true, '
+                '"relevant_ids": [{"id": "a1", "reason": "on topic"}], '
+                '"rejected": [], "missing": "", "refined_query": ""}'
+            ),
+            "Answer [1].",
+        ],
+        retrieval_responses=[[_result("a1", "Article")]],
+    )
+
+    result = service.answer("question")
+
+    assert result["answer"] == "Answer [1]."
+
+
+def test_verify_tolerates_relevant_ids_as_a_non_list_scalar(
+    service_factory,
+):
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            '{"tools": ["news_search"], "query": "q", "k": 10}',
+            (
+                '{"sufficient": true, "relevant_ids": 5, '
+                '"rejected": [], "missing": "", "refined_query": ""}'
+            ),
+            "Answer.",
+        ],
+        retrieval_responses=[[_result("a1", "Article")]],
+    )
+
+    result = service.answer("question")
+
+    assert result["answer"] == "Answer."
+
+
+def test_verify_treats_the_string_false_as_false(service_factory):
+    """
+    bool("false") is True in Python — a model returning the literal
+    string "false" for the sufficient field must not be treated as
+    truthy and suppress the refinement round.
+    """
+
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            '{"tools": ["news_search"], "query": "q1", "k": 10}',
+            (
+                '{"sufficient": "false", "relevant_ids": [], '
+                '"rejected": [], "missing": "x", "refined_query": "q2"}'
+            ),
+            SUFFICIENT_VERIFY,
+            "Refined answer.",
+        ],
+        retrieval_responses=[
+            [_result("old", "Old article")],
+            [_result("a1", "New article")],
+        ],
+    )
+
+    service.answer("question")
+
+    assert [c["query"] for c in retrieval.calls] == ["q1", "q2"]
+
+
 def test_on_step_reports_each_stage_for_a_live_status_display(
     service_factory,
 ):
@@ -238,6 +315,42 @@ def test_on_step_reports_each_stage_for_a_live_status_display(
     service.answer("question", on_step=stages.append)
 
     assert stages == ["Planning", "Retrieving", "Verifying", "Answering"]
+
+
+def test_site_ranking_result_actually_reaches_the_answer_prompt(
+    service_factory,
+):
+    """
+    Found by code review: rank_sites() was computed whenever the plan
+    picked the site_ranking tool, but the result only ever landed in
+    trace["ranking"] — never passed to _answer(), so the (expensive,
+    all-223-facilities) computation was thrown away. It must now reach
+    the prompt the final answer is generated from.
+    """
+
+    service, ai, retrieval = service_factory(
+        ai_responses=[
+            '{"tools": ["news_search", "site_ranking"], '
+            '"query": "q", "k": 10}',
+            SUFFICIENT_VERIFY,
+            "Answer [1].",
+        ],
+        retrieval_responses=[[_result("a1", "Article")]],
+        ranking_service=type(
+            "_FakeRanking",
+            (),
+            {
+                "rank_sites": lambda self: [
+                    {"facility": "DISTINCTIVE_RANKED_FACILITY"}
+                ]
+            },
+        )(),
+    )
+
+    service.answer("question")
+
+    answer_prompt = ai.calls[-1]["prompt"]
+    assert "DISTINCTIVE_RANKED_FACILITY" in answer_prompt
 
 
 def test_a_failing_tool_does_not_raise(service_factory):
