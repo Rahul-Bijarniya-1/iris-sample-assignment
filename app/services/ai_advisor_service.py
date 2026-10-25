@@ -22,6 +22,7 @@ import re
 from enum import Enum
 from enum import auto
 
+from openai import OpenAIError
 from sqlalchemy.orm import Session
 
 from app.services.dashboard_service import DashboardService
@@ -1115,9 +1116,15 @@ class AIAdvisorService:
             context,
         )
 
-        return self.ai.generate(
-            prompt,
-        )
+        try:
+
+            return self.ai.generate(
+                prompt,
+            )
+
+        except OpenAIError:
+
+            return "AI unavailable right now. Please try again later."
         
     def _extract_companies(
         self,

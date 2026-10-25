@@ -11,12 +11,15 @@ NRW BI Platform
 from __future__ import annotations
 
 import hashlib
-import os
 
-from openai import OpenAI
+from app.config.openai import LazyOpenAIClient, get_embedding_model
 
 
-class EmbeddingService:
+class EmbeddingDimensionMismatch(ValueError):
+    """The API vector cannot fit the configured database column."""
+
+
+class EmbeddingService(LazyOpenAIClient):
 
     EXPECTED_DIMENSIONS = 1536
 
@@ -26,39 +29,22 @@ class EmbeddingService:
         model: str | None = None,
     ):
 
-        self._client = client
+        super().__init__(client)
 
-        self.model = model or os.getenv(
-            "OPENAI_EMBEDDING_MODEL",
-            "text-embedding-3-small",
-        )
+        self.model = model or get_embedding_model()
 
     # =====================================================
     # Public
     # =====================================================
 
-    @property
-    def client(self):
-        """
-        Built lazily: constructing OpenAI() with no API key raises
-        immediately, and callers like NewsRetrievalService.search()
-        rely on that failure happening inside their own try/except
-        (missing key -> degrade to []), not at service-construction
-        time, before there is anything to catch it.
-        """
-
-        if self._client is None:
-
-            self._client = OpenAI(
-                api_key=os.getenv("OPENAI_API_KEY")
-            )
-
-        return self._client
-
     def embed(
         self,
         text: str,
     ) -> list[float]:
+
+        if not isinstance(text, str) or not text.strip():
+
+            raise ValueError("embedding input must be a non-empty string")
 
         response = self.client.embeddings.create(
             model=self.model,
@@ -73,7 +59,7 @@ class EmbeddingService:
             # NewsRetrievalService's blanket except swallowing a
             # cosine_distance() dimension error and returning [] —
             # indistinguishable from "no results", forever.
-            raise ValueError(
+            raise EmbeddingDimensionMismatch(
                 f"{self.model} returned a {len(vector)}-dimension "
                 f"vector; news_articles.embedding is "
                 f"vector({self.EXPECTED_DIMENSIONS})"

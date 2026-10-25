@@ -10,6 +10,8 @@ NRW BI Platform
 
 from __future__ import annotations
 
+import logging
+
 import streamlit as st
 
 from app.database.session import SessionLocal
@@ -29,6 +31,9 @@ from ui.components.ai.ai_header import (
 from ui.components.ai.ai_chat import (
     render_ai_chat,
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 # ==========================================================
@@ -152,10 +157,12 @@ def _call_ai(
             advisor.last_citations,
         )
 
-    except Exception as exc:
+    except Exception:
+
+        logger.exception("AI advisor request failed")
 
         return (
-            f"AI Error: {exc}",
+            "AI unavailable right now. Please try again later.",
             None,
             None,
         )
@@ -163,5 +170,3 @@ def _call_ai(
     finally:
 
         session.close()
-
-        

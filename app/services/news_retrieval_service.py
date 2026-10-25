@@ -2,9 +2,9 @@
 News Retrieval Service
 
 Semantic search over embedded news articles via pgvector cosine
-distance. Degrades to an empty result on any failure — missing
-OPENAI_API_KEY, no embeddings yet, or no pgvector extension — so the
-dashboard is never worse than the pre-RAG keyword path.
+distance. Recoverable failures — a missing API key or unavailable
+pgvector database — degrade to an empty result, while an embedding
+dimension mismatch remains visible as a configuration defect.
 
 Author:
 NRW BI Platform
@@ -16,7 +16,11 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.database.models.news_article import NewsArticle
-from app.services.embedding_service import EmbeddingService
+from app.database.models.news_signal import NewsSignal
+from app.services.embedding_service import (
+    EmbeddingDimensionMismatch,
+    EmbeddingService,
+)
 
 
 class NewsRetrievalService:
@@ -64,11 +68,22 @@ class NewsRetrievalService:
 
             rows = self.session.execute(stmt).all()
 
+        except EmbeddingDimensionMismatch:
+
+            # A model/column dimension mismatch is a configuration defect,
+            # not a temporary retrieval outage, and must remain visible to
+            # operators.
+            raise
+
         except Exception:
 
             # Any failure here — a bad API key, an unreachable OpenAI
             # endpoint, the vector extension missing on this database —
-            # must degrade to "nothing found", never raise.
+            # must degrade to "nothing found", never raise. A failed SQL
+            # statement poisons the transaction until it is rolled back;
+            # the keyword fallback reuses this same session.
+            self.session.rollback()
+
             return []
 
         return [

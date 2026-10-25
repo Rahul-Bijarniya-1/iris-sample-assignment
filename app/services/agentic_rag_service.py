@@ -6,9 +6,9 @@ Orchestrates the planner-facing news intelligence loop:
     question -> PLAN -> RETRIEVE -> VERIFY -> (REFINE once) -> ANSWER
 
 Hard bounds: at most 2 retrieval rounds, at most 1 refinement, roughly
-4 model calls per question. Every external call (model or tool) is
-wrapped so a failure degrades the answer rather than raising — the
-dashboard must never end up worse than the pre-RAG keyword path.
+4 model calls per question. Recoverable external-call failures degrade
+the answer rather than raising; configuration defects such as an
+embedding-dimension mismatch remain visible to operators.
 
 Author:
 NRW BI Platform
@@ -16,18 +16,18 @@ NRW BI Platform
 
 from __future__ import annotations
 
-import os
-
 from sqlalchemy.orm import Session
 
 from app.ai.json_parsing import parse_json_object
 from app.ai.prompts.agentic_answer_prompt import AgenticAnswerPrompt
 from app.ai.prompts.retrieval_plan_prompt import RetrievalPlanPrompt
 from app.ai.prompts.sufficiency_prompt import SufficiencyPrompt
+from app.config.openai import get_answer_model
 from app.database.repositories.land_value_repository import (
     LandValueRepository,
 )
 from app.services.ai_recommendation_service import AIRecommendationService
+from app.services.embedding_service import EmbeddingDimensionMismatch
 from app.services.news_retrieval_service import NewsRetrievalService
 from app.services.site_intelligence_service import SiteIntelligenceService
 from app.services.site_ranking_service import RankingType, SiteRankingService
@@ -73,10 +73,7 @@ class AgenticRagService:
             session
         )
 
-        self.answer_model = answer_model or os.getenv(
-            "OPENAI_ANSWER_MODEL",
-            "gpt-4.1",
-        )
+        self.answer_model = answer_model or get_answer_model()
 
     # =====================================================
     # Public
@@ -621,6 +618,10 @@ class AgenticRagService:
         try:
 
             return fn()
+
+        except EmbeddingDimensionMismatch:
+
+            raise
 
         except Exception:
 

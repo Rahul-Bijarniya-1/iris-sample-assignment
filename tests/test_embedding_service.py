@@ -8,7 +8,10 @@ import hashlib
 
 import pytest
 
-from app.services.embedding_service import EmbeddingService
+from app.services.embedding_service import (
+    EmbeddingDimensionMismatch,
+    EmbeddingService,
+)
 
 
 class _FakeEmbeddingsClient:
@@ -70,8 +73,19 @@ def test_embed_raises_on_a_dimension_mismatch():
     fake_client = _FakeOpenAI([0.1, 0.2, 0.3])  # 3 dims, not 1536
     service = EmbeddingService(client=fake_client, model="fake-model")
 
-    with pytest.raises(ValueError, match="1536"):
+    with pytest.raises(EmbeddingDimensionMismatch, match="1536"):
         service.embed("hello world")
+
+
+@pytest.mark.parametrize("invalid_input", [None, "", [], {"query": "q"}])
+def test_embed_rejects_invalid_input_before_the_paid_call(invalid_input):
+    fake_client = _FakeOpenAI([0.1] * 1536)
+    service = EmbeddingService(client=fake_client, model="fake-model")
+
+    with pytest.raises(ValueError, match="non-empty string"):
+        service.embed(invalid_input)
+
+    assert fake_client.embeddings.calls == []
 
 
 def test_construction_does_not_require_an_api_key(monkeypatch):
