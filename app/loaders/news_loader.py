@@ -92,19 +92,10 @@ class NewsLoader:
                 )
             )
 
-            # --------------------------------------------------
-            # Make the new articles visible to match resolution.
-            #
-            # _load_matches resolves each match's article by URL.
-            # SessionLocal is built with autoflush=False, so the
-            # articles just added are still pending and that
-            # lookup would miss every one of them.
-            #
-            # flush() writes them inside the existing
-            # transaction, so a later failure still rolls the
-            # whole load back.
-            # --------------------------------------------------
-
+            # _load_matches resolves articles by URL, and SessionLocal sets
+            # autoflush=False, so flush the pending articles first or every
+            # match is skipped. Inside the transaction, so rollback still
+            # covers the whole load.
             self.session.flush()
 
             loaded_matches = (

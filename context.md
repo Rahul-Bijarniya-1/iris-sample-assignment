@@ -332,19 +332,20 @@ external rate limits), plus Create the Database / Load the Data / Run the Tests 
 
 ## Pipeline reference
 
-`uv run python main.py <command>` — **23** steps plus `all` (24 keys in `PipelineRunner.commands`).
+`uv run python main.py <command>` — **25** steps plus `all` (26 keys in `PipelineRunner.commands`).
 
 - **Phase 1 — Data Acquisition:** `country` → `markets` → `facilities` → `merge` → `transform` →
   `facility-geo-transform` → `facility-load`  *(datacentermap.com)*
 - **Phase 2 — Infrastructure:** `overpass` → `overpass-parse` → `overpass-transform` → `mastr` →
-  `mastr-parse` → `mastr-transform` → `boris-transform`  *(Overpass, MaStR, BORIS)*
+  `mastr-parse` → `mastr-transform` → `boris-transform` → `energy-asset-load`
+  *(Overpass, MaStR, BORIS)*
 - **Phase 3 — Spatial Intelligence:** `power-enricher` → `boris-enricher` → `site-score`
 - **Phase 4 — Business Intelligence:** `news` → `entity-matcher` → `news-load` → `news-intelligence` →
   `land-values` → `power-infrastructure` → `osm-infrastructure`  *(RSS via `feedparser`)*
 
 **Staging model** (`app/runners/run_context.py`): `all` creates an isolated `RunContext` writing to
 `data/runs/<run_id>/`, and on full success promotes to **`data/current/`** — a *filesystem* dataset, not
-the database. Database writes happen inside individual load steps (`facility-load`, `news-load`,
+the database. Database writes happen inside individual load steps (`facility-load`, `energy-asset-load`, `news-load`,
 `land-values`, `power-infrastructure`, `osm-infrastructure`), so they are **not** rolled back when a later
 phase fails. Individual commands run without a RunContext and use the flat `data/` workspace.
 
@@ -361,7 +362,7 @@ phase fails. Individual commands run without a RunContext and use the flat `data
   original author added.
 - Individual-step path behaviour was left alone: `main.py facility-load` standalone reads flat
   `data/processed/...`, so after a staged run promoted to `data/current/` it can fail with
-  FileNotFoundError. Pre-existing for all 23 steps; changing it would alter every step.
+  FileNotFoundError. Pre-existing for all 25 steps; changing it would alter every step.
 - The final code review this session was a **self-review**, not a fresh reviewer. Weigh that before merge.
 - The work was pushed to a **private repo under the user's own account**
   (`Rahul-Bijarniya-1/iris-sample-assignment`) rather than a fork, accepting the loss of visible
@@ -397,7 +398,7 @@ substitute facilities with the real ones.
 **Deferred minors (deliberately not done)**
 - [ ] README doesn't mention `uv run pytest -m "not integration"` for running without a database
 - [ ] `app/exporters/factsheet_exporter.py:41` and `map_renderer.py:76` still hardcode `Path("data")`
-- [ ] `app/commands/load_facilities.py` is a dead near-duplicate wrapper around `FacilityLoader`
+- [x] ~~`app/commands/load_facilities.py` / `load_energy_assets.py` dead wrappers~~ — deleted
 
 **Decide**
 - [ ] How to submit. **Amauri is not reachable** (user's call, 2026-10-24), so the blockers were resolved

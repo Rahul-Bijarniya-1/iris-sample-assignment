@@ -451,7 +451,7 @@ output — see [Staged runs](#staged-runs).
 | Phase | Steps | External sources |
 |---|---|---|
 | 1 — Data Acquisition | `country` → `markets` → `facilities` → `merge` → `transform` → `facility-geo-transform` → `facility-load` | datacentermap.com |
-| 2 — Infrastructure | `overpass` → `overpass-parse` → `overpass-transform` → `mastr` → `mastr-parse` → `mastr-transform` → `boris-transform` | OpenStreetMap Overpass, MaStR registry, BORIS |
+| 2 — Infrastructure | `overpass` → `overpass-parse` → `overpass-transform` → `mastr` → `mastr-parse` → `mastr-transform` → `boris-transform` → `energy-asset-load` | OpenStreetMap Overpass, MaStR registry, BORIS |
 | 3 — Spatial Intelligence | `power-enricher` → `boris-enricher` → `site-score` | none — operates on loaded data |
 | 4 — Business Intelligence | `news` → `entity-matcher` → `news-load` → `news-intelligence` → `land-values` → `power-infrastructure` → `osm-infrastructure` | RSS feeds |
 
@@ -478,8 +478,8 @@ is promoted and `data/runs/<run_id>/run_status.json` records the error. The
 existing `data/current/` is never modified until a run succeeds.
 
 Database writes are not part of that staging — they happen inside the
-individual load steps (`facility-load`, `news-load`, `land-values`,
-`power-infrastructure`, `osm-infrastructure`).
+individual load steps (`facility-load`, `energy-asset-load`, `news-load`,
+`land-values`, `power-infrastructure`, `osm-infrastructure`).
 
 ETL components resolve paths through `DataPaths` (`app/config/paths.py`)
 rather than hardcoding `data/raw` or `data/processed`.
