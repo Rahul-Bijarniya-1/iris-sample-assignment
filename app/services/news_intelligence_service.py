@@ -10,6 +10,8 @@ NRW BI Platform
 
 from __future__ import annotations
 
+import re
+
 from sqlalchemy.orm import Session
 
 from app.database.repositories.news_repository import (
@@ -18,6 +20,16 @@ from app.database.repositories.news_repository import (
 
 
 class NewsIntelligenceService:
+
+    # Short function words in the two languages the advisor sees
+    # questions in (English and German, since the corpus is German).
+    # Excluding them keeps a one-word match from firing on "what"/"die".
+    _STOPWORDS = {
+        "what", "whats", "about", "near", "with", "from", "that", "this",
+        "there", "should", "know", "happening", "recent", "activity",
+        "the", "and", "for", "are", "was", "were", "have", "has",
+        "die", "der", "das", "und", "ist", "sind", "mit", "fuer",
+    }
 
     def __init__(
         self,
@@ -133,9 +145,18 @@ class NewsIntelligenceService:
     ) -> list[dict]:
         """
         Search news articles by title and summary.
+
+        `keyword` is normally a full natural-language question. Matching
+        it as one literal substring essentially never hits a real
+        article, so it is split into individual significant words first
+        and an article matches if any one of them appears.
         """
 
-        keyword = keyword.lower()
+        tokens = self._keywords(keyword)
+
+        if not tokens:
+
+            return []
 
         articles = []
 
@@ -149,7 +170,7 @@ class NewsIntelligenceService:
                 + (article.summary or "")
             ).lower()
 
-            if keyword in text:
+            if any(token in text for token in tokens):
 
                 articles.append(
                     article,
@@ -158,6 +179,28 @@ class NewsIntelligenceService:
         return self._merge(
             articles,
         )
+
+    @classmethod
+    def _keywords(
+        cls,
+        question: str,
+    ) -> list[str]:
+        """
+        Significant words from a question: lower-cased, split on
+        non-alphanumerics, short function words and anything under 4
+        characters dropped.
+        """
+
+        words = re.findall(
+            r"[\wäöüß]+",
+            question.lower(),
+        )
+
+        return [
+            word
+            for word in words
+            if len(word) >= 4 and word not in cls._STOPWORDS
+        ]
 
     # =====================================================
     # Merge Articles
