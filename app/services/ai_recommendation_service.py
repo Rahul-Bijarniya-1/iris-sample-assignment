@@ -11,13 +11,11 @@ Author:
     NRW BI Platform
 """
 
-import os
-
-from openai import OpenAI
 from app.ai.prompts.site_analysis_prompt import SiteAnalysisPrompt
+from app.config.openai import LazyOpenAIClient, get_chat_model
 
 
-class AIRecommendationService:
+class AIRecommendationService(LazyOpenAIClient):
 
     def __init__(
         self,
@@ -25,27 +23,13 @@ class AIRecommendationService:
         model: str | None = None,
     ):
 
-        self._client = client
+        super().__init__(client)
 
-        self.model = model or os.getenv(
-            "OPENAI_MODEL",
-            "gpt-4.1-mini",
-        )
+        self.model = model or get_chat_model()
 
     # =====================================================
     # Public
     # =====================================================
-
-    @property
-    def client(self):
-
-        if self._client is None:
-
-            self._client = OpenAI(
-                api_key=os.getenv("OPENAI_API_KEY")
-            )
-
-        return self._client
 
     def generate(
         self,
