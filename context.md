@@ -11,7 +11,7 @@ Last updated: **2026-10-25** (post-review fix pass) · Last verified against liv
 
 1. Read this whole file. It supersedes the README for project *state*; the README was corrected this
    session (see "README corrections" below) and should now be consistent with it.
-2. **Work is on branch `feat/agentic-rag`, 27 commits ahead of `main`**, checked out in place (not a
+2. **Work is on branch `feat/agentic-rag`, 29 commits ahead of `main`**, checked out in place (not a
    worktree — the user has this directory open in their IDE). `main` itself is 15 commits ahead of
    `upstream/main` and pushed to the user's private `origin`. Remotes: `origin` →
    `Rahul-Bijarniya-1/iris-sample-assignment` (private), `upstream` → `amaurisantosjr/iris-sample`
@@ -29,10 +29,10 @@ Last updated: **2026-10-25** (post-review fix pass) · Last verified against liv
 5. Re-verify state before acting on it:
    ```bash
    cd ~/Assignment/iris-sample
-   git log --oneline main..feat/agentic-rag              # expect 27 commits
+   git log --oneline main..feat/agentic-rag              # expect 29 commits
    git status -sb                                        # expect feat/agentic-rag, clean
-   uv run pytest                                          # expect 103 passed, 2 skipped
-   env -u OPENAI_API_KEY uv run pytest                    # expect 103 passed, 2 skipped — identical to
+   uv run pytest                                          # expect 104 passed, 2 skipped
+   env -u OPENAI_API_KEY uv run pytest                    # expect 104 passed, 2 skipped — identical to
                                                            # with a key; nothing in the default suite
                                                            # depends on OPENAI_API_KEY being set anymore
    uv run alembic current                                 # expect d88d670b067f (head)
@@ -47,9 +47,13 @@ Last updated: **2026-10-25** (post-review fix pass) · Last verified against liv
    `uv run pytest -m live` also makes two small real OpenAI calls (opt-in only, never runs by default).
 7. Time constraint: 48-hour take-home, started 2026-10-24. **Amauri is not reachable** — don't plan
    around asking him; blockers have been resolved independently throughout.
-8. **Blocked on the user:** the eval set (10-15 planner questions, "the one input I should not author"
-   per the plan) has not been received yet. The PR also needs the user's explicit go-ahead, not given
-   yet. Everything else in the plan is done — see "What's left" below.
+8. **The eval is done.** The user supplied 14 real German planner questions; ground-truth labeled
+   against the real 40-article corpus and run for real against the live `AgenticRagService` — see
+   `EVAL.md` and `eval/`. This surfaced one more real gap (the plan's "Thin evidence: name the gap,
+   then give the national context that does exist" decision wasn't actually happening — the answer
+   prompt had the evidence but wasn't told to use it for non-place-specific context), fixed and
+   verified live before/after. **Only the PR remains, blocked on the user's explicit go-ahead** —
+   not given yet.
 
 ---
 
@@ -89,7 +93,7 @@ news_retrieval_service.py` (pgvector search), `app/extractors/openai_extractor.p
 | App schema | `iris_core` (8 tables now — `news_signals` added) |
 | Python | 3.12 via `uv`, `.venv` at repo root |
 | Alembic head | `d88d670b067f` — 15 migrations applied |
-| Tests | pytest, **105 tests** (103 default + 2 opt-in `live`), `uv run pytest` |
+| Tests | pytest, **106 tests** (104 default + 2 opt-in `live`), `uv run pytest` |
 
 `.env` at repo root: `DATABASE_URL` + `OPENAI_API_KEY` (a **real key**, confirmed working this session —
 no longer the `sk-...` placeholder noted in the previous handoff) + optionally `OPENAI_MODEL` (mini,
@@ -100,7 +104,7 @@ default `gpt-4.1-mini`) and `OPENAI_ANSWER_MODEL` (default `gpt-4.1`) + `OPENAI_
 
 ## Verified current state (2026-10-25, after this session's work)
 
-- Environment, migrations, tests: **working.** 103/103 passing (plus 2 opt-in `live` tests, verified separately).
+- Environment, migrations, tests: **working.** 104/104 passing (plus 2 opt-in `live` tests, verified separately).
 - Database: **all 8 tables populated**, including the new `news_signals` (40 rows, real German-aware
   extraction — see table below).
 - `news_articles`: all 40 rows have `published_at`, `title_en`/`summary_en` (real English translations,
@@ -189,7 +193,9 @@ dispatched in the background, then a full fix pass on its findings:
 - Several Minor findings deferred — listed in the execution ledger, none judged to affect a planner
   using the dashboard enough to block the submission.
 
-Eval and PR excluded from review scope — both still blocked on the user (see "What's left").
+Eval and PR excluded from the review's scope. **The eval is now done** (after the review, from the
+user's 14 real questions) — see `EVAL.md`. It found one more real gap (Thin evidence framing
+wasn't happening — FINDINGS.md #12), fixed and verified live. Only the PR remains blocked.
 
 Test suite after the fix pass: 27 pre-existing + 76 new = **103 tests** (plus 2 opt-in `live` tests,
 verified passing against the real API). No test in the default run touches the network or requires
@@ -229,11 +235,12 @@ implementation, documented for a reviewer to weigh.
 
 ## What's left (Phase F, remaining)
 
-- [ ] **The eval.** BLOCKED — needs the user's 10-15 planner questions ("the one input I should not
-      author," per the plan). Once received: label which articles should surface for each, run them
-      through `AgenticRagService`, report recall@5 before/after. Capture the literal before/after
-      acceptance-test text (`"No matching news signals were found."` vs. the new grounded answer) for
-      the submission.
+- [x] **The eval.** Done — 14 real user-supplied German planner questions, ground-truth labeled by
+      hand against the real corpus, run for real against the live `AgenticRagService`. See `EVAL.md`
+      (full report: methodology, recall@5 table, before/after literal text) and `eval/` (the
+      question set, the runner, raw results). Surfaced and fixed one more real gap — see
+      FINDINGS.md #12 (Thin evidence framing wasn't actually happening; fixed in
+      `AgenticAnswerPrompt`, verified live before/after).
 - [x] **`context.md` diagram check** — re-verified; `app/database/repositories/` is real and the
       diagram above is accurate. The plan's stale complaint predates this session.
 - [ ] **Open the PR** — needs the user's explicit go-ahead before any push (not asked yet this
