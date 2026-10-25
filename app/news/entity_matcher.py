@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 
 import geopandas as gpd
+import pandas as pd
 
 from app.config.paths import DataPaths
 
@@ -268,7 +269,7 @@ class EntityMatcher:
                             ]
                         ),
 
-                        "city": (
+                        "city": self._clean_city(
                             facility.get(
                                 "city"
                             )
@@ -288,6 +289,27 @@ class EntityMatcher:
         )
 
         return matches
+
+    # =====================================================
+    # CITY
+    # =====================================================
+
+    @staticmethod
+    def _clean_city(
+        city,
+    ):
+        """
+        A facility row with no `city` property carries a pandas NaN float
+        there instead of a missing key. json.dump writes that as the bare
+        token `NaN`, which loads back as a float and lands in the VARCHAR
+        `city` column as the literal string "NaN".
+        """
+
+        if pd.isna(city):
+
+            return None
+
+        return city
 
     # =====================================================
     # SAVE
