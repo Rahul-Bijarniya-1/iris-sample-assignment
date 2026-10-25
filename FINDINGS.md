@@ -164,6 +164,82 @@ changes) and a deliberate translation-model upgrade (the model name is part of t
 **Test:** `tests/test_embedding_idempotency.py`.
 **Verified live:** `{'embedded': 0, 'skipped': 40}` on a second real run.
 
+### 11b. `_filter_relevant` crashed on a plausible malformed verify response — FIXED
+
+Found by a fresh-context code review of this branch, then reproduced directly:
+`AgenticRagService._filter_relevant` passed `verify["relevant_ids"]` straight into `set()`.
+`SufficiencyPrompt` shows `"relevant_ids": ["..."]` directly above `"rejected": [{"id": "...",
+"reason": "..."}]` — a model conflating the two shapes (`relevant_ids` as objects, or as a
+bare scalar) is an ordinary mini-model deviation, not an exotic one.
+
+Live reproduction:
+```
+>>> AgenticRagService._filter_relevant([...], {"relevant_ids": [{"id": "a1", "reason": "x"}]})
+TypeError: cannot use 'dict' as a set element
+```
+With `_safe_call` only wrapping the model/tool calls (not `_filter_relevant`, which runs on
+their output), this exception reached `_agentic_news` → `ask()` → the UI's blanket
+`except Exception`, surfacing as *"AI Error: cannot use 'dict' as a set element"* instead of
+an answer — breaking the plan's explicit "never raises" requirement on exactly the step the
+plan calls out it most.
+
+**Fix:** `_verify()` now sanitizes `relevant_ids` through `_as_id_list()` (non-list → `[]`,
+non-hashable items dropped) before anything downstream treats them as a set. Also fixed the
+adjacent `bool(data.get("sufficient", True))`, where `bool("false") is True` in Python would
+have silently suppressed the refinement round on a model returning the literal string
+`"false"`.
+**Test:** `tests/test_agentic_rag.py::test_verify_tolerates_relevant_ids_as_objects_instead_of_strings`,
+`::test_verify_tolerates_relevant_ids_as_a_non_list_scalar`, `::test_verify_treats_the_string_false_as_false`.
+
+### 11c. OpenAI clients were constructed eagerly, defeating the documented degradation path — FIXED
+
+Found by the same review. `EmbeddingService`, `AIRecommendationService`, `TranslationService`,
+and `OpenAIExtractor` all built their `OpenAI()` client in `__init__`, which raises
+immediately when `OPENAI_API_KEY` is unset — **before** `NewsRetrievalService.search()`'s own
+`try/except` (documented, here and in the service's own docstring, to degrade a missing key
+to `[]`) ever got a chance to catch anything.
+
+Live reproduction:
+```
+$ env -u OPENAI_API_KEY python -c "NewsRetrievalService(None)"
+RAISED: OpenAIError Missing credentials...
+```
+Same root cause broke 5 tests that merely construct `AIAdvisorService` (which eagerly builds
+`AgenticRagService` → `NewsRetrievalService` → `EmbeddingService`) with no key set —
+`env -u OPENAI_API_KEY uv run pytest` → 5 failed, despite none of those tests making a
+network call. A reviewer who follows the README's own `cp .env.example .env` setup (leaving
+`OPENAI_API_KEY` empty) hits this.
+
+**Fix:** all four classes now build their client lazily via a `client` property, constructed
+on first access rather than at `__init__`. The missing-key failure now surfaces inside the
+`try/except` that was always meant to catch it.
+**Test:** a `test_construction_does_not_require_an_api_key` test added to each of the four
+services' test files, plus `tests/test_news_retrieval.py::test_search_degrades_to_empty_list_with_no_api_key_at_all`,
+which exercises the real `EmbeddingService()` end-to-end with the env var genuinely unset
+(the pre-existing degradation test only exercised an injected failing stub, which tested a
+different failure mode).
+**Verified:** `env -u OPENAI_API_KEY uv run pytest` → 97/97 passed (was 5 failed before the fix).
+
+### 11d. Three smaller robustness gaps, also found by the review — FIXED
+
+- **`embed_news_command.py`'s content hash named the translation model but not the embedding
+  model.** Changing `OPENAI_EMBEDDING_MODEL` left every row looking "unchanged" with no way
+  to force a re-embed. Fixed: the embedding model's name is now part of the hash too.
+  Added `EmbeddingService.EXPECTED_DIMENSIONS` guard (raises on a non-1536-dim response)
+  so a dimension mismatch from a model switch fails loudly instead of being swallowed by
+  `search()`'s blanket `except` and silently returning `[]` forever.
+- **`OpenAIExtractor` didn't coerce `capacity_mw`/`confidence`.** A model answering `"50 MW"`
+  or `"high"` instead of a bare number would have failed the `Float` column insert. Fixed
+  with a `float()`-or-`None` coercion.
+- **`ExtractNewsSignalsCommand` committed once at the end of a run.** One bad value on
+  article 40 of 40 would have discarded all 39 paid extractions that preceded it. Fixed:
+  batches commits every 10 rows, same pattern as `EmbedNewsCommand`.
+
+**Tests:** `tests/test_embedding_idempotency.py::test_embedding_model_change_forces_re_embedding`,
+`tests/test_embedding_service.py::test_embed_raises_on_a_dimension_mismatch`,
+`tests/test_openai_extractor.py::test_extract_coerces_*`,
+`tests/test_extract_news_signals.py::test_a_failure_partway_through_does_not_lose_earlier_progress`.
+
 ### 11. `PowerService` and `LandService` are empty files
 
 The plan's architecture (written from the interview, before re-reading the codebase in
@@ -198,14 +274,46 @@ mirroring `tests/test_news_embed_wiring.py`.
 
 `NewsRetrievalService.search()` returns `[]` on any failure — missing `OPENAI_API_KEY`, no
 embeddings yet, a missing `vector` extension — rather than raising
-(`app/services/news_retrieval_service.py`). `AgenticRagService` itself still produces an
-answer in that case (naming the gap), but `AIAdvisorService._agentic_news()` distinguishes
-two situations: an **empty first retrieval round** (retrieval infrastructure itself failed)
-falls back to the pre-RAG keyword path (`_news()`, defect #5/#6 above) so the dashboard is
-never worse than before; a **non-empty retrieval that the verify step judged mostly
-irrelevant** (a real question the 40-article, single-feed corpus genuinely doesn't cover)
-keeps the agentic answer, which states the gap explicitly instead of discarding a true
-answer in favor of "no matching news signals."
+(`app/services/news_retrieval_service.py`). This claim is now verified end-to-end, not just
+in the happy path: see #11c above, and `test_search_degrades_to_empty_list_with_no_api_key_at_all`.
+`AgenticRagService` itself still produces an answer in that case (naming the gap), but
+`AIAdvisorService._agentic_news()` distinguishes two situations: an **empty first retrieval
+round** (retrieval infrastructure itself failed) falls back to the pre-RAG keyword path
+(`_news()`, defect #5/#6 above) so the dashboard is never worse than before; a **non-empty
+retrieval that the verify step judged mostly irrelevant** (a real question the 40-article,
+single-feed corpus genuinely doesn't cover) keeps the agentic answer, which states the gap
+explicitly instead of discarding a true answer in favor of "no matching news signals."
+
+## `news_signals` is extracted but not yet joined into retrieval or the answer
+
+Flagged by the code review, and accurate: `ExtractNewsSignalsCommand` loads real,
+German-aware signals into `news_signals` (verified: 5 expansion, 10 power, 2 renewable, 7
+retrofit, 8 investment across 40 real articles — see defect #4), but no code path currently
+*reads* that table back out. `NewsRetrievalService._to_result()` doesn't join it;
+`AgenticAnswerPrompt` never mentions it. The plan's Intended Outcome says the answer "states
+which signals it found" — today it states what the *verify step* judged relevant, not these
+structured signals specifically.
+
+This is a real, honestly-disclosed gap rather than a claim this document makes falsely: the
+data asset exists and is correctly populated, but surfacing it in retrieval/the answer is
+unimplemented. Treated as out of scope for this fix pass (it's a feature addition, not a
+defect fix) — recorded here so a reader of this document knows not to assume otherwise.
+
+## Two plan items not implemented (recorded, not silently dropped)
+
+Flagged by the code review; both are real gaps against the plan's literal text, neither
+breaks the headline acceptance scenario (verified by hand-scoring the plan's own acceptance
+question through `detect_intent` — NEWS wins clearly), and both are deliberately left for a
+future session rather than rushed into this fix pass:
+
+- **Decisions table: "Route `AIIntent.NEWS` through the new service and enrich
+  `_site_analysis()`."** Only the first half was done. `_site_analysis()`
+  (`app/services/ai_advisor_service.py`) is unchanged — a question that scores as
+  `SITE_ANALYSIS`/`SEARCH_POWER`/`SEARCH_LAND`/etc. gets no news context or citations, even
+  though the facility it's about might have relevant coverage.
+- **Phase E: "bilingual citations in `ui/components/site_intelligence_panel.py` and the AI
+  panel."** Only the AI panel (`ui/components/ai/*`) was touched;
+  `ui/components/site_intelligence_panel.py` is unchanged.
 
 ## Known pre-existing limitation (out of scope, documented not fixed)
 
