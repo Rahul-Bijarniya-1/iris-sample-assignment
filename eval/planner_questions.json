@@ -1,0 +1,144 @@
+[
+  {
+    "id": "q1",
+    "question": "Gab es in den letzten zwei Wochen relevante Rechenzentrumsnachrichten aus Duisburg?",
+    "expectation": "none",
+    "relevant_article_ids": [],
+    "note": "Duisburg does not appear anywhere in the 40-article corpus."
+  },
+  {
+    "id": "q2",
+    "question": "Wird derzeit über neue Rechenzentrumsprojekte in Hamm berichtet?",
+    "expectation": "none",
+    "relevant_article_ids": [],
+    "note": "Hamm does not appear anywhere in the corpus."
+  },
+  {
+    "id": "q3",
+    "question": "Gibt es aktuelle Entwicklungen, die für einen Standort in Paderborn relevant sind?",
+    "expectation": "none",
+    "relevant_article_ids": [],
+    "note": "Paderborn does not appear anywhere in the corpus."
+  },
+  {
+    "id": "q4",
+    "question": "Was ist aktuell zur Rechenzentrumsentwicklung in Mönchengladbach bekannt?",
+    "expectation": "none",
+    "relevant_article_ids": [],
+    "note": "Mönchengladbach does not appear anywhere in the corpus."
+  },
+  {
+    "id": "q5",
+    "question": "Welche aktuellen Meldungen weisen auf Engpässe bei Strom und Netzanschlüssen für neue Rechenzentren hin?",
+    "expectation": "coverage",
+    "relevant_article_ids": [
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "8868c1df-5949-4413-bcae-04e12c064bb5",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2"
+    ],
+    "note": "#25 Stromengpaesse (direct), #12 Microsoft/Loughton grid-connection withdrawal, #33 modular offices waiting on Netzanschluss. #13 Badingen (1.2GW available, not a bottleneck) treated as borderline, excluded from strict ground truth."
+  },
+  {
+    "id": "q6",
+    "question": "Wo verzögern Genehmigungen oder regulatorische Vorgaben derzeit den Bau von Rechenzentren?",
+    "expectation": "coverage",
+    "relevant_article_ids": [
+      "99044862-e93e-40a1-a154-88503628f910",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf"
+    ],
+    "note": "#7 late expert reports delaying permits (direct), #30 Trebbin missing permits + city chimney approval, #38 Obertshausen community/regulatory opposition. #33 and #13 treated as borderline secondary, excluded from strict ground truth."
+  },
+  {
+    "id": "q7",
+    "question": "Welche großen Investitionen in neue Rechenzentrumskapazitäten wurden zuletzt angekündigt?",
+    "expectation": "coverage",
+    "relevant_article_ids": [
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "344d2b34-f39f-489b-9bfa-b8730f86b9c9",
+      "de2d23bd-0eb8-4a84-a9c4-f79ee937ce56",
+      "547c9d2d-6b75-4018-8e41-248d46851ab4"
+    ],
+    "note": "#9 Amazon/Nvidia/Siemens billions, #27 Nvidia ~10bn in Europe's AI ecosystem, #19 Siemens/Skeleton power investment, #29 Alibaba Cloud new regions. Secondary/borderline: #26 Bull (manufacturing capacity, France), #38 Obertshausen, #30 Trebbin — excluded from strict ground truth."
+  },
+  {
+    "id": "q8",
+    "question": "Gibt es Anzeichen dafür, dass Hyperscaler ihre Ausbaupläne in Deutschland beschleunigen oder zurückfahren?",
+    "expectation": "coverage",
+    "relevant_article_ids": [
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "ea5544c9-e533-418d-b376-878468e38af6"
+    ],
+    "note": "#9 Amazon accelerating in Germany, #38 AWS continuing to expand in Germany despite friction, #25 Germany growing into Europe's largest market. #12 Microsoft/Loughton is a pullback signal but the facility is in the UK, not Germany — treated as thematically relevant but excluded from the Germany-specific strict ground truth."
+  },
+  {
+    "id": "q9",
+    "question": "Welche Stromnetzrisiken sollte ich bei einem geplanten Standort nahe Dortmund berücksichtigen?",
+    "expectation": "partial",
+    "relevant_article_ids": [
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "8868c1df-5949-4413-bcae-04e12c064bb5",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2"
+    ],
+    "note": "Same thematic grid-risk set as q5. Dortmund itself does not appear anywhere in the corpus — a correct answer finds the theme but must say it found nothing specific to Dortmund."
+  },
+  {
+    "id": "q10",
+    "question": "Gibt es Hinweise auf Genehmigungsprobleme für ein Rechenzentrumsprojekt in Wuppertal?",
+    "expectation": "partial",
+    "relevant_article_ids": [
+      "99044862-e93e-40a1-a154-88503628f910",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf"
+    ],
+    "note": "Same thematic permitting-delay set as q6. Wuppertal does not appear anywhere in the corpus."
+  },
+  {
+    "id": "q11",
+    "question": "Sehen Sie aktuelle Investitions- oder Erweiterungssignale für den Raum Bonn?",
+    "expectation": "partial",
+    "relevant_article_ids": [
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "344d2b34-f39f-489b-9bfa-b8730f86b9c9",
+      "de2d23bd-0eb8-4a84-a9c4-f79ee937ce56",
+      "547c9d2d-6b75-4018-8e41-248d46851ab4"
+    ],
+    "note": "Same thematic investment set as q7. Bonn does not appear anywhere in the corpus."
+  },
+  {
+    "id": "q12",
+    "question": "Wo wird es gerade eng – bei Strom, Flächen oder Behörden – und was davon könnte unseren Zeitplan gefährden?",
+    "expectation": "coverage",
+    "relevant_article_ids": [
+      "99044862-e93e-40a1-a154-88503628f910",
+      "8868c1df-5949-4413-bcae-04e12c064bb5",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "ecb62649-180a-4a95-b409-f6b185cc6ca2",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf",
+      "207760c0-fafa-441e-92c1-03ed3712dc6c"
+    ],
+    "note": "Broad combined theme: union of the grid-bottleneck and permitting-delay sets (q5+q6) plus #13 Badingen (land/grid review). This question has the widest ground truth of the set, so recall@5 is a genuinely tight bar here — 5 slots cannot hold all 7."
+  },
+  {
+    "id": "q13",
+    "question": "Welche Meldungen verändern gerade den Business Case für einen neuen Campus, und was ist eher allgemeines Branchenrauschen?",
+    "expectation": "coverage",
+    "relevant_article_ids": [
+      "7edf27f0-a6f2-45cf-8296-adafc480bc8c",
+      "ea5544c9-e533-418d-b376-878468e38af6",
+      "99044862-e93e-40a1-a154-88503628f910",
+      "9338bf31-b4ac-4968-90e5-ec939e1defaa",
+      "7f897531-d16f-4a68-81e3-4d3b8e40adbf"
+    ],
+    "note": "Signal set capped at 5 for recall@5 purposes (the full signal set is larger: also #19, #27, #29, #33, #26 — see q7/q5/q6). Success here is also judged qualitatively — whether the answer actually distinguishes signal from noise, which recall@5 alone cannot capture."
+  },
+  {
+    "id": "q14",
+    "question": "Wie viel freie Leistung hat der Digital-Realty-Campus in Northern Virginia, und was kostet dort aktuell ein Megawatt?",
+    "expectation": "none",
+    "relevant_article_ids": [],
+    "note": "Digital Realty / Northern Virginia does not appear anywhere in the corpus — deliberately out-of-scope control question."
+  }
+]

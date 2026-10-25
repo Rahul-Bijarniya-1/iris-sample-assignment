@@ -1,6 +1,9 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 
+from ui.navigation import PAGE_NAMES
+
+
 def render_sidebar():
     with st.sidebar:
         # Professional UI Overrides: Aggressively targets Streamlit's inner block structure to strip top whitespace
@@ -66,15 +69,7 @@ def render_sidebar():
 
         selected = option_menu(
             menu_title=None,
-            options=[
-                "Dashboard",
-                "Facilities",
-                "Power Grid",
-                "Land Values",
-                "News Intelligence",
-                "AI Assistant",
-                "Settings",
-            ],
+            options=list(PAGE_NAMES),
             icons=[
                 "house",
                 "building",
@@ -85,6 +80,7 @@ def render_sidebar():
                 "gear",
             ],
             default_index=0,
+            key="primary_navigation",
             styles={
                 "container": {
                     "padding": "0px",
@@ -179,7 +175,7 @@ def render_sidebar():
 
         st.button(
             "Apply Filters",
-            use_container_width=True,
+            width="stretch",
             type="primary",
         )
 

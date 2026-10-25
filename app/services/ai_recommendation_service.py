@@ -11,24 +11,21 @@ Author:
     NRW BI Platform
 """
 
-import os
-
-from openai import OpenAI
 from app.ai.prompts.site_analysis_prompt import SiteAnalysisPrompt
+from app.config.openai import LazyOpenAIClient, get_chat_model
 
 
-class AIRecommendationService:
+class AIRecommendationService(LazyOpenAIClient):
 
-    def __init__(self):
+    def __init__(
+        self,
+        client=None,
+        model: str | None = None,
+    ):
 
-        self.client = OpenAI(
-            api_key=os.getenv("OPENAI_API_KEY")
-        )
+        super().__init__(client)
 
-        self.model = os.getenv(
-            "OPENAI_MODEL",
-            "gpt-4.1-mini",
-        )
+        self.model = model or get_chat_model()
 
     # =====================================================
     # Public
@@ -37,10 +34,11 @@ class AIRecommendationService:
     def generate(
         self,
         prompt: str,
+        model: str | None = None,
     ) -> str:
 
         response = self.client.responses.create(
-            model=self.model,
+            model=model or self.model,
             input=prompt,
         )
 

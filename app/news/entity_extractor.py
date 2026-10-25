@@ -23,6 +23,7 @@ class EntityExtractor:
     def __init__(
         self,
         paths: DataPaths | None = None,
+        extractor=None,
     ):
 
         self.paths = paths or DataPaths()
@@ -53,7 +54,7 @@ class EntityExtractor:
         # Entity extractor
         # -------------------------------------------------
 
-        self.extractor = MockExtractor()
+        self.extractor = extractor or MockExtractor()
 
     # =====================================================
     # EXTRACT

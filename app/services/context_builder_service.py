@@ -246,21 +246,6 @@ class ContextBuilderService:
         }
 
     # =====================================================
-    # News
-    # =====================================================
-
-    def build_news_context(
-        self,
-        articles: list[dict],
-        question: str,
-    ) -> dict:
-
-        return {
-            "question": question,
-            "articles": articles,
-        }
-
-    # =====================================================
     # Generic
     # =====================================================
 
@@ -277,7 +262,6 @@ class ContextBuilderService:
             "nearby": self.build_nearby_context,
             "company": self.build_company_context,
             "city": self.build_city_context,
-            "news": self.build_news_context,
         }
 
         if context_type not in builders:

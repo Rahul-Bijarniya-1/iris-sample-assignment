@@ -13,6 +13,7 @@ NRW BI Platform
 
 from __future__ import annotations
 
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     Boolean,
     DateTime,
@@ -106,6 +107,41 @@ class NewsArticle(Base):
         Boolean,
         default=False,
         nullable=False,
+    )
+
+    # ------------------------------------------------------
+    # Translation and embedding
+    # ------------------------------------------------------
+
+    title_en: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
+    summary_en: Mapped[str | None] = mapped_column(
+        Text,
+        nullable=True,
+    )
+
+    embedding: Mapped[list[float] | None] = mapped_column(
+        Vector(1536),
+        nullable=True,
+        deferred=True,
+    )
+
+    embedding_model: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+    )
+
+    embedding_hash: Mapped[str | None] = mapped_column(
+        String(64),
+        nullable=True,
+    )
+
+    embedded_at: Mapped[DateTime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
     )
 
     # ------------------------------------------------------

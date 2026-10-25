@@ -19,6 +19,7 @@ dependencies = [
     "numpy>=2.5.1",
     "openai>=2.52.0",
     "pandas>=3.0.5",
+    "pgvector>=0.3",
     "plotly>=6.9.0",
     "psycopg2-binary>=2.9.12",
     "psycopg[binary]>=3.3.4",
@@ -51,4 +52,5 @@ testpaths = ["tests"]
 pythonpath = ["."]
 markers = [
     "integration: requires a live PostgreSQL server (the one DATABASE_URL points at)",
+    "live: makes a real OpenAI API call (requires OPENAI_API_KEY); opt-in only, never run by default",
 ]

@@ -22,6 +22,7 @@ import re
 from enum import Enum
 from enum import auto
 
+from openai import OpenAIError
 from sqlalchemy.orm import Session
 
 from app.services.dashboard_service import DashboardService
@@ -32,6 +33,7 @@ from app.services.context_builder_service import ContextBuilderService
 from app.ai.prompts.site_analysis_prompt import SiteAnalysisPrompt
 from app.ai.prompts.city_search_prompt import CitySearchPrompt
 from app.ai.prompts.news_prompt import NewsPrompt
+from app.services.agentic_rag_service import AgenticRagService
 
 from app.services.intelligence_search_service import (
     IntelligenceSearchService,
@@ -187,6 +189,13 @@ class AIAdvisorService:
         self.news_service = NewsIntelligenceService(
             session,
         )
+
+        self.agentic_rag = AgenticRagService(
+            session,
+        )
+
+        self.last_trace: dict | None = None
+        self.last_citations: list | None = None
 
     # ======================================================
     # Intent Detection
@@ -420,12 +429,19 @@ class AIAdvisorService:
         self,
         question: str,
         selected_facility_id: int | None,
+        on_step=None,
     ) -> str:
         """
         Main entry point for the AI Advisor.
 
         Every question from the UI comes here first.
         """
+
+        # Trace data belongs to one answer only. Clear it before even
+        # detecting intent so an error or a non-news response cannot expose
+        # citations from the preceding turn.
+        self.last_trace = None
+        self.last_citations = None
 
         intent = self.detect_intent(question)
 
@@ -536,8 +552,10 @@ class AIAdvisorService:
         # ----------------------------------------------
 
         if intent == AIIntent.NEWS:
-            return self._news(
+            return self._agentic_news(
                 question,
+                selected_facility_id,
+                on_step,
             )
 
         return self._unknown()
@@ -992,6 +1010,55 @@ class AIAdvisorService:
         )
 
     # ======================================================
+    # Agentic News
+    # ======================================================
+
+    def _agentic_news(
+        self,
+        question: str,
+        facility_id: int | None,
+        on_step=None,
+    ) -> str:
+        """
+        Route AIIntent.NEWS through the agentic retrieval loop, letting
+        the planner name a place instead of selecting a facility.
+
+        Degradation path: an empty first retrieval round means
+        NewsRetrievalService itself degraded (missing OPENAI_API_KEY,
+        no embeddings yet, or no pgvector extension) — not that the
+        corpus legitimately lacks coverage for a real question, which
+        the agentic answer already states explicitly. Only the former
+        falls back to the pre-RAG keyword/match path, so the dashboard
+        is never worse than before.
+        """
+
+        parsed = self.parser.parse(question)
+
+        result = self.agentic_rag.answer(
+            question,
+            facility_id=facility_id,
+            place=parsed["city"],
+            on_step=on_step,
+        )
+
+        trace = result["trace"]
+        rounds = trace.get("rounds") or []
+        retrieved_anything = any(
+            isinstance(round_, dict) and round_.get("result_ids")
+            for round_ in rounds
+        )
+
+        if not retrieved_anything:
+
+            return self._news(question)
+
+        # Publish metadata only for the answer the caller actually receives.
+        self.last_trace = trace
+        self.last_citations = result["citations"]
+
+        return result["answer"]
+
+    # ======================================================
     # News Signals
     # ======================================================
 
@@ -1034,46 +1101,6 @@ class AIAdvisorService:
 
             news = self.news_service.latest_news(10)
 
-        # --------------------------------------------------
-        # Facility News
-        # --------------------------------------------------
-
-        if parsed["facility"]:
-
-            news = self.news_service.facility_news(
-                parsed["facility"],
-            )
-
-        # --------------------------------------------------
-        # Company News
-        # --------------------------------------------------
-
-        elif parsed["company"]:
-
-            news = self.news_service.company_news(
-                parsed["company"],
-            )
-
-        # --------------------------------------------------
-        # City News
-        # --------------------------------------------------
-
-        elif parsed["city"]:
-
-            news = self.news_service.city_news(
-                parsed["city"],
-            )
-
-        # --------------------------------------------------
-        # Latest News
-        # --------------------------------------------------
-
-        else:
-
-            news = self.news_service.latest_news(
-                10,
-            )
-
         if not news:
 
             return (
@@ -1089,9 +1116,15 @@ class AIAdvisorService:
             context,
         )
 
-        return self.ai.generate(
-            prompt,
-        )
+        try:
+
+            return self.ai.generate(
+                prompt,
+            )
+
+        except OpenAIError:
+
+            return "AI unavailable right now. Please try again later."
         
     def _extract_companies(
         self,

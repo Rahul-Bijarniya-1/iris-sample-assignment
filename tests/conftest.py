@@ -28,6 +28,38 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 # DATABASE_URL after loading .env.
 load_dotenv()
 
+
+def _live_tests_requested(marker_expression: str) -> bool:
+    """Only the explicit ``-m live`` invocation opts into paid tests."""
+
+    return marker_expression.strip() == "live"
+
+
+def pytest_collection_modifyitems(config, items):
+    """
+    `live`-marked tests make a real OpenAI API call. They must never run
+    as a side effect of a plain `pytest` invocation — only an explicit
+    `-m live` opts in. (A plain `-m "not live"` addopts default would
+    conflict with `-m live` on the command line, since pytest ANDs them
+    together into an empty selection — so this is done by hand instead.)
+    """
+
+    requested_markers = config.getoption("-m") or ""
+
+    if _live_tests_requested(requested_markers):
+
+        return
+
+    skip_live = pytest.mark.skip(
+        reason="live test: opt-in only, run with `pytest -m live`"
+    )
+
+    for item in items:
+
+        if "live" in item.keywords:
+
+            item.add_marker(skip_live)
+
 DEFAULT_PG_PORT = 5432
 
 
@@ -193,6 +225,22 @@ def schema_tables():
         return {row[0] for row in rows}
 
     return _schema_tables
+
+
+@pytest.fixture
+def pg_query():
+    """
+    Callable: run a read-only SQL query against a named scratch database
+    and return its rows. A thin general-purpose sibling to schema_tables,
+    for the one-off checks (extensions, columns, indexes) a single
+    migration test needs without a dedicated fixture each.
+    """
+
+    def _pg_query(database: str, sql: str, params: tuple = ()):
+        with psycopg.connect(scratch_url(database)) as conn:
+            return conn.execute(sql, params).fetchall()
+
+    return _pg_query
 
 
 @pytest.fixture

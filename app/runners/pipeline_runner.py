@@ -120,6 +120,14 @@ from app.runners.news_loader_runner import (
     run as run_news_loader,
 )
 
+from app.runners.news_embed_runner import (
+    run as run_news_embed,
+)
+
+from app.runners.news_signals_runner import (
+    run as run_news_signals,
+)
+
 # ==========================================================
 # BUSINESS INTELLIGENCE
 # ==========================================================
@@ -244,6 +252,20 @@ class PipelineRunner:
 
             "news-intelligence": (
                 self.news_intelligence
+            ),
+
+            # Deliberately not referenced by any phase() method — it
+            # makes paid OpenAI calls, so running it is an explicit
+            # choice (`main.py news-embed`), never a side effect of
+            # `main.py all`. See test_news_embed_wiring.py.
+            "news-embed": (
+                self.news_embed
+            ),
+
+            # Same reasoning as news-embed: paid OpenAI calls, explicit
+            # opt-in only. See test_news_signals_wiring.py.
+            "news-signals": (
+                self.news_signals
             ),
 
             "land-values": (
@@ -809,6 +831,34 @@ class PipelineRunner:
         else:
 
             run_news_loader()
+
+    # ======================================================
+
+    def news_embed(self):
+        """
+        Translate and embed news articles into pgvector. Makes paid
+        OpenAI calls — not part of any phase(), only runnable directly.
+        """
+
+        print(
+            "▶ Embedding News Articles..."
+        )
+
+        run_news_embed()
+
+    # ======================================================
+
+    def news_signals(self):
+        """
+        Extract structured signals (OpenAIExtractor) for every news
+        article. Makes paid OpenAI calls — not part of any phase().
+        """
+
+        print(
+            "▶ Extracting News Signals..."
+        )
+
+        run_news_signals()
 
     # ======================================================
 

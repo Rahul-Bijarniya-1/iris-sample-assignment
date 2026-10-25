@@ -10,8 +10,11 @@ NRW BI Platform
 
 from __future__ import annotations
 
+import re
+
 from sqlalchemy.orm import Session
 
+from app.ai.ai_keywords import NEWS_SEARCH_STOPWORDS
 from app.database.repositories.news_repository import (
     NewsRepository,
 )
@@ -52,19 +55,10 @@ class NewsIntelligenceService:
         self,
     ) -> int:
         """
-        Return the total number of news intelligence
-        signals stored in PostgreSQL.
-
-        Each NewsMatch represents a detected
-        relationship between a news article and
-        a known facility.
+        Return the total number of structured news-signal rows.
         """
 
-        matches = (
-            self.repository.get_matches()
-        )
-
-        return len(matches)
+        return self.repository.get_signal_count()
 
     # =====================================================
     # Company
@@ -133,13 +127,22 @@ class NewsIntelligenceService:
     ) -> list[dict]:
         """
         Search news articles by title and summary.
+
+        `keyword` is normally a full natural-language question. Matching
+        it as one literal substring essentially never hits a real
+        article, so it is split into individual significant words first
+        and an article matches if any one of them appears.
         """
 
-        keyword = keyword.lower()
+        tokens = self._keywords(keyword)
 
-        articles = []
+        if not tokens:
 
-        for article in (
+            return []
+
+        ranked_articles = []
+
+        for source_index, article in enumerate(
             self.repository.get_articles()
         ):
 
@@ -149,15 +152,67 @@ class NewsIntelligenceService:
                 + (article.summary or "")
             ).lower()
 
-            if keyword in text:
+            hit_count = sum(
+                bool(
+                    re.search(
+                        rf"\b{re.escape(token)}\b",
+                        text,
+                        flags=re.IGNORECASE,
+                    )
+                )
+                for token in tokens
+            )
 
-                articles.append(
-                    article,
+            if hit_count:
+
+                ranked_articles.append(
+                    (hit_count, source_index, article)
                 )
 
-        return self._merge(
-            articles,
+        ranked_articles.sort(
+            key=lambda item: (-item[0], item[1])
         )
+
+        return self._merge(
+            [item[2] for item in ranked_articles[:10]],
+        )
+
+    @classmethod
+    def _keywords(
+        cls,
+        question: str,
+    ) -> list[str]:
+        """
+        Significant words from a question. Short all-caps and dotted
+        names (RWE, E.ON) are retained while ordinary short words drop.
+        """
+
+        words = re.findall(
+            r"[\wäöüß]+(?:\.[\wäöüß]+)*",
+            question,
+            flags=re.IGNORECASE,
+        )
+
+        keywords = []
+
+        for word in words:
+
+            normalized = word.lower()
+            looks_like_name = word.isupper() or "." in word
+
+            if normalized in NEWS_SEARCH_STOPWORDS:
+
+                continue
+
+            if len(normalized) < 4 and not looks_like_name:
+
+                continue
+
+            if normalized not in keywords:
+
+                keywords.append(normalized)
+
+        return keywords
 
     # =====================================================
     # Merge Articles

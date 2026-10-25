@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 
 import geopandas as gpd
+import pandas as pd
 
 from app.config.paths import DataPaths
 
@@ -219,15 +220,14 @@ class EntityMatcher:
 
         for article in self.news:
 
-            company = (
-                article.get(
-                    "company"
-                )
-                or ""
-            ).strip().lower()
+            company = self._clean_text(
+                article.get("company")
+            )
 
             if not company:
                 continue
+
+            company = company.strip().lower()
 
             facility_matches = (
                 self.facilities[
@@ -256,19 +256,15 @@ class EntityMatcher:
                             )
                         ),
 
-                        "company": (
-                            facility[
-                                "company"
-                            ]
+                        "company": self._clean_text(
+                            facility["company"]
                         ),
 
-                        "facility_name": (
-                            facility[
-                                "name"
-                            ]
+                        "facility_name": self._clean_text(
+                            facility["name"]
                         ),
 
-                        "city": (
+                        "city": self._clean_text(
                             facility.get(
                                 "city"
                             )
@@ -288,6 +284,26 @@ class EntityMatcher:
         )
 
         return matches
+
+    # =====================================================
+    # NULLABLE TEXT
+    # =====================================================
+
+    @staticmethod
+    def _clean_text(
+        value,
+    ):
+        """
+        GeoDataFrame rows carry pandas NaN values for missing text fields.
+        Normalize those values before matching or serializing them so they
+        cannot become the literal string "NaN" in VARCHAR columns.
+        """
+
+        if pd.isna(value):
+
+            return None
+
+        return value
 
     # =====================================================
     # SAVE
