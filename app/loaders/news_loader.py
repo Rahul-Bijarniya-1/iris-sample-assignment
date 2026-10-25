@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 from sqlalchemy import select
@@ -176,6 +177,31 @@ class NewsLoader:
         return data
 
     # ======================================================
+    # DATES
+    # ======================================================
+
+    @staticmethod
+    def _parse_published(
+        published: str | None,
+    ):
+        """
+        Parse an RFC-822 date string (e.g. feedparser/email format) into a
+        timezone-aware datetime, or None when missing/unparseable.
+        """
+
+        if not published:
+
+            return None
+
+        try:
+
+            return parsedate_to_datetime(published)
+
+        except (TypeError, ValueError):
+
+            return None
+
+    # ======================================================
     # ARTICLES
     # ======================================================
 
@@ -240,6 +266,10 @@ class NewsLoader:
                     "summary"
                 )
 
+                existing.published_at = self._parse_published(
+                    data.get("published")
+                )
+
                 existing.processed = data.get(
                     "processed",
                     False,
@@ -275,6 +305,10 @@ class NewsLoader:
                 ),
 
                 url=url,
+
+                published_at=self._parse_published(
+                    data.get("published")
+                ),
 
                 processed=data.get(
                     "processed",
