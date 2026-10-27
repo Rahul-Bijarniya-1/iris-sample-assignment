@@ -45,6 +45,41 @@ services:
     depends_on:
       - postgres
 
+  # PostgreSQL 16 / PostGIS 3.4 — the versions the TransnetBW harvester
+  # (IRIS-SIG-30) targets. Kept apart from the dashboard database above and
+  # behind a profile, so a plain `docker compose up` is unchanged.
+  # Start it with: docker compose up -d postgis16   (see TRANSNETBW.md)
+  postgis16:
+
+    image: postgis/postgis:16-3.4
+
+    container_name: iris-postgis16
+
+    restart: unless-stopped
+
+    profiles:
+      - staging
+
+    environment:
+      POSTGRES_DB: iris_signals
+      POSTGRES_USER: postgres
+      # No default on purpose: set STAGING_POSTGRES_PASSWORD in .env.
+      POSTGRES_PASSWORD: ${STAGING_POSTGRES_PASSWORD:-}
+
+    ports:
+      - "5434:5432"
+
+    volumes:
+      - postgis16_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
 
   postgres_data:
+
+  postgis16_data:
