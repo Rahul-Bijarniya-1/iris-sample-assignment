@@ -59,7 +59,10 @@ target_metadata = Base.metadata
 # Schema Configuration
 # ==========================================================
 
-APPLICATION_SCHEMA = "iris_core"
+APPLICATION_SCHEMAS = {
+    "iris_core",
+    "iris_staging",
+}
 
 
 def include_name(
@@ -69,7 +72,7 @@ def include_name(
 ):
     """
     Only autogenerate migrations for the
-    application schema.
+    application schemas.
 
     PostgreSQL/PostGIS system schemas such as:
 
@@ -82,7 +85,7 @@ def include_name(
     """
 
     if type_ == "schema":
-        return name == APPLICATION_SCHEMA
+        return name in APPLICATION_SCHEMAS
 
     return True
 

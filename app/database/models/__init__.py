@@ -7,6 +7,15 @@ from app.database.models.news_article import NewsArticle
 from app.database.models.news_match import NewsMatch
 from app.database.models.osm_infrastructure import OsmInfrastructure
 
+from app.database.models.signal_ingest import (
+    IngestIssue,
+    IngestRun,
+    RefRegion,
+    SignalIngest,
+    SignalIngestVersion,
+    SourceDocument,
+)
+
 __all__ = [
     "Facility",
     "EnergyAsset",
@@ -15,4 +24,10 @@ __all__ = [
     "NewsArticle",
     "NewsMatch",
     "OsmInfrastructure",
+    "RefRegion",
+    "IngestRun",
+    "IngestIssue",
+    "SourceDocument",
+    "SignalIngest",
+    "SignalIngestVersion",
 ]
