@@ -3,7 +3,49 @@
 **Purpose of this file:** a fresh agent session should be able to read only this file and resume work
 without re-deriving anything. Keep it current at the end of every session.
 
-Last updated: **2026-10-24** · Last verified against live code + DB: **2026-10-24**
+Last updated: **2026-10-28** · Last verified against live code + DB: **2026-10-28**
+
+---
+
+## IRIS-SIG-30 — TransnetBW Project Radar (branch `feat/transnetbw-project-radar`)
+
+A separate assignment built on `main`, not on `feat/insolvency-notices`. Both add a command to
+`app/runners/pipeline_runner.py`, so merging both will conflict there. The conflict is small:
+keep both commands. **`TRANSNETBW.md` is the slice's README** (source, mapping, run, limits).
+
+- **State 2026-10-28:**
+  - All milestones are committed on the branch: schema, parsers, classify, geocode, store,
+    harvester, CLI, artifacts, docs and CI.
+  - Live harvest done: 160 requests, then replayed with the fixed code, then a live
+    incremental re-run of 4 requests that changed nothing.
+  - Artifacts are in `artifacts/transnetbw/`.
+- **Not yet done:**
+  - `git push` and the PR, waiting on the user's OK (checkpoint 2).
+  - The GitHub Actions CI (`.github/workflows/ci.yml`) has not run yet.
+  - The Nominatim fallback was cut by agreement.
+- **Databases:**
+  - The harvester uses PostgreSQL 16.4 / PostGIS 3.4.3 in docker (`docker compose up -d
+    postgis16`, port 5434). It needs OrbStack running.
+  - `iris_signals` holds the live runs; `iris_signals_offline` holds fixture runs. They must
+    stay separate, because the mode guard refuses to mix them.
+  - Credentials: `.env` has `STAGING_POSTGRES_PASSWORD` and `TRANSNETBW_DATABASE_URL`.
+- **Verify:**
+
+  ```bash
+  uv run pytest                                                   # 278 passed, 1 skipped (live)
+  DATABASE_URL="$TRANSNETBW_DATABASE_URL" uv run pytest           # same on PG16
+  uv run pytest --run-live -m live                                # 5 requests to the live site
+  docker exec -i iris-postgis16 psql -U postgres -d iris_signals < artifacts/transnetbw/validation_queries.sql
+  ```
+
+- **Open item for the user:** GitHub reports this repo as **public** (checked 2026-10-27),
+  although the note below says it was made private. The user said they will handle it.
+  Nothing here changes GitHub settings.
+- **Source quirks worth remembering:**
+  - The brief's URL redirects (303) to an overview page.
+  - Press releases are listed only via the JSON `/de/api/press-releases`.
+  - The CMS reuses URL slugs for unrelated articles.
+  - Umspannwerk Stalldorf (a TransnetBW project) lies in Bavaria, so it is excluded.
 
 ---
 

@@ -19,6 +19,7 @@ Built with **Python**, **PostgreSQL/PostGIS**, **GeoPandas**, **PyDeck**, **Stre
 - [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Data Pipeline](#data-pipeline)
+- [Signal Harvesting: TransnetBW Project Radar](#signal-harvesting-transnetbw-project-radar)
 - [Project Status](#current-project-status)
 - [Roadmap](#roadmap)
 - [Vision](#vision)
@@ -499,6 +500,25 @@ takes a long time and can fail for reasons that are not bugs:
   external requests.
 - Phases 2 and 4 use different hosts (Overpass, MaStR, BORIS, RSS) and are
   unaffected by a datacentermap.com rate limit.
+# Signal Harvesting: TransnetBW Project Radar
+
+`app/transnetbw/` harvests grid-capacity-constraint and transformer-modernization
+signals for Baden-Württemberg from TransnetBW's public website into
+`iris_staging.signal_ingest` (PostgreSQL 16 / PostGIS 3.4, EPSG:25832). It is a
+separate slice (IRIS-SIG-30) with its own staging database, and no phase of
+`main.py all` runs it.
+
+```bash
+docker compose up -d postgis16                          # PostgreSQL 16 / PostGIS 3.4 on port 5434
+uv run python -m app.transnetbw.cli harvest --offline   # committed fixtures, no network
+uv run python main.py transnetbw                        # live harvest
+```
+
+Data source, mapping assumptions, how to run, outputs and known limitations:
+**[TRANSNETBW.md](TRANSNETBW.md)**.
+
+---
+
 # Current Project Status
 
 ## Completed
