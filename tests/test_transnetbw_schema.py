@@ -8,7 +8,6 @@ These run against a freshly migrated scratch database on the server named
 in DATABASE_URL (see tests/conftest.py).
 """
 
-import json
 import uuid
 
 import psycopg
