@@ -267,6 +267,11 @@ municipalities called Au, Berg, Lauf and Wald, and nine municipality names occur
   and `retired_at` after 2 consecutive misses. Only runs that passed every gate count, and
   only when discovery for that record kind was complete. A record seen again is un-retired.
   Nothing is ever deleted.
+- **After upgrading the harvester:** incremental runs re-process only pages whose
+  `lastmod` changed. To re-classify everything with new rules, run once with `--full`, or
+  with `--replay` on the last raw capture to avoid contacting the site. Changed records are
+  then updated with a new version, and `ingest_run.code_version` records which code
+  produced them.
 - **Concurrency:** a per-source PostgreSQL advisory lock. A second run exits with code 3.
 - **Mode guard:** fixture (`--offline`) runs and live runs never share a database. A run
   refuses a database that already holds runs of the other mode.
