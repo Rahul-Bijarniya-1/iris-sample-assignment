@@ -388,10 +388,22 @@ def extract_title_places(title: str, vocabulary=None) -> TitlePlaces:
 # in Philippsburg", "Gleichstrom-Umspannwerks in Philippsburg". A converter
 # word or a "Gleichstrom-" prefix makes the converter station preferred.
 SUBSTATION_MENTION = re.compile(
-    r"(?P<dc>Gleichstrom-)?(?P<kind>Umspannwerk(?:s|es)?|UW|Netzknoten(?:s)?|Schaltanlage|Konverter(?:s)?)"
+    r"(?P<dc>Gleichstrom-)?"
+    r"(?P<kind>Umspannwerke|Umspannwerk(?:s|es)?|UW|Netzknoten(?:s)?|Schaltanlage|Konverter(?:s)?|Standort(?:es)?)"
     r"(?:\s+(?:in|am|bei))?"
-    r"\s+(?P<name>[A-ZÄÖÜ][\wäöüß]+(?:-[A-ZÄÖÜ][\wäöüß]+)?)"
+    r"\s+(?P<name>[A-ZÄÖÜ][\wäöüß]+(?:-[A-ZÄÖÜ][\wäöüß]+)?(?:/[A-ZÄÖÜ][\wäöüß]+(?:-[A-ZÄÖÜ][\wäöüß]+)?)*)"
 )
+
+# "…Leitung zwischen Herbertingen und Hoheneck", "zwischen Karlsruhe-Daxlanden
+# und Eichstetten am Kaiserstuhl", "zwischen Birkenfeld und Punkt Ötisheim":
+# the two ends of a line.
+BETWEEN = re.compile(
+    r"zwischen\s+(?:dem\s+|der\s+)?(?P<a>[A-ZÄÖÜ][\wäöüß-]+)"
+    r"(?:\s+(?:am|an der|bei|im)\s+[A-ZÄÖÜ][\wäöüß-]+)?"
+    r"\s+und\s+(?:dem\s+|der\s+)?(?:Punkt\s+)?(?P<b>[A-ZÄÖÜ][\wäöüß-]+)"
+)
+
+CONVERTER_CONTEXT = re.compile(r"gleichstrom-umspannwerk|konverter", re.IGNORECASE)
 
 
 def _round(value: float | None) -> float | None:
@@ -567,13 +579,18 @@ class Geocoder:
 
         mentions: dict[str, bool] = {}
 
+        # A release about a converter ("ULTRANET-Konverter", "Gleichstrom-
+        # Umspannwerk") prefers converter stations for every place it names.
+        converter_context = bool(CONVERTER_CONTEXT.search(clean_text(title) or ""))
+
         for text in (title, *subheads, lead):
 
             for match in SUBSTATION_MENTION.finditer(clean_text(text) or ""):
 
-                converter = bool(match.group("dc")) or match.group("kind").startswith("Konverter")
+                converter = converter_context or bool(match.group("dc")) or match.group("kind").startswith("Konverter")
 
-                mentions[match.group("name")] = mentions.get(match.group("name"), False) or converter
+                for name in match.group("name").split("/"):
+                    mentions[name] = mentions.get(name, False) or converter
 
         # A named station resolves like a project place: the station itself,
         # else its settlement or municipality ("Konverter in Leingarten").
@@ -603,6 +620,23 @@ class Geocoder:
                 "several stations named: no single representative point",
             )
 
+        for text in (title, *subheads):
+
+            between = BETWEEN.search(clean_text(text) or "")
+
+            if not between:
+                continue
+
+            ends = [self._endpoint(between.group("a")), self._endpoint(between.group("b"))]
+
+            if any(endpoint["status"] == "resolved" for endpoint in ends):
+                return self._multi(
+                    ends,
+                    [],
+                    f"{between.group('a')}, {between.group('b')}",
+                    "line between two places: no single representative point",
+                )
+
         if project_location is not None and project_location.status == "resolved":
             return Location(
                 status="resolved",
@@ -625,4 +659,13 @@ class Geocoder:
                 note="linked project has no single representative point",
             )
 
-        return Location(status="unresolved", note="no station named in title, subheads or lead, and no linked project")
+        if project_location is not None:
+            return Location(
+                status="unresolved",
+                note="no station named in title, subheads or lead; the linked project has no location either",
+            )
+
+        return Location(
+            status="unresolved",
+            note="no station or line ends named in title, subheads or lead, and no linked project",
+        )

@@ -309,3 +309,42 @@ def test_a_station_mentioned_with_a_preposition_resolves(geocoder):
 
     assert location.status == "resolved"
     assert location.precision == "substation"
+
+
+def test_a_line_named_between_two_places_keeps_both_endpoints(geocoder):
+    location = geocoder.locate_press(
+        "TransnetBW modernisiert Höchstspannungsleitung zwischen Herbertingen und Hoheneck", [], None
+    )
+
+    assert location.status == "ambiguous"
+    assert [endpoint["name"] for endpoint in location.endpoints] == ["Herbertingen", "Hoheneck"]
+    assert all(endpoint["in_bw"] for endpoint in location.endpoints)
+
+
+def test_two_stations_named_together_are_both_kept(geocoder):
+    location = geocoder.locate_press("Umspannwerke Gurtweil/Tiengen: Amprion und TransnetBW bleiben im Tal", [], None)
+
+    assert location.status == "ambiguous"
+    assert [endpoint["name"] for endpoint in location.endpoints] == ["Gurtweil", "Tiengen"]
+
+
+def test_a_site_named_as_standort_with_a_converter_context_resolves(geocoder):
+    location = geocoder.locate_press(
+        "Weg für den Bau des Gleichstrom-Umspannwerks der TransnetBW am Standort Philippsburg ist frei", [], None
+    )
+
+    assert location.status == "resolved"
+    assert location.source == "osm:way/691662101"
+
+
+def test_a_linked_project_without_a_location_is_named_as_the_reason(geocoder):
+    from app.transnetbw.geocode import Location
+
+    location = geocoder.locate_press(
+        "SuedLink: Erste Gleichstrom-Erdkabel erreichen Zwischenlager", [], None,
+        project_location=Location(status="unresolved", note="no place named in the title"),
+    )
+
+    assert location.status == "unresolved"
+    assert "no linked project" not in location.note
+    assert "linked project has no location" in location.note

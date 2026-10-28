@@ -442,6 +442,9 @@ class _Run:
         for key in ("attempted", "failed", "not_captured", "skipped_unchanged"):
             stats["fetch"].setdefault(key, 0)
 
+        # What the fetcher actually sent or served, robots.txt included.
+        stats["fetch"]["http_requests"] = getattr(self.h.fetcher, "request_count", stats["fetch"]["attempted"])
+
         severities = Counter(issue["severity"] for issue in self.issues)
 
         stats["issues"] = {

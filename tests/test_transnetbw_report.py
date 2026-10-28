@@ -124,7 +124,11 @@ def test_the_quality_report_lists_every_record_without_a_point(harvested):
     assert all(row["note"] for row in data["locations"]["not_resolved"])
     assert data["records"]["by_kind"] == {"press_release": 7, "project": 7}
     assert report.name == "quality_report.md"
-    assert "Unresolved and ambiguous locations" in report.read_text(encoding="utf-8")
+    text = report.read_text(encoding="utf-8")
+    assert "Unresolved and ambiguous locations" in text
+    # Hand-verified facts are dated; this run's own numbers sit next to them.
+    assert "checked by hand on 2026-10-27" in text
+    assert "this run: listing 23 cards" in text
 
 
 @pytest.mark.integration

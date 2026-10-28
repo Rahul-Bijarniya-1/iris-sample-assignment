@@ -133,6 +133,9 @@ def test_pages_missing_from_the_fixture_set_are_reported_not_failed(engine):
 
     assert result.stats["fetch"]["not_captured"] == 17
     assert result.stats["fetch"]["failed"] == 0
+    # Every document actually served: sitemap, listing, feed, 8 overviews,
+    # 7 portraits (SuedLink has none) and 9 articles.
+    assert result.stats["fetch"]["http_requests"] == 27
 
     not_captured = rows(engine, "select severity from iris_staging.ingest_issue where code = 'not_captured'")
 

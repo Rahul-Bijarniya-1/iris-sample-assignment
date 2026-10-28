@@ -54,7 +54,7 @@ def render_summary(result: HarvestResult, report_path=None) -> str:
         f"  unchanged-lastmod {_n(projects, 'skipped_unchanged')}",
         f"press     feed {_n(press, 'feed_items')} → candidates {_n(press, 'candidates')}"
         f" → fetched {_n(press, 'fetched')}  unchanged-lastmod {_n(press, 'skipped_unchanged')}",
-        f"fetch     requests {_n(fetch, 'attempted')}  failed {_n(fetch, 'failed')}"
+        f"fetch     requests {_n(fetch, 'http_requests') or _n(fetch, 'attempted')}  failed {_n(fetch, 'failed')}"
         + (f"  not-captured {_n(fetch, 'not_captured')}" if _n(fetch, 'not_captured') else ""),
         f"classify  in {_n(classify, 'included')}  needs_review {_n(classify, 'needs_review')}  excluded {excluded}",
         f"geocode   resolved {_n(geocode, 'resolved')} (substation {_n(geocode, 'substation')},"
@@ -376,6 +376,11 @@ def render_markdown(data: dict) -> str:
         f"status **{run['status']}** (exit {run['exit_code']}) · code `{run['code_version']}`",
         "",
         "## Source verification",
+        "",
+        "Facts checked by hand on 2026-10-27 — this run: "
+        f"listing {run['stats'].get('discovery', {}).get('listing_cards', '?')} cards, "
+        f"sitemap {run['stats'].get('discovery', {}).get('sitemap_urls', '?')} URLs, "
+        f"press feed {run['stats'].get('press', {}).get('feed_items', '?')} items.",
         "",
         *[f"- {finding}" for finding in data["source_findings"]],
         "",

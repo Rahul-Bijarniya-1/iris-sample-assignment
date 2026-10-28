@@ -255,3 +255,16 @@ def test_back_office_systems_are_not_grid_capacity_signals():
 
     assert not result.included
     assert result.exclusion == "out_of_scope_back_office"
+
+
+def test_a_spelled_out_voltage_is_a_capacity_cue():
+    result = classify("Transnet BW startet mit dem Neubau der 380-Kilovolt-Leitung zwischen Birkenfeld und Ötisheim")
+
+    assert result.signal_type == "grid_capacity_constraint"
+    assert result.confidence == "high"
+
+
+def test_the_underground_cable_priority_debate_is_policy():
+    result = classify("Expertenkommission rät zur Überprüfung des Erdkabelvorrangs")
+
+    assert result.exclusion == "out_of_scope_policy"

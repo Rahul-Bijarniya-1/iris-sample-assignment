@@ -35,7 +35,7 @@ TRANSFORMER_SUBJECT = re.compile(
 CAPACITY_SUBJECT = re.compile(
     r"netzverst[äa]rkung|netzausbau|netzbooster|suedlink|südlink|ultranet|engpass|"
     r"überlast|übertragungskapazität|transportkapazität|höchstspannungsleitung|"
-    r"(?<!\d)(?:380|220)\s?-?\s?kv|leitungsbau|stromleitung|gleichstrom|"
+    r"(?<!\d)(?:380|220)\s?-?\s?(?:kv|kilovolt)|leitungsbau|stromleitung|gleichstrom|"
     r"freileitung|erdkabel|trasse|netzoptimierung",
     re.IGNORECASE,
 )
@@ -67,7 +67,7 @@ EXCLUSIONS = (
     (
         "out_of_scope_policy",
         re.compile(
-            r"freileitungsvorrang|bundesbedarfsplan|szenariorahmen|netzentwicklungsplan|"
+            r"freileitungsvorrang|erdkabelvorrang|bundesbedarfsplan|szenariorahmen|netzentwicklungsplan|"
             r"gesetzentwurf|positionspapier|stellungnahme|bündnis|netzplanungsgrundsätze",
             re.IGNORECASE,
         ),

@@ -101,3 +101,12 @@ def test_a_substation_project_named_with_a_preposition_is_linked(aliases):
     result = link_project("TransnetBW informierte über den Neubau des Umspannwerks in Wendlingen", aliases)
 
     assert result.slug == "umspannwerk-wendlingen"
+
+
+def test_a_line_project_named_with_its_junction_point_is_linked(aliases):
+    result = link_project(
+        "Leitungsbauprojekt zwischen Birkenfeld und Punkt Ötisheim: TransnetBW erhält Planfeststellungsbeschluss",
+        aliases,
+    )
+
+    assert result.slug == "birkenfeld-punkt-oetisheim"

@@ -7,7 +7,7 @@
    "netzbooster\\W+(?:\\w+\\W+){0,4}kupferzell",
    "kupferzell\\W+(?:\\w+\\W+){0,2}netzbooster"
   ],
-  "birkenfeld-punkt-oetisheim": ["birkenfeld\\s*-\\s*(?:punkt\\s+)?ötisheim", "zwischen birkenfeld und ötisheim"],
+  "birkenfeld-punkt-oetisheim": ["birkenfeld\\s*-\\s*(?:punkt\\s+)?ötisheim", "zwischen birkenfeld und (?:punkt )?ötisheim"],
   "eichstetten-bundesgrenze-frankreich": ["eichstetten\\s*-\\s*bundesgrenze"],
   "grafenrheinfeld-kupferzell-grossgartach": ["grafenrheinfeld\\s*-\\s*kupferzell\\s*-\\s*gro(?:ß|ss)gartach"],
   "hochrhein": ["projekt(?:s|es)? hochrhein", "netzverstärkung hochrhein", "herbertingen\\s*-\\s*waldshut-tiengen"],
