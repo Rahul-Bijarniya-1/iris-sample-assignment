@@ -1,0 +1,1079 @@
+{
+ "generated_at": "2026-10-28T16:42:05+00:00",
+ "source_system": "transnetbw",
+ "run": {
+  "run_id": "c9dc6176-51d0-4123-8015-5d0b9e9dddee",
+  "mode": "live",
+  "status": "succeeded",
+  "exit_code": 0,
+  "started_at": "2026-10-28T16:40:23.375451+00:00",
+  "finished_at": "2026-10-28T16:40:25.474883+00:00",
+  "code_version": "097f2b6",
+  "stats": {
+   "load": {
+    "missed": 0,
+    "retired": 0,
+    "updated": 0,
+    "inserted": 120,
+    "rejected": 0,
+    "reverted": 0,
+    "unchanged": 0,
+    "page_changed": 0,
+    "derived_refreshed": 15
+   },
+   "fetch": {
+    "failed": 0,
+    "attempted": 160,
+    "not_captured": 0,
+    "http_requests": 160,
+    "skipped_unchanged": 0
+   },
+   "press": {
+    "fetched": 108,
+    "malformed": 0,
+    "candidates": 108,
+    "duplicates": 1,
+    "feed_items": 563,
+    "before_since": 288,
+    "prefiltered_out": 167
+   },
+   "issues": {
+    "info": 36,
+    "error": 0,
+    "by_code": {
+     "duplicate_in_feed": 1,
+     "location_ambiguous": 22,
+     "excluded_outside_bw": 6,
+     "location_unresolved": 46,
+     "discovery_listing_only": 1,
+     "discovery_sitemap_only": 2,
+     "excluded_out_of_scope_policy": 3,
+     "excluded_out_of_scope_no_signal": 2,
+     "excluded_out_of_scope_back_office": 1,
+     "excluded_out_of_scope_maintenance": 1
+    },
+    "warning": 49
+   },
+   "geocode": {
+    "resolved": 52,
+    "ambiguous": 22,
+    "substation": 46,
+    "unresolved": 46,
+    "municipality": 6
+   },
+   "classify": {
+    "included": 120,
+    "needs_review": 11,
+    "excluded_outside_bw": 6,
+    "grid_capacity_constraint": 75,
+    "transformer_modernization": 45,
+    "excluded_out_of_scope_policy": 3,
+    "excluded_out_of_scope_no_signal": 2,
+    "excluded_out_of_scope_back_office": 1,
+    "excluded_out_of_scope_maintenance": 1
+   },
+   "projects": {
+    "seen": 25,
+    "fetched": 25
+   },
+   "discovery": {
+    "gap": 3,
+    "projects": 25,
+    "sitemap_urls": 948,
+    "listing_cards": 23,
+    "sitemap_projects": 24
+   }
+  },
+  "gates": {
+   "discovery_gap": {
+    "limit": "<= 5",
+    "value": 3,
+    "passed": true
+   },
+   "listing_cards": {
+    "limit": ">= 15",
+    "value": 23,
+    "passed": true
+   },
+   "resolved_rows": {
+    "limit": ">= 1",
+    "value": 52,
+    "passed": true
+   },
+   "fetch_failure_ratio": {
+    "limit": "<= 0.3",
+    "value": 0.0,
+    "passed": true
+   }
+  }
+ },
+ "source_findings": [
+  "The brief's URL https://www.transnetbw.de/de/netzentwicklung answers HTTP 303 and lands on /de/netzentwicklung/planung/netzentwicklungsplan, an overview without project data.",
+  "The project catalogue is /de/netzentwicklung/projekte/alle-projekte: server-rendered HTML, one page, no pagination; its map is a schematic SVG without coordinates.",
+  "robots.txt disallows only /neos/.",
+  "/de/sitemap.xml gives a lastmod for every URL; listing and sitemap disagree on three projects.",
+  "Project pages carry no publication date and no coordinates.",
+  "The newsroom list is rendered by JavaScript from /de/api/press-releases (JSON, 564 entries from 2009-10-15 to 2026-10-15, one URL listed twice); article pages state their date as text (\"15. Oktober 2026\").",
+  "The newsroom CMS reuses URL slugs for unrelated articles (e.g. …-umspannwerkes-wendlingen-1 is a release on the underground-cable priority); the URL is a stable identifier, the page title is authoritative."
+ ],
+ "records": {
+  "total": 120,
+  "retired": 0,
+  "by_kind": {
+   "press_release": 97,
+   "project": 23
+  },
+  "by_signal_type": {
+   "grid_capacity_constraint": 75,
+   "transformer_modernization": 45
+  },
+  "by_stage": {
+   "approval": 48,
+   "construction": 44,
+   "in_operation": 11,
+   "planning": 1,
+   "unknown": 16
+  },
+  "needs_review": 11
+ },
+ "locations": {
+  "by_status": {
+   "ambiguous": 22,
+   "resolved": 52,
+   "unresolved": 46
+  },
+  "by_precision": {
+   "municipality": 6,
+   "substation": 46
+  },
+  "not_resolved": [
+   {
+    "source_record_id": "press:alle-suedlink-abschnitte-in-der-genehmigung-transnetbw-reicht-letzte-planfeststellungsunterlagen-in-niedersachsen-ein",
+    "title": "Alle SuedLink-Abschnitte in der Genehmigung: TransnetBW reicht letzte Planfeststellungsunterlagen in Niedersachsen ein",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:baustart-fuer-suedlink-in-baden-wuerttemberg",
+    "title": "Baustart für SuedLink in Baden-Württemberg",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:baustart-ultranet-im-bauabschnitt-b1",
+    "title": "TransnetBW startet mit dem Leitungsbau für das Gleichstromvorhaben ULTRANET im Bauabschnitt B1",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:bundesweit-laufen-auf-allen-suedlink-baustellen-die-arbeiten-weiterhin-mit-hochdruck",
+    "title": "Bundesweit laufen auf allen SuedLink-Baustellen die Arbeiten weiterhin mit Hochdruck",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:bwihk-stromstudie-2024-unterstreicht-die-dringlichkeit-des-stromnetzausbaus",
+    "title": "BWIHK-Stromstudie 2024 unterstreicht die Dringlichkeit des Stromnetzausbaus",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station or line ends named in title, subheads or lead, and no linked project",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:effizienteres-engpassmanagement-uebertragungsnetzbetreiber-nehmen-redispatch-abwicklungsserver-ras-in-betrieb",
+    "title": "Effizienteres Engpassmanagement: Übertragungsnetzbetreiber nehmen Redispatch-Abwicklungsserver (RAS) in Betrieb",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station or line ends named in title, subheads or lead, and no linked project",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:energiewende-monitoringbericht",
+    "title": "Der Netzausbau ist ein wichtiger Schlüssel für die Energiewende",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station or line ends named in title, subheads or lead, and no linked project",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:erdkabelbericht-zieht-zwischenbilanz",
+    "title": "Erdkabelbericht zieht Zwischenbilanz",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station or line ends named in title, subheads or lead, and no linked project",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:es-geht-voran-erdkabel-fuer-suedlink-gehen-in-produktion",
+    "title": "Es geht voran: Erdkabel für SuedLink gehen in Produktion",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:feierlicher-baustart-von-suedlink",
+    "title": "Feierlicher Baustart von SuedLink in Thüringen – größtes Infrastrukturprojekt der Energiewende in sechs Bundesländern im Bau",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:hoeherauslastung-der-stromleitungen-hilft-im-winter",
+    "title": "Höherauslastung der Stromleitungen hilft im Winter",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station or line ends named in title, subheads or lead, and no linked project",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:hydrogreen-boost-studie-bestaetigt-wirtschaftlichkeit-und-grosses-potenzial-fur-hybride-netzbooster",
+    "title": "HydrogREenBoost: Studie bestätigt Wirtschaftlichkeit und großes Potenzial für hybride Netzbooster",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station or line ends named in title, subheads or lead, and no linked project",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:kleinstflexibilitaeten-als-beitrag-fuer-das-netzengpassmanagement",
+    "title": "Kleinstflexibilitäten als Beitrag für das Netzengpassmanagement",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station or line ends named in title, subheads or lead, and no linked project",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:leitungsbauprojekt-zwischen-birkenfeld-und-punkt-oetisheim-transnetbw-erhaelt-planfeststellungsbeschluss",
+    "title": "Leitungsbauprojekt zwischen Birkenfeld und Punkt Ötisheim: TransnetBW erhält Planfeststellungsbeschluss",
+    "location_status": "ambiguous",
+    "location_text": "Birkenfeld, Ötisheim",
+    "note": "line between two places: no single representative point",
+    "endpoints": [
+     "Birkenfeld",
+     "Ötisheim"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:letzte-genehmigungsphase-fuer-suedlink-in-baden-wuerttemberg-transnetbw-reicht-planfeststellungsunterlagen-im-raum-heilbronn-franken-ein",
+    "title": "Letzte Genehmigungsphase für SuedLink in Baden-Württemberg: TransnetBW reicht Planfeststellungsunterlagen im Raum Heilbronn-Franken ein",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:mastbau-zur-netzverstaerkung-zwischen-karlsruhe-daxlanden-und-eichstetten-am-kaiserstuhl-beginnt",
+    "title": "Mastbau zur Netzverstärkung zwischen Karlsruhe-Daxlanden und Eichstetten am Kaiserstuhl beginnt",
+    "location_status": "ambiguous",
+    "location_text": "Karlsruhe-Daxlanden, Eichstetten",
+    "note": "line between two places: no single representative point",
+    "endpoints": [
+     "Karlsruhe-Daxlanden",
+     "Eichstetten"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:naechster-schritt-der-realisierung-regionale-suedlink-planungsbueros-nehmen-arbeit-auf",
+    "title": "Nächster Schritt der Realisierung: Regionale SuedLink-Planungsbüros nehmen Arbeit auf",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:netzbauprojekt-rippolingen-istein-transnetbw-modernisiert-zwei-leitungsanlagen-in-den-landkreisen-loerrach-und-waldshut",
+    "title": "Netzbauprojekt Rippolingen – Istein: Transnet BW modernisiert zwei Leitungsanlagen in den Landkreisen Lörrach und Waldshut",
+    "location_status": "ambiguous",
+    "location_text": "Rippolingen, Istein",
+    "note": "linked project has no single representative point",
+    "endpoints": [
+     "Rippolingen",
+     "Istein"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:startschuss-fuer-witterungsabhaengigen-freileitungsbetrieb-3-0",
+    "title": "Startschuss für witterungsabhängigen Freileitungsbetrieb 3.0 - TransnetBW und energy & meteo systems legen rund 300 Standorte zur echtzeitfähigen Erfassung der Belastbarkeit von Freileitungen fest",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station or line ends named in title, subheads or lead, and no linked project",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-auftrag-fuer-kunststoffisolierte-525-kilovolt-erdkabel-vergeben",
+    "title": "SuedLink: Auftrag für kunststoffisolierte 525-Kilovolt-Erdkabel vergeben",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-auftrag-fuer-zwei-konverteranlagen-vergeben",
+    "title": "SuedLink: Auftrag für zwei Konverteranlagen vergeben",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-bauarbeiten-im-bergwerk-und-kampfmitteluntersuchungen-gestartet",
+    "title": "SuedLink: Bauarbeiten im Bergwerk und Kampfmitteluntersuchungen gestartet",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-bau-im-nordosten-baden-wuerttembergs-kann-starten",
+    "title": "SuedLink: Bau im Nordosten Baden-Württembergs kann starten",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-bau-in-suedniedersachsen-kann-starten",
+    "title": "SuedLink: Bau in Südniedersachsen kann starten",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-einigung-mit-bauernverbaenden-ueber-entschaedigung",
+    "title": "SuedLink: Einigung mit Bauernverbänden über Entschädigung",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-erste-gleichstrom-erdkabel-erreichen-zwischenlager",
+    "title": "SuedLink: Erste Gleichstrom-Erdkabel erreichen Zwischenlager",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-geht-auch-in-suedniedersachsen-in-den-bau",
+    "title": "Meilenstein der Energiewende: SuedLink geht auch in Südniedersachsen in den Bau",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-im-gesamten-verlauf-in-der-planfeststellung-transnetbw-reicht-planfeststellungsantrag-fuer-das-leinetal-ein",
+    "title": "SuedLink im gesamten Verlauf in der Planfeststellung: Transnet BW reicht Planfeststellungsantrag für das Leinetal ein",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-kommt-transnetbw-reicht-planfeststellungsunterlagen-fuer-nordhessen-ein",
+    "title": "SuedLink kommt: TransnetBW reicht Planfeststellungsunterlagen für Nordhessen ein",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-kommt-transnetbw-reicht-planfeststellungsunterlagen-fuer-suedniedersachsen-ein",
+    "title": "SuedLink kommt: TransnetBW reicht Planfeststellungsunterlagen für Südniedersachsen ein",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-kommt-transnetbw-reicht-planfeststellungsunterlagen-fuer-unterfranken-ein",
+    "title": "SuedLink kommt: TransnetBW reicht Planfeststellungsunterlagen für Unterfranken ein",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-kommt-transnetbw-reicht-planfeststellungsunterlagen-fuer-west-und-suedthueringen-ein",
+    "title": "SuedLink kommt: TransnetBW reicht Planfeststellungsunterlagen für West- und Südthüringen ein",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-kommt-voran-transnetbw-leitet-letzte-phase-des-genehmigungsverfahrens-ein-und-schafft-grundlage-fuer-spaeteren-bau",
+    "title": "SuedLink kommt voran: Transnet BW leitet letzte Phase des Genehmigungsverfahrens ein und schafft Grundlage für späteren Bau",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-letzte-abschnitte-genehmigt",
+    "title": "SuedLink: Letzte Abschnitte genehmigt – größtes Infrastrukturprojekt der Energiewende jetzt in allen sechs Bundesländern in Bau",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-planfeststellungsantrag-fuer-thueringen-und-den-noerdlichen-teil-unterfrankens-eingereicht",
+    "title": "SuedLink: Planfeststellungsantrag für Thüringen und den nördlichen Teil Unterfrankens eingereicht",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-schacht-arbeiten-fuer-bergwerks-abschnitt-beauftragt",
+    "title": "SuedLink: Schacht-Arbeiten für Bergwerks-Abschnitt beauftragt",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-tennet-und-transnetbw-begruessen-festgelegten-verlauf",
+    "title": "SuedLink: TenneT und Transnet BW begrüßen festgelegten Verlauf",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:suedlink-tiefbau-arbeiten-in-baden-wuerttemberg-vergeben",
+    "title": "SuedLink: Tiefbau-Arbeiten in Baden-Württemberg vergeben",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:transnetbw-informierte-in-merdingen",
+    "title": "TransnetBW informierte in Merdingen über die 380-kV-Netzverstärkung Eichstetten – Bundesgrenze Frankreich",
+    "location_status": "ambiguous",
+    "location_text": "Eichstetten, Bundesgrenze Frankreich",
+    "note": "linked project has no single representative point",
+    "endpoints": [
+     "Eichstetten",
+     "Bundesgrenze Frankreich"
+    ],
+    "flags": [
+     "cross_border"
+    ]
+   },
+   {
+    "source_record_id": "press:transnetbw-informierte-in-merdingen-1",
+    "title": "TransnetBW erhält Planfeststellungsbeschluss für das Gleichstromvorhaben ULTRANET",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:transnetbw-modernisiert-hoechstspannungsleitung-zwischen-herbertingen-und-hoheneck",
+    "title": "TransnetBW modernisiert Höchstspannungsleitung zwischen Herbertingen und Hoheneck",
+    "location_status": "ambiguous",
+    "location_text": "Herbertingen, Hoheneck",
+    "note": "line between two places: no single representative point",
+    "endpoints": [
+     "Herbertingen",
+     "Hoheneck"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:transnetbw-reicht-planfeststellungsantraege-fuer-den-suedlichsten-suedlink-abschnitt-ein",
+    "title": "Transnet BW reicht Planfeststellungsanträge für den südlichsten SuedLink-Abschnitt ein",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:transnetbw-reicht-suedlink-planfeststellungsantrag-fuer-suedlichen-teil-unterfrankens-ein",
+    "title": "Transnet BW reicht SuedLink-Planfeststellungsantrag für südlichen Teil Unterfrankens ein",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:transnetbw-reicht-suedlink-planfeststellungsantrag-fuer-suedniedersachsen-und-hessen-ein",
+    "title": "Transnet BW reicht SuedLink-Planfeststellungsantrag für Südniedersachsen und Hessen ein",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:transnetbw-startet-mit-dem-neubau-der-380-kilovolt-leitung-zwischen-birkenfeld-und-oetisheim",
+    "title": "Transnet BW startet mit dem Neubau der 380-Kilovolt-Leitung zwischen Birkenfeld und Ötisheim",
+    "location_status": "ambiguous",
+    "location_text": "Birkenfeld, Ötisheim",
+    "note": "line between two places: no single representative point",
+    "endpoints": [
+     "Birkenfeld",
+     "Ötisheim"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:transnetbw-treibt-planfeststellung-bei-netzverstaerkungsprojekt-zwischen-gaukoenigshofen-und-kupferzell-voran",
+    "title": "Netzverstärkungsprojekt zwischen Gaukönigshofen und Kupferzell: Transnet BW treibt Planfeststellung voran",
+    "location_status": "ambiguous",
+    "location_text": "Gaukönigshofen, Kupferzell",
+    "note": "line between two places: no single representative point",
+    "endpoints": [
+     "Gaukönigshofen",
+     "Kupferzell"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:transnetbw-und-netze-bw-staerken-gemeinsam-oekologisches-trassenmanagement",
+    "title": "TransnetBW und Netze BW stärken gemeinsam Ökologisches Trassenmanagement",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station or line ends named in title, subheads or lead, and no linked project",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:transnetbw-und-tennet-germany-feiern-symbolische-inbetriebnahme-der-netzverstaerkung-grafenrheinfeld-kupferzell-grossgartach",
+    "title": "TransnetBW und TenneT Germany feiern symbolische Inbetriebnahme der Netzverstärkung Grafenrheinfeld – Kupferzell – Großgartach",
+    "location_status": "ambiguous",
+    "location_text": "Grafenrheinfeld, Großgartach",
+    "note": "several stations named: no single representative point",
+    "endpoints": [
+     "Grafenrheinfeld",
+     "Großgartach"
+    ],
+    "flags": [
+     "cross_border"
+    ]
+   },
+   {
+    "source_record_id": "press:transnetbw-und-uni-hohenheim-untersuchen-einfluss-von-erdkabeln-auf-boeden-und-pflanzen",
+    "title": "Transnet BW und Universität Hohenheim untersuchen Einfluss von Erdkabeln auf Böden und landwirtschaftliche Kulturpflanzen",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:uebertragungsnetzbetreiber-veroeffentlichen-ersten-entwurf-des-netzentwicklungsplans-2037-2045",
+    "title": "Bürgerdialog informiert Bürgerschaft in Oberjettingen zur geplanten Erweiterung und zumNeubau des örtlichen Umspannwerks",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station or line ends named in title, subheads or lead, and no linked project",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:ultranet-transnetbw-erreicht-meilenstein-im-genehmigungsverfahren",
+    "title": "ULTRANET: Transnet BW erreicht Meilenstein im Genehmigungsverfahren",
+    "location_status": "ambiguous",
+    "location_text": "Mannheim-Wallstadt, Philippsburg",
+    "note": "line between two places: no single representative point",
+    "endpoints": [
+     "Mannheim-Wallstadt",
+     "Philippsburg"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:ultranet-transnetbw-informiert-ueber-planungsstand",
+    "title": "ULTRANET: TransnetBW informiert über Planungsstand",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:umsetzung-startet-genehmigung-fuer-laengsten-teilabschnitt-der-netzverstaerkung-badische-rheinschiene-erteilt",
+    "title": "Umsetzung startet: Genehmigung für längsten Teilabschnitt der „Netzverstärkung Badische Rheinschiene“ erteilt",
+    "location_status": "ambiguous",
+    "location_text": "Daxlanden, Weier",
+    "note": "several stations named: no single representative point",
+    "endpoints": [
+     "Daxlanden",
+     "Weier"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:umspannwerke-gurtweil-tiengen-amprion-und-transnetbw-bleiben-im-tal",
+    "title": "Umspannwerke Gurtweil/Tiengen: Amprion und TransnetBW bleiben im Tal",
+    "location_status": "ambiguous",
+    "location_text": "Gurtweil, Tiengen",
+    "note": "several stations named: no single representative point",
+    "endpoints": [
+     "Gurtweil",
+     "Tiengen"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "press:wir-brauchen-suedlink",
+    "title": "Wir brauchen SuedLink",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no station named in title, subheads or lead; the linked project has no location either",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "project:380-kv-netzverstaerkung-mittlerer-neckarraum",
+    "title": "Mittlerer Neckarraum",
+    "location_status": "ambiguous",
+    "location_text": "Mittlerer Neckarraum",
+    "note": "line or area project: no single representative point",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "project:birkenfeld-punkt-oetisheim",
+    "title": "Birkenfeld – Punkt Ötisheim",
+    "location_status": "ambiguous",
+    "location_text": "Birkenfeld, Ötisheim",
+    "note": "line or area project: no single representative point",
+    "endpoints": [
+     "Birkenfeld",
+     "Ötisheim"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "project:eichstetten-bundesgrenze-frankreich",
+    "title": "Eichstetten – Bundesgrenze Frankreich",
+    "location_status": "ambiguous",
+    "location_text": "Eichstetten, Bundesgrenze Frankreich",
+    "note": "line or area project: no single representative point",
+    "endpoints": [
+     "Eichstetten",
+     "Bundesgrenze Frankreich"
+    ],
+    "flags": [
+     "cross_border"
+    ]
+   },
+   {
+    "source_record_id": "project:grafenrheinfeld-kupferzell-grossgartach",
+    "title": "Grafenrheinfeld – Kupferzell – Großgartach",
+    "location_status": "ambiguous",
+    "location_text": "Grafenrheinfeld, Kupferzell, Großgartach",
+    "note": "line or area project: no single representative point",
+    "endpoints": [
+     "Grafenrheinfeld",
+     "Kupferzell",
+     "Großgartach"
+    ],
+    "flags": [
+     "cross_border"
+    ]
+   },
+   {
+    "source_record_id": "project:hochrhein",
+    "title": "Hochrhein | Herbertingen – Waldshut-Tiengen",
+    "location_status": "ambiguous",
+    "location_text": "Herbertingen, Waldshut-Tiengen, Hochrhein",
+    "note": "line or area project: no single representative point",
+    "endpoints": [
+     "Herbertingen",
+     "Waldshut-Tiengen"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "project:netzverstaerkung-badische-rheinschiene",
+    "title": "Netzverstärkung Badische Rheinschiene",
+    "location_status": "ambiguous",
+    "location_text": "Badische Rheinschiene",
+    "note": "line or area project: no single representative point",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "project:netzverstaerkung-neckar-odenwald",
+    "title": "Netzverstärkung Neckar-Odenwald",
+    "location_status": "ambiguous",
+    "location_text": "Neckar-Odenwald",
+    "note": "line or area project: no single representative point",
+    "endpoints": [],
+    "flags": []
+   },
+   {
+    "source_record_id": "project:netzverstaerkung-reicheneck-rommelsbach",
+    "title": "Reicheneck–Rommelsbach",
+    "location_status": "ambiguous",
+    "location_text": "Reicheneck, Rommelsbach",
+    "note": "line or area project: no single representative point",
+    "endpoints": [
+     "Reicheneck",
+     "Rommelsbach"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "project:netzverstaerkung-weinheim-karlsruhe",
+    "title": "Weinheim – Karlsruhe",
+    "location_status": "ambiguous",
+    "location_text": "Weinheim, Karlsruhe",
+    "note": "line or area project: no single representative point",
+    "endpoints": [
+     "Weinheim",
+     "Karlsruhe"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "project:rippolingen-istein",
+    "title": "Rippolingen – Istein",
+    "location_status": "ambiguous",
+    "location_text": "Rippolingen, Istein",
+    "note": "line or area project: no single representative point",
+    "endpoints": [
+     "Rippolingen",
+     "Istein"
+    ],
+    "flags": []
+   },
+   {
+    "source_record_id": "project:stalldorf-main-tauber",
+    "title": "Stalldorf / Main-Tauber",
+    "location_status": "ambiguous",
+    "location_text": "Stalldorf, Main-Tauber",
+    "note": "line or area project: no single representative point",
+    "endpoints": [
+     "Stalldorf"
+    ],
+    "flags": [
+     "cross_border"
+    ]
+   },
+   {
+    "source_record_id": "project:suedlink",
+    "title": "SuedLink",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no place named in the title",
+    "endpoints": [],
+    "flags": [
+     "portrait_missing"
+    ]
+   },
+   {
+    "source_record_id": "project:ultranet",
+    "title": "ULTRANET",
+    "location_status": "unresolved",
+    "location_text": null,
+    "note": "no place named in the title",
+    "endpoints": [],
+    "flags": []
+   }
+  ]
+ },
+ "dates": {
+  "press_releases": 97,
+  "verified": 97,
+  "not_verified": []
+ },
+ "exclusions": [
+  {
+   "code": "excluded_outside_bw",
+   "source_record_id": "press:baustart-fur-suedlink-in-bayern",
+   "source_url": "https://www.transnetbw.de/de/newsroom/news/baustart-fur-suedlink-in-bayern",
+   "message": "not loaded: outside bw",
+   "evidence": "the title places the release outside Baden-Württemberg"
+  },
+  {
+   "code": "excluded_out_of_scope_no_signal",
+   "source_record_id": "press:einsatz-in-luftiger-hoehe-leitungsinspektion-per-hubschrauber",
+   "source_url": "https://www.transnetbw.de/de/newsroom/news/einsatz-in-luftiger-hoehe-leitungsinspektion-per-hubschrauber",
+   "message": "not loaded: out of scope no signal",
+   "evidence": null
+  },
+  {
+   "code": "excluded_out_of_scope_policy",
+   "source_record_id": "press:Freileitungsvorrang-konsequent-umsetzen",
+   "source_url": "https://www.transnetbw.de/de/newsroom/news/Freileitungsvorrang-konsequent-umsetzen",
+   "message": "not loaded: out of scope policy",
+   "evidence": "Freileitungsvorrang konsequent umsetzen: Breites Bündnis fordert Nachbesserungen am Bundesbedarfsplangesetz"
+  },
+  {
+   "code": "excluded_out_of_scope_policy",
+   "source_record_id": "press:freileitungsvorrang-staerkt-netzausbau-einschraenkungen-schaffen-unsicherheit",
+   "source_url": "https://www.transnetbw.de/de/newsroom/news/freileitungsvorrang-staerkt-netzausbau-einschraenkungen-schaffen-unsicherheit",
+   "message": "not loaded: out of scope policy",
+   "evidence": "Freileitungsvorrang stärkt Netzausbau – Einschränkungen schaffen Unsicherheit"
+  },
+  {
+   "code": "excluded_outside_bw",
+   "source_record_id": "press:offizieller-bauauftakt-fuer-suedlink-in-hessen-netzausbau-macht-grosse-fortschritte",
+   "source_url": "https://www.transnetbw.de/de/newsroom/news/offizieller-bauauftakt-fuer-suedlink-in-hessen-netzausbau-macht-grosse-fortschritte",
+   "message": "not loaded: outside bw",
+   "evidence": "the title places the release outside Baden-Württemberg"
+  },
+  {
+   "code": "excluded_outside_bw",
+   "source_record_id": "press:suedlink-bau-in-bayern-kann-starten",
+   "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-bau-in-bayern-kann-starten",
+   "message": "not loaded: outside bw",
+   "evidence": "the title places the release outside Baden-Württemberg"
+  },
+  {
+   "code": "excluded_outside_bw",
+   "source_record_id": "press:suedlink-bau-in-hessen-kann-starten",
+   "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-bau-in-hessen-kann-starten",
+   "message": "not loaded: outside bw",
+   "evidence": "the title places the release outside Baden-Württemberg"
+  },
+  {
+   "code": "excluded_outside_bw",
+   "source_record_id": "press:suedlink-erste-tiefbau-arbeiten-in-unterfranken-vergeben",
+   "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-erste-tiefbau-arbeiten-in-unterfranken-vergeben",
+   "message": "not loaded: outside bw",
+   "evidence": "the title places the release outside Baden-Württemberg"
+  },
+  {
+   "code": "excluded_out_of_scope_back_office",
+   "source_record_id": "press:transnetbw-nimmt-neue-loesung-fuer-die-abrechnungspruefung-im-engpass-management-in-betrieb",
+   "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-nimmt-neue-loesung-fuer-die-abrechnungspruefung-im-engpass-management-in-betrieb",
+   "message": "not loaded: out of scope back office",
+   "evidence": "TransnetBW nimmt neue Lösung für die Abrechnungsprüfung im Engpass-Management in Betrieb"
+  },
+  {
+   "code": "excluded_out_of_scope_policy",
+   "source_record_id": "press:transnetbw-startet-um-und-neubau-des-umspannwerkes-wendlingen-1",
+   "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-startet-um-und-neubau-des-umspannwerkes-wendlingen-1",
+   "message": "not loaded: out of scope policy",
+   "evidence": "Expertenkommission rät zur Überprüfung des Erdkabelvorrangs"
+  },
+  {
+   "code": "excluded_out_of_scope_no_signal",
+   "source_record_id": "press:umweltminister-franz-untersteller-besucht-transnetbw-hauptschaltleitung",
+   "source_url": "https://www.transnetbw.de/de/newsroom/news/umweltminister-franz-untersteller-besucht-transnetbw-hauptschaltleitung",
+   "message": "not loaded: out of scope no signal",
+   "evidence": null
+  },
+  {
+   "code": "excluded_out_of_scope_maintenance",
+   "source_record_id": "project:seiltausch-hoellental",
+   "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/seiltausch-hoellental",
+   "message": "not loaded: out of scope maintenance",
+   "evidence": "Seiltausch Höllental (LA5120) willkommen im projekt"
+  },
+  {
+   "code": "excluded_outside_bw",
+   "source_record_id": "project:umspannwerk-stalldorf",
+   "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-stalldorf",
+   "message": "not loaded: outside bw",
+   "evidence": "Stalldorf (Umspannwerk Stalldorf) lies outside Baden-Württemberg"
+  }
+ ],
+ "discovery": [
+  {
+   "code": "discovery_listing_only",
+   "source_record_id": "project:stalldorf-main-tauber"
+  },
+  {
+   "code": "discovery_sitemap_only",
+   "source_record_id": "project:schaltanlage-obermooweiler"
+  },
+  {
+   "code": "discovery_sitemap_only",
+   "source_record_id": "project:seiltausch-hoellental"
+  }
+ ],
+ "issues": {
+  "by_code": [
+   {
+    "severity": "info",
+    "code": "duplicate_in_feed",
+    "count": 1
+   },
+   {
+    "severity": "info",
+    "code": "excluded_out_of_scope_back_office",
+    "count": 1
+   },
+   {
+    "severity": "info",
+    "code": "excluded_out_of_scope_maintenance",
+    "count": 1
+   },
+   {
+    "severity": "info",
+    "code": "excluded_out_of_scope_no_signal",
+    "count": 2
+   },
+   {
+    "severity": "info",
+    "code": "excluded_out_of_scope_policy",
+    "count": 3
+   },
+   {
+    "severity": "info",
+    "code": "excluded_outside_bw",
+    "count": 6
+   },
+   {
+    "severity": "info",
+    "code": "location_ambiguous",
+    "count": 22
+   },
+   {
+    "severity": "warning",
+    "code": "discovery_listing_only",
+    "count": 1
+   },
+   {
+    "severity": "warning",
+    "code": "discovery_sitemap_only",
+    "count": 2
+   },
+   {
+    "severity": "warning",
+    "code": "location_unresolved",
+    "count": 46
+   }
+  ],
+  "errors": []
+ },
+ "review_queue": [
+  {
+   "source_record_id": "press:bwihk-stromstudie-2024-unterstreicht-die-dringlichkeit-des-stromnetzausbaus",
+   "title": "BWIHK-Stromstudie 2024 unterstreicht die Dringlichkeit des Stromnetzausbaus",
+   "reasons": [
+    "no_project_and_no_location"
+   ]
+  },
+  {
+   "source_record_id": "press:effizienteres-engpassmanagement-uebertragungsnetzbetreiber-nehmen-redispatch-abwicklungsserver-ras-in-betrieb",
+   "title": "Effizienteres Engpassmanagement: Übertragungsnetzbetreiber nehmen Redispatch-Abwicklungsserver (RAS) in Betrieb",
+   "reasons": [
+    "no_project_and_no_location"
+   ]
+  },
+  {
+   "source_record_id": "press:energiewende-monitoringbericht",
+   "title": "Der Netzausbau ist ein wichtiger Schlüssel für die Energiewende",
+   "reasons": [
+    "no_project_and_no_location"
+   ]
+  },
+  {
+   "source_record_id": "press:erdkabelbericht-zieht-zwischenbilanz",
+   "title": "Erdkabelbericht zieht Zwischenbilanz",
+   "reasons": [
+    "no_project_and_no_location"
+   ]
+  },
+  {
+   "source_record_id": "press:hoeherauslastung-der-stromleitungen-hilft-im-winter",
+   "title": "Höherauslastung der Stromleitungen hilft im Winter",
+   "reasons": [
+    "no_project_and_no_location"
+   ]
+  },
+  {
+   "source_record_id": "press:hydrogreen-boost-studie-bestaetigt-wirtschaftlichkeit-und-grosses-potenzial-fur-hybride-netzbooster",
+   "title": "HydrogREenBoost: Studie bestätigt Wirtschaftlichkeit und großes Potenzial für hybride Netzbooster",
+   "reasons": [
+    "no_project_and_no_location"
+   ]
+  },
+  {
+   "source_record_id": "press:kleinstflexibilitaeten-als-beitrag-fuer-das-netzengpassmanagement",
+   "title": "Kleinstflexibilitäten als Beitrag für das Netzengpassmanagement",
+   "reasons": [
+    "no_project_and_no_location"
+   ]
+  },
+  {
+   "source_record_id": "press:netzbauprojekt-rippolingen-istein-transnetbw-modernisiert-zwei-leitungsanlagen-in-den-landkreisen-loerrach-und-waldshut",
+   "title": "Netzbauprojekt Rippolingen – Istein: Transnet BW modernisiert zwei Leitungsanlagen in den Landkreisen Lörrach und Waldshut",
+   "reasons": [
+    "low_confidence_classification"
+   ]
+  },
+  {
+   "source_record_id": "press:startschuss-fuer-witterungsabhaengigen-freileitungsbetrieb-3-0",
+   "title": "Startschuss für witterungsabhängigen Freileitungsbetrieb 3.0 - TransnetBW und energy & meteo systems legen rund 300 Standorte zur echtzeitfähigen Erfassung der Belastbarkeit von Freileitungen fest",
+   "reasons": [
+    "no_project_and_no_location"
+   ]
+  },
+  {
+   "source_record_id": "press:transnetbw-und-netze-bw-staerken-gemeinsam-oekologisches-trassenmanagement",
+   "title": "TransnetBW und Netze BW stärken gemeinsam Ökologisches Trassenmanagement",
+   "reasons": [
+    "no_project_and_no_location"
+   ]
+  },
+  {
+   "source_record_id": "press:uebertragungsnetzbetreiber-veroeffentlichen-ersten-entwurf-des-netzentwicklungsplans-2037-2045",
+   "title": "Bürgerdialog informiert Bürgerschaft in Oberjettingen zur geplanten Erweiterung und zumNeubau des örtlichen Umspannwerks",
+   "reasons": [
+    "no_project_and_no_location"
+   ]
+  }
+ ]
+}
