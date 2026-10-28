@@ -22,7 +22,7 @@ from sqlalchemy import create_engine
 
 from app.transnetbw import report
 from app.transnetbw.config import TransnetBWSettings
-from app.transnetbw.fetch import FixtureFetcher, LiveFetcher, load_fixture_index
+from app.transnetbw.fetch import FixtureFetcher, LiveFetcher, load_fixture_index, load_snapshot_index
 from app.transnetbw.harvester import Harvester
 
 
@@ -46,6 +46,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     harvest.add_argument("--offline", action="store_true", help="read the committed fixtures instead of transnetbw.de")
     harvest.add_argument("--fixtures", type=Path, help="fixture directory for --offline (default: fixtures/transnetbw)")
+    harvest.add_argument(
+        "--replay",
+        type=Path,
+        metavar="SNAPSHOT_DIR",
+        help="re-process a live run's raw snapshot (data/raw/transnetbw/run-*) without contacting the site",
+    )
     harvest.add_argument("--full", action="store_true", help="refetch every document, ignoring the sitemap lastmod")
     harvest.add_argument("--since", type=date.fromisoformat, help="earliest press release date to fetch (default: 2020-01-01)")
     harvest.add_argument("--dry-run", action="store_true", help="do everything, then roll the data back")
@@ -114,6 +120,8 @@ def harvest(args, settings: TransnetBWSettings) -> int:
     if not url:
         return 1
 
+    context = {}
+
     if args.offline:
 
         fixtures = Path(args.fixtures or settings.fixtures_dir)
@@ -121,6 +129,16 @@ def harvest(args, settings: TransnetBWSettings) -> int:
         fetcher = FixtureFetcher(load_fixture_index(fixtures / "index.json"))
 
         mode = "offline"
+
+    elif args.replay:
+
+        # The snapshot holds documents as the live site served them, so a
+        # replay is a live run; the source is recorded with it.
+        fetcher = FixtureFetcher(load_snapshot_index(args.replay))
+
+        mode = "live"
+
+        context = {"replay": str(args.replay)}
 
     else:
 
@@ -136,7 +154,10 @@ def harvest(args, settings: TransnetBWSettings) -> int:
 
     try:
 
-        result = Harvester(settings, fetcher, engine, mode, echo=echo).run(full=args.full, dry_run=args.dry_run)
+        result = Harvester(settings, fetcher, engine, mode, echo=echo, context=context).run(
+            full=args.full,
+            dry_run=args.dry_run,
+        )
 
         report_path = None
 

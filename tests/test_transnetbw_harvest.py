@@ -8,6 +8,7 @@ The expectations are worked out by hand from the fixtures (8 projects and
 projects, so 17 are reported as not captured).
 """
 
+import json
 import shutil
 from dataclasses import replace
 from datetime import datetime, timezone
@@ -432,3 +433,22 @@ def ledger(outcome="parsed", lastmod=LASTMOD):
 )
 def test_a_document_is_fetched_only_when_it_may_have_changed(entry, lastmod, full, expected):
     assert needs_fetch(entry, lastmod, full) is expected
+
+
+@pytest.mark.integration
+def test_a_feed_title_that_disagrees_with_the_page_is_flagged(engine, tmp_path):
+    feed = json.loads((FIXTURES / "press-releases.json").read_text(encoding="utf-8"))
+
+    for item in feed:
+        if item["url"].endswith("/feierlicher-baubeginn-des-netzboosters"):
+            item["title"] = "Expertenkommission rät zur Überprüfung des Erdkabelvorrangs"
+
+    changed = variant(tmp_path, edits={"press-releases.json": json.dumps(feed, ensure_ascii=False)})
+
+    harvest(engine, changed)
+
+    row = signal(engine, "press:feierlicher-baubeginn-des-netzboosters")
+
+    # The page's own title is kept, and the disagreement is visible.
+    assert row["title"] == "Feierlicher Baubeginn des Netzboosters"
+    assert "feed_title_mismatch" in row["quality_flags"]

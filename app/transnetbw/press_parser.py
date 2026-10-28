@@ -110,6 +110,18 @@ def parse_german_date(text: str | None) -> date | None:
         return None
 
 
+def titles_agree(first: str | None, second: str | None) -> bool:
+    """
+    Same title, ignoring case, spacing and punctuation. The live feed writes
+    "zumNeubau" where the page has "zum Neubau"; that is not a mismatch.
+    """
+
+    def key(text):
+        return re.sub(r"[\W_]+", "", (clean_text(text) or "").casefold())
+
+    return key(first) == key(second)
+
+
 def strip_dateline(paragraph: str) -> tuple[str | None, str]:
     """
     (dateline, rest) — or (None, paragraph) when it does not open with one.

@@ -273,3 +273,39 @@ def test_a_dateline_place_is_not_a_project_location(geocoder):
     )
 
     assert location.status == "unresolved"
+
+
+# =========================================================
+# REGRESSIONS FROM THE FIRST LIVE HARVEST (2026-10-28)
+# =========================================================
+
+
+def test_a_converter_mention_prefers_the_converter_station(geocoder):
+    """
+    Philippsburg has two TransnetBW stations: the AC substation and the
+    ULTRANET converter ("Gleichstrom-Umspannwerk").
+    """
+
+    location = geocoder.locate_press("Feierliche Inbetriebnahme des ULTRANET-Konverters in Philippsburg", [], None)
+
+    assert location.status == "resolved"
+    assert location.precision == "substation"
+    assert location.source == "osm:way/691662101"
+
+
+def test_a_station_named_by_place_resolves_at_settlement_level_when_osm_has_none(geocoder):
+    """
+    The SuedLink converter in Leingarten is not in OSM yet; the place is.
+    """
+
+    location = geocoder.locate_press("SuedLink: Bau des Konverters in Leingarten ist genehmigt", [], None)
+
+    assert location.status == "resolved"
+    assert location.precision == "municipality"
+
+
+def test_a_station_mentioned_with_a_preposition_resolves(geocoder):
+    location = geocoder.locate_press("TransnetBW informierte über den Neubau des Umspannwerks in Wendlingen", [], None)
+
+    assert location.status == "resolved"
+    assert location.precision == "substation"

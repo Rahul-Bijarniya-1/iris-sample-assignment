@@ -220,3 +220,26 @@ def test_an_article_without_a_title_is_a_parse_error():
 
     with pytest.raises(ParseError, match="no page title"):
         parse_article(html, f"{NEWS}/feierlicher-baubeginn-des-netzboosters")
+
+
+# =========================================================
+# FEED VS PAGE TITLE
+# =========================================================
+
+
+from app.transnetbw.press_parser import titles_agree  # noqa: E402
+
+
+def test_titles_that_differ_only_in_spacing_agree():
+    # The live feed writes "zumNeubau" where the page has "zum Neubau".
+    assert titles_agree(
+        "Bürgerdialog informiert Bürgerschaft in Oberjettingen zur geplanten Erweiterung und zumNeubau",
+        "Bürgerdialog informiert Bürgerschaft in Oberjettingen zur geplanten Erweiterung und zum Neubau",
+    )
+
+
+def test_different_titles_do_not_agree():
+    assert not titles_agree(
+        "Expertenkommission rät zur Überprüfung des Erdkabelvorrangs",
+        "TransnetBW startet Um- und Neubau des Umspannwerkes Wendlingen",
+    )

@@ -331,3 +331,30 @@ def test_offline_mode_never_falls_through_to_the_network(tmp_path):
 
     with pytest.raises(FetchError, match="not in the fixture index"):
         fetcher.fetch(f"{BASE}/de/netzentwicklung/projekte/suedlink")
+
+
+# =========================================================
+# SNAPSHOT REPLAY
+# =========================================================
+
+
+from app.transnetbw.fetch import load_snapshot_index  # noqa: E402
+
+
+def test_a_raw_snapshot_replays_the_latest_capture_of_each_url(tmp_path):
+    (tmp_path / "old.html").write_bytes(b"<main>old</main>")
+    (tmp_path / "new.html").write_bytes(b"<main>new</main>")
+
+    entries = [
+        {"url": LISTING, "final_url": LISTING, "status": 200, "content_type": "text/html", "sha256": "1", "file": "old.html", "fetched_at": "2026-10-28T16:20:00+00:00"},
+        {"url": LISTING, "final_url": LISTING, "status": 200, "content_type": "text/html", "sha256": "2", "file": "new.html", "fetched_at": "2026-10-28T16:25:00+00:00"},
+    ]
+
+    (tmp_path / "index.jsonl").write_text("\n".join(json.dumps(entry) for entry in entries) + "\n")
+
+    fetcher = FixtureFetcher(load_snapshot_index(tmp_path))
+
+    result = fetcher.fetch(LISTING)
+
+    assert result.text == "<main>new</main>"
+    assert result.fetched_at.isoformat() == "2026-10-28T16:25:00+00:00"

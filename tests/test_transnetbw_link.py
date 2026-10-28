@@ -95,3 +95,9 @@ def test_every_alias_names_a_project_discovery_finds(aliases):
 
     assert aliases
     assert set(aliases) <= listing | sitemap
+
+
+def test_a_substation_project_named_with_a_preposition_is_linked(aliases):
+    result = link_project("TransnetBW informierte über den Neubau des Umspannwerks in Wendlingen", aliases)
+
+    assert result.slug == "umspannwerk-wendlingen"

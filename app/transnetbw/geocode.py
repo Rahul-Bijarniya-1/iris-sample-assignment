@@ -62,9 +62,21 @@ class GazetteerEntry:
 
     names: tuple[str, ...] = ()
 
+    power: str | None = None
+
     @property
     def all_names(self) -> tuple[str, ...]:
         return self.names or (self.name,)
+
+    @property
+    def is_converter(self) -> bool:
+        """
+        An HVDC converter station ("Konverter", "Gleichstrom-Umspannwerk").
+        """
+
+        return self.power == "converter" or any(
+            re.search(r"konverter|gleichstrom", name, re.IGNORECASE) for name in self.all_names
+        )
 
     @property
     def precision(self) -> str:
@@ -201,6 +213,7 @@ class Gazetteer:
                 source=f"osm:{entry['osm']}",
                 operator=entry.get("operator"),
                 names=tuple(entry["names"]),
+                power=entry.get("power"),
             )
             for entry in osm["substations"]
             if entry["names"]
@@ -242,13 +255,20 @@ class Gazetteer:
     def contains(self, x: float, y: float) -> bool:
         return self._prepared.contains(Point(x, y))
 
-    def resolve(self, place: str, substations_only: bool = False) -> Resolution:
+    def resolve(self, place: str, substations_only: bool = False, prefer_converter: bool = False) -> Resolution:
 
         stations = [
             entry
             for entry in self.substations
             if any(_mentions(name, place) for name in entry.all_names)
         ]
+
+        if len(stations) > 1 and prefer_converter:
+
+            converters = [entry for entry in stations if entry.is_converter]
+
+            if len(converters) == 1:
+                stations = converters
 
         if len(stations) > 1:
 
@@ -364,9 +384,13 @@ def extract_title_places(title: str, vocabulary=None) -> TitlePlaces:
 # =========================================================
 
 
+# "Umspannwerk Beuren", "Umspannwerks in Wendlingen", "ULTRANET-Konverters
+# in Philippsburg", "Gleichstrom-Umspannwerks in Philippsburg". A converter
+# word or a "Gleichstrom-" prefix makes the converter station preferred.
 SUBSTATION_MENTION = re.compile(
-    r"(?:Umspannwerk(?:s|es)?|UW|Netzknoten(?:s)?|Schaltanlage|Konverter(?:s)?(?:\s+in)?)"
-    r"\s+([A-ZÄÖÜ][\wäöüß]+(?:-[A-ZÄÖÜ][\wäöüß]+)?)"
+    r"(?P<dc>Gleichstrom-)?(?P<kind>Umspannwerk(?:s|es)?|UW|Netzknoten(?:s)?|Schaltanlage|Konverter(?:s)?)"
+    r"(?:\s+(?:in|am|bei))?"
+    r"\s+(?P<name>[A-ZÄÖÜ][\wäöüß]+(?:-[A-ZÄÖÜ][\wäöüß]+)?)"
 )
 
 
@@ -430,9 +454,13 @@ class Geocoder:
             note=note or resolution.note,
         )
 
-    def _endpoint(self, place: str, substations_only: bool = False) -> dict:
+    def _endpoint(self, place: str, substations_only: bool = False, prefer_converter: bool = False) -> dict:
 
-        resolution = self.gazetteer.resolve(place, substations_only=substations_only)
+        resolution = self.gazetteer.resolve(
+            place,
+            substations_only=substations_only,
+            prefer_converter=prefer_converter,
+        )
 
         entry = resolution.entry
 
@@ -537,16 +565,19 @@ class Geocoder:
         project_location: Location | None = None,
     ) -> Location:
 
-        mentions = []
+        mentions: dict[str, bool] = {}
 
         for text in (title, *subheads, lead):
 
             for match in SUBSTATION_MENTION.finditer(clean_text(text) or ""):
 
-                if match.group(1) not in mentions:
-                    mentions.append(match.group(1))
+                converter = bool(match.group("dc")) or match.group("kind").startswith("Konverter")
 
-        endpoints = [self._endpoint(name, substations_only=True) for name in mentions]
+                mentions[match.group("name")] = mentions.get(match.group("name"), False) or converter
+
+        # A named station resolves like a project place: the station itself,
+        # else its settlement or municipality ("Konverter in Leingarten").
+        endpoints = [self._endpoint(name, prefer_converter=converter) for name, converter in mentions.items()]
 
         resolved = [endpoint for endpoint in endpoints if endpoint["status"] == "resolved"]
 
@@ -562,7 +593,7 @@ class Geocoder:
 
         if len(resolved) == 1:
             place = resolved[0]["name"]
-            return self._point(place, self.gazetteer.resolve(place, substations_only=True), place)
+            return self._point(place, self.gazetteer.resolve(place, prefer_converter=mentions[place]), place)
 
         if len(resolved) > 1:
             return self._multi(

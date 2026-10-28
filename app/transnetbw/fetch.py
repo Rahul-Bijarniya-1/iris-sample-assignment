@@ -366,6 +366,8 @@ class FixtureDocument:
 
     final_url: str
 
+    fetched_at: datetime | None = None
+
 
 @dataclass(frozen=True)
 class FixtureIndex:
@@ -397,6 +399,48 @@ def load_fixture_index(path: str | Path) -> FixtureIndex:
 
     return FixtureIndex(
         retrieved_at=datetime.fromisoformat(data["retrieved_at"]),
+        documents=documents,
+    )
+
+
+def load_snapshot_index(directory: str | Path) -> FixtureIndex:
+    """
+    Replay a LiveFetcher raw snapshot (index.jsonl + content files): the
+    latest capture of each URL, with its own fetch time. Lets a run be
+    re-processed without contacting the site again.
+    """
+
+    directory = Path(directory)
+
+    latest: dict[str, dict] = {}
+
+    for line in (directory / "index.jsonl").read_text(encoding="utf-8").splitlines():
+
+        if not line.strip():
+            continue
+
+        entry = json.loads(line)
+
+        held = latest.get(entry["url"])
+
+        if held is None or entry["fetched_at"] >= held["fetched_at"]:
+            latest[entry["url"]] = entry
+
+    documents = {
+        url: FixtureDocument(
+            file=directory / entry["file"],
+            status=int(entry["status"]),
+            content_type=entry.get("content_type"),
+            final_url=entry.get("final_url") or url,
+            fetched_at=datetime.fromisoformat(entry["fetched_at"]),
+        )
+        for url, entry in latest.items()
+    }
+
+    times = [document.fetched_at for document in documents.values()]
+
+    return FixtureIndex(
+        retrieved_at=min(times) if times else datetime.now(timezone.utc),
         documents=documents,
     )
 
@@ -441,6 +485,6 @@ class FixtureFetcher:
             status=document.status,
             content=content,
             content_type=document.content_type,
-            fetched_at=self.index.retrieved_at,
+            fetched_at=document.fetched_at or self.index.retrieved_at,
             sha256=_sha256(content),
         )

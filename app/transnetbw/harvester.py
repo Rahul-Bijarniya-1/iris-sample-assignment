@@ -50,7 +50,7 @@ from app.transnetbw.fetch import FetchError, FetchResult, NotCapturedError
 from app.transnetbw.geocode import Gazetteer, Geocoder, Location
 from app.transnetbw.link import link_project, load_aliases
 from app.transnetbw.normalize import SignalRecord, cap
-from app.transnetbw.press_parser import parse_article, parse_feed
+from app.transnetbw.press_parser import parse_article, parse_feed, titles_agree
 from app.transnetbw.project_parser import parse_project_page
 from app.transnetbw.store import LedgerEntry, RunLog, SignalStore
 
@@ -180,6 +180,7 @@ class Harvester:
         aliases: dict | None = None,
         clock: Callable[[], datetime] | None = None,
         echo: Callable[[dict], None] | None = None,
+        context: dict | None = None,
     ):
         self.settings = settings
 
@@ -197,9 +198,12 @@ class Harvester:
 
         self.echo = echo
 
+        # Recorded with the run, e.g. {"replay": "<snapshot dir>"}.
+        self.context = context or {}
+
     def run(self, full: bool = False, dry_run: bool = False) -> HarvestResult:
 
-        config = {**self.settings.public_dict(), "full": full, "dry_run": dry_run}
+        config = {**self.settings.public_dict(), **self.context, "full": full, "dry_run": dry_run}
 
         version = code_version()
 
@@ -842,6 +846,16 @@ class _Run:
         title = article.title or item.title
 
         flags: list[str] = []
+
+        if not titles_agree(item.title, article.title):
+            flags.append("feed_title_mismatch")
+            self.issue(
+                "warning",
+                "feed_title_mismatch",
+                f"feed title {item.title!r} differs from the page title {article.title!r}; the page title is kept",
+                record=key,
+                url=item.url,
+            )
 
         published, verified = None, False
 

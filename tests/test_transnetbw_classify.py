@@ -202,3 +202,56 @@ def test_the_completed_section_of_the_listing_marks_a_project_in_operation():
 
     assert stage == "in_operation"
     assert "Abgeschlossene Projekte" in evidence
+
+
+# =========================================================
+# REGRESSIONS FROM THE FIRST LIVE HARVEST (2026-10-28)
+# =========================================================
+
+
+@pytest.mark.parametrize(
+    "title, subheads, expected",
+    [
+        # Permission to build is approval, even when construction is named.
+        ("SuedLink: Bau des Konverters in Leingarten ist genehmigt", [], "approval"),
+        ("TransnetBW startet vorzeitig mit dem Bau des Netzboosters Kupferzell", [], "construction"),
+        ("TransnetBW startet Um- und Neubau des Umspannwerkes Wendlingen", [], "construction"),
+        ("TransnetBW beginnt mit der Erweiterung des Umspannwerks Pulverdingen", [], "construction"),
+        ("Einweihung der gasisolierten Schaltanlage am Standort Philippsburg", [], "in_operation"),
+    ],
+)
+def test_live_press_titles_carry_the_right_milestone(title, subheads, expected):
+    stage, _ = press_stage(title, subheads, None)
+
+    assert stage == expected
+
+
+@pytest.mark.parametrize(
+    "title, subheads",
+    [
+        (
+            "Nächster Schritt der Realisierung: Regionale SuedLink-Planungsbüros nehmen Arbeit auf",
+            ["Vergabe der Regionalen Planungsbüros (RPB) abgeschlossen", "Erste Planungsbüros im Norden am Start"],
+        ),
+        (
+            "HydrogREenBoost: Studie bestätigt Wirtschaftlichkeit und großes Potenzial für hybride Netzbooster",
+            ["Das nun abgeschlossene Forschungsprojekt zeigt, dass die Technologie überzeugt."],
+        ),
+    ],
+)
+def test_a_completed_procedure_or_study_is_not_a_commissioned_asset(title, subheads):
+    """
+    "abgeschlossen" alone (an award procedure, a research project) says
+    nothing about an asset going into operation.
+    """
+
+    stage, _ = press_stage(title, subheads, None)
+
+    assert stage != "in_operation"
+
+
+def test_back_office_systems_are_not_grid_capacity_signals():
+    result = classify("TransnetBW nimmt neue Lösung für die Abrechnungsprüfung im Engpass-Management in Betrieb")
+
+    assert not result.included
+    assert result.exclusion == "out_of_scope_back_office"

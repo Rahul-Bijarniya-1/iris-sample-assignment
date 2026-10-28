@@ -53,6 +53,10 @@ BODY_CAPACITY = re.compile(
 
 EXCLUSIONS = (
     (
+        "out_of_scope_back_office",
+        re.compile(r"abrechnung|rechnungsprüfung", re.IGNORECASE),
+    ),
+    (
         "out_of_scope_maintenance",
         re.compile(r"seiltausch|leiterseil(?:wechsel|tausch)|korrosionsschutz|mastsanierung|isolatortausch", re.IGNORECASE),
     ),
@@ -217,13 +221,19 @@ def classify(subject: str, body: str = "") -> Classification:
 
 
 STAGE_CUES = {
+    # "abgeschlossen" counts only after a construction noun: a completed
+    # award procedure or research project commissions nothing.
     "in_operation": re.compile(
-        r"inbetriebnahme|in betrieb genommen|in betrieb\b|abgeschlossen|fertiggestellt|fertigstellung",
+        r"inbetriebnahme|in betrieb genommen|in betrieb gegangen|ans netz gegangen|fertiggestellt|"
+        r"einweihung|eingeweiht|"
+        r"(?:(?<![a-zäöüß])bau|umbau|neubau|ausbau|modernisierung|erweiterung)\w*(?:\W+\w+){0,8}?\W+abgeschlossen",
         re.IGNORECASE,
     ),
     "construction": re.compile(
         r"baubeginn|baustart|bauauftakt|spatenstich|bauarbeiten|baustelle|bauaktivität|"
-        r"baufortschritt|bauphase|leitungsbau|im bau\b|rückbau",
+        r"baufortschritt|bauphase|leitungsbau|im bau\b|rückbau|"
+        r"\bbau (?:des|der|eines|einer|von)\b|\bmit dem (?:um- und )?(?:neu|um)?bau\b|"
+        r"\bstartet\s+(?:den\s+)?(?:um- und )?(?:neu|um)?bau\b|\bbeginnt mit (?:der|dem|den)\b|\bbegonnen\b",
         re.IGNORECASE,
     ),
     "approval": re.compile(
@@ -257,22 +267,27 @@ def _first_cue(text: str | None) -> tuple[str, str] | None:
     that speak of the future.
     """
 
-    best = None
-
     for sentence in sentences(text or ""):
 
         if FUTURE.search(sentence):
             continue
 
-        for stage, pattern in STAGE_CUES.items():
+        found = {
+            stage: match
+            for stage, pattern in STAGE_CUES.items()
+            if (match := pattern.search(sentence))
+        }
 
-            found = pattern.search(sentence)
+        if not found:
+            continue
 
-            if found and (best is None or found.start() < best[0]):
-                best = (found.start(), stage, sentence)
+        # Permission to build is approval ("Bau des Konverters … ist genehmigt").
+        if "approval" in found and "construction" in found:
+            return "approval", cap(sentence, EVIDENCE_LIMIT)
 
-        if best:
-            return best[1], cap(best[2], EVIDENCE_LIMIT)
+        stage = min(found, key=lambda name: found[name].start())
+
+        return stage, cap(sentence, EVIDENCE_LIMIT)
 
     return None
 
