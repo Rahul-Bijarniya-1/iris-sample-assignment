@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import uuid
 from datetime import date, datetime, timezone
 from pathlib import Path
 
@@ -63,6 +64,7 @@ def build_parser() -> argparse.ArgumentParser:
     regenerate = commands.add_parser("report", help="regenerate artifacts/transnetbw from the database")
 
     regenerate.add_argument("--database-url", help="override TRANSNETBW_DATABASE_URL / DATABASE_URL")
+    regenerate.add_argument("--run-id", type=uuid.UUID, help="report on this run (default: the latest)")
 
     return parser
 
@@ -196,7 +198,7 @@ def regenerate(args, settings: TransnetBWSettings) -> int:
     engine = create_engine(url)
 
     try:
-        path = report.write_artifacts(engine, settings, None)
+        path = report.write_artifacts(engine, settings, run_id=args.run_id)
 
     finally:
         engine.dispose()

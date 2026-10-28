@@ -96,8 +96,12 @@ SOURCE_FINDINGS = [
     "robots.txt disallows only /neos/.",
     "/de/sitemap.xml gives a lastmod for every URL; listing and sitemap disagree on three projects.",
     "Project pages carry no publication date and no coordinates.",
-    "The newsroom list is rendered by JavaScript from /de/api/press-releases (JSON, 564 items "
-    "from 2009-10-15 to 2026-10-15); article pages state their date as text (\"15. Oktober 2026\").",
+    "The newsroom list is rendered by JavaScript from /de/api/press-releases (JSON, 564 entries "
+    "from 2009-10-15 to 2026-10-15, one URL listed twice); article pages state their date as text "
+    "(\"15. Oktober 2026\").",
+    "The newsroom CMS reuses URL slugs for unrelated articles (e.g. …-umspannwerkes-wendlingen-1 is a "
+    "release on the underground-cable priority); the URL is a stable identifier, the page title is "
+    "authoritative.",
 ]
 
 CSV_COLUMNS = (
@@ -461,12 +465,13 @@ def render_markdown(data: dict) -> str:
     return "\n".join(out)
 
 
-def write_artifacts(engine, settings, result=None) -> Path:
+def write_artifacts(engine, settings, result=None, run_id=None) -> Path:
     """
     Write the sample exports and the quality report; returns the report path.
+    The report covers `result`'s run, else `run_id`, else the latest run.
     """
 
-    data = collect(engine, run_id=result.run_id if result else None)
+    data = collect(engine, run_id=result.run_id if result else run_id)
 
     directory = Path(settings.artifacts_dir)
 

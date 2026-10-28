@@ -96,3 +96,27 @@ def test_log_json_emits_one_parseable_event_per_line(migrated_database, capsys):
     assert {"record", "issue", "run_finished"} <= {event["event"] for event in events}
     assert events[-1]["event"] == "run_finished"
     assert events[-1]["exit_code"] == 0
+
+
+@pytest.mark.integration
+def test_the_report_can_be_regenerated_for_a_chosen_run(migrated_database, tmp_path, capsys, monkeypatch):
+    url = scratch_url(migrated_database)
+
+    monkeypatch.setenv("TRANSNETBW_ARTIFACTS_DIR", str(tmp_path))
+
+    cli.main(["harvest", "--offline", "--fixtures", _fixtures(), "--database-url", url, "--no-report"])
+    cli.main(["harvest", "--offline", "--fixtures", _fixtures(), "--database-url", url, "--no-report"])
+
+    import sqlalchemy as sa
+
+    engine = sa.create_engine(url)
+    with engine.connect() as conn:
+        first_run = conn.execute(sa.text("select run_id from iris_staging.ingest_run order by started_at limit 1")).scalar_one()
+    engine.dispose()
+
+    capsys.readouterr()
+
+    exit_code = cli.main(["report", "--database-url", url, "--run-id", str(first_run)])
+
+    assert exit_code == 0
+    assert str(first_run) in (tmp_path / "quality_report.md").read_text(encoding="utf-8")
