@@ -483,6 +483,29 @@ class SignalStore:
             source=self.source_system,
         ).rowcount
 
+    def project_locations(self) -> dict[str, dict]:
+        """
+        Stored location of every live project, keyed by source_record_id —
+        including projects not re-fetched this run, so a press release can
+        inherit the point of a project whose page did not change.
+        """
+
+        rows = self._execute(
+            f"""
+            select source_record_id, location_status, location_text, location_precision,
+                   ST_X(geom) as x, ST_Y(geom) as y,
+                   attributes -> 'endpoints' as endpoints,
+                   attributes -> 'regions' as regions,
+                   attributes ->> 'location_source' as source,
+                   quality_flags
+            from {SCHEMA}.signal_ingest
+            where source_system = :source and record_kind = 'project' and retired_at is null
+            """,
+            source=self.source_system,
+        ).mappings().all()
+
+        return {row["source_record_id"]: dict(row) for row in rows}
+
     # =====================================================
     # GATE INPUTS
     # =====================================================

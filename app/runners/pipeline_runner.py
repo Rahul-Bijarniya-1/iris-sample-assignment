@@ -136,6 +136,14 @@ from app.runners.osm_infrastructure_runner import (
     run as run_osm_infrastructure,
 )
 
+# ==========================================================
+# SIGNALS
+# ==========================================================
+
+from app.runners.transnetbw_runner import (
+    run as run_transnetbw,
+)
+
 
 class PipelineRunner:
     """
@@ -256,6 +264,14 @@ class PipelineRunner:
 
             "osm-infrastructure": (
                 self.osm_infrastructure
+            ),
+
+            # Deliberately not referenced by any phase() method: a live
+            # harvest of an external source (IRIS-SIG-30) is an explicit
+            # choice (`main.py transnetbw`), never a side effect of
+            # `main.py all`. See test_transnetbw_wiring.py.
+            "transnetbw": (
+                self.transnetbw
             ),
 
             "all": self.run_all,
@@ -877,6 +893,28 @@ class PipelineRunner:
     # ======================================================
     # OSM INFRASTRUCTURE
     # ======================================================
+
+    # ======================================================
+    # SIGNALS
+    # ======================================================
+
+    def transnetbw(self):
+        """
+        Live harvest of TransnetBW grid projects and press releases into
+        iris_staging.signal_ingest. Exits with the harvester's exit code
+        when it is not 0, so schedulers see partial and failed runs.
+        """
+
+        print(
+            "▶ Running TransnetBW Project Radar harvest..."
+        )
+
+        exit_code = run_transnetbw()
+
+        if exit_code:
+            raise SystemExit(exit_code)
+
+        return exit_code
 
     def osm_infrastructure(self):
 

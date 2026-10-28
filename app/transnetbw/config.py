@@ -80,6 +80,10 @@ class TransnetBWSettings(BaseSettings):
 
     gate_max_discovery_gap: int = Field(default=5, ge=0)
 
+    # Below this, the press feed is treated as truncated: its items are
+    # still processed, but nothing is retired on the strength of it.
+    gate_min_feed_items: int = Field(default=100, ge=0)
+
     # =====================================================
     # GEOCODING
     # =====================================================

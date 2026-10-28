@@ -70,6 +70,14 @@ class FetchError(Exception):
         self.status = status
 
 
+class NotCapturedError(FetchError):
+    """
+    Offline only: the fixture set does not contain this document. Not a
+    network failure — the harvester reports it as information and does not
+    count it against the fetch-failure gate.
+    """
+
+
 @dataclass(frozen=True)
 class FetchResult:
 
@@ -414,7 +422,7 @@ class FixtureFetcher:
         document = self.index.documents.get(url)
 
         if document is None:
-            raise FetchError(url, "not in the fixture index")
+            raise NotCapturedError(url, "not in the fixture index")
 
         self.request_count += 1
 
