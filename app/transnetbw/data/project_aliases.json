@@ -1,0 +1,33 @@
+{
+ "note": "Curated project-name patterns for linking press releases to projects. Each value is a list of case-insensitive regular expressions, matched against title + subheads + lead with dashes normalized to '-'. Patterns name a PROJECT, never a bare place: one substation (e.g. Kupferzell) serves several projects. Two different projects matching the same release means no link and a review flag.",
+ "aliases": {
+  "suedlink": ["\\bsuedlink\\b", "\\bsüdlink\\b"],
+  "ultranet": ["\\bultranet\\b"],
+  "netzbooster-kupferzell": [
+   "netzbooster\\W+(?:\\w+\\W+){0,4}kupferzell",
+   "kupferzell\\W+(?:\\w+\\W+){0,2}netzbooster"
+  ],
+  "birkenfeld-punkt-oetisheim": ["birkenfeld\\s*-\\s*(?:punkt\\s+)?ötisheim", "zwischen birkenfeld und ötisheim"],
+  "eichstetten-bundesgrenze-frankreich": ["eichstetten\\s*-\\s*bundesgrenze"],
+  "grafenrheinfeld-kupferzell-grossgartach": ["grafenrheinfeld\\s*-\\s*kupferzell\\s*-\\s*gro(?:ß|ss)gartach"],
+  "hochrhein": ["projekt(?:s|es)? hochrhein", "netzverstärkung hochrhein", "herbertingen\\s*-\\s*waldshut-tiengen"],
+  "380-kv-netzverstaerkung-mittlerer-neckarraum": ["netzverstärkung mittlere[nrs]? neckarraum", "mittlere[nrs]? neckarraum"],
+  "netzverstaerkung-badische-rheinschiene": ["badische[n]? rheinschiene", "\\(nbr\\)", "\\bnbr\\b"],
+  "netzverstaerkung-neckar-odenwald": ["netzverstärkung neckar-odenwald"],
+  "rippolingen-istein": ["rippolingen\\s*-\\s*istein"],
+  "netzverstaerkung-reicheneck-rommelsbach": ["reicheneck\\s*-\\s*rommelsbach"],
+  "netzverstaerkung-weinheim-karlsruhe": ["weinheim\\s*-\\s*karlsruhe"],
+  "umspannwerk-dellmensingen": ["umspannwerk(?:s|es)? dellmensingen", "\\buw dellmensingen\\b"],
+  "umspannwerk-uw-engstlatt": ["umspannwerk(?:s|es)? engstlatt", "\\buw engstlatt\\b"],
+  "netzknoten-kuehmoos": ["netzknoten(?:s)? kühmoos", "umspannwerk(?:s|es)? kühmoos"],
+  "projekte-am-standort-neckarwestheim": ["standort(?:es)? neckarwestheim"],
+  "umspannwerk-oberjettingen": ["umspannwerk(?:s|es)? oberjettingen", "\\buw oberjettingen\\b"],
+  "umspannwerk-pulverdingen": ["umspannwerk(?:s|es)? pulverdingen", "\\buw pulverdingen\\b"],
+  "umspannwerk-stalldorf": ["umspannwerk(?:s|es)? stalldorf"],
+  "umspannwerk-wendlingen": ["umspannwerk(?:s|es)? wendlingen", "\\buw wendlingen\\b"],
+  "umspannwerk-schwoerstadt": ["umspannwerk(?:s|es)? schwörstadt"],
+  "stalldorf-main-tauber": ["stalldorf\\s*[-/]\\s*main-tauber"],
+  "schaltanlage-obermooweiler": ["schaltanlage obermooweiler"],
+  "seiltausch-hoellental": ["seiltausch höllental"]
+ }
+}
