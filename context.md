@@ -19,10 +19,12 @@ keep both commands. **`TRANSNETBW.md` is the slice's README** (source, mapping, 
   - Live harvest done: 160 requests, then replayed with the fixed code, then a live
     incremental re-run of 4 requests that changed nothing.
   - Artifacts are in `artifacts/transnetbw/`.
-- **Not yet done:**
-  - `git push` and the PR, waiting on the user's OK (checkpoint 2).
-  - The GitHub Actions CI (`.github/workflows/ci.yml`) has not run yet.
-  - The Nominatim fallback was cut by agreement.
+- **Pushed** on 2026-10-28 with the user's OK.
+  - PR **#2**: https://github.com/Rahul-Bijarniya-1/iris-sample-assignment/pull/2
+  - CI is green on both the push and the pull_request run: 278 passed, 1 skipped, on
+    PostgreSQL 16.4 / PostGIS 3.4.3.
+  - Open: the merge decision, and an independent code review (the final review was a
+    self-review). The Nominatim fallback was cut by agreement.
 - **Databases:**
   - The harvester uses PostgreSQL 16.4 / PostGIS 3.4.3 in docker (`docker compose up -d
     postgis16`, port 5434). It needs OrbStack running.

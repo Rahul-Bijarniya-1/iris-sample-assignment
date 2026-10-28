@@ -427,8 +427,9 @@ All in `artifacts/transnetbw/`, from the live harvest of 2026-10-28:
   retires after two runs.
 - **Text is kept short on purpose** (summary ≤ 500 characters, snippets ≤ 200), out of
   respect for TransnetBW's copyright.
-- **CI** (`.github/workflows/ci.yml`, a PostGIS 16-3.4 service container) has not run yet;
-  it runs on the first push.
+- **CI** (`.github/workflows/ci.yml`) runs the whole suite on every push and pull request
+  against a `postgis/postgis:16-3.4` service container. Live-site tests never run there. The
+  first run, on 2026-10-28, passed: 278 passed, 1 skipped, on PostgreSQL 16.4 / PostGIS 3.4.3.
 
 ---
 
