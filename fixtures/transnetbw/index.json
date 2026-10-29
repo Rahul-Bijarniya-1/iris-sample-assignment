@@ -1,0 +1,175 @@
+{
+ "retrieved_at": "2026-10-27T18:21:55+00:00",
+ "source": "https://www.transnetbw.de",
+ "note": "Trimmed captures of public TransnetBW pages, for tests and offline runs. © TransnetBW GmbH.",
+ "documents": {
+  "https://www.transnetbw.de/robots.txt": {
+   "file": "robots.txt",
+   "status": 200,
+   "content_type": "text/plain;;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/robots.txt"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/alle-projekte": {
+   "file": "pages/alle-projekte.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/alle-projekte"
+  },
+  "https://www.transnetbw.de/de/api/press-releases": {
+   "file": "press-releases.json",
+   "status": 200,
+   "content_type": "application/json",
+   "final_url": "https://www.transnetbw.de/de/api/press-releases"
+  },
+  "https://www.transnetbw.de/de/sitemap.xml": {
+   "file": "sitemap.xml",
+   "status": 200,
+   "content_type": "text/xml;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/sitemap.xml"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-pulverdingen": {
+   "file": "pages/project-umspannwerk-pulverdingen.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-pulverdingen"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-pulverdingen/projektportraet": {
+   "file": "pages/project-umspannwerk-pulverdingen--projektportraet.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-pulverdingen/projektportraet"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/netzverstaerkung-weinheim-karlsruhe": {
+   "file": "pages/project-netzverstaerkung-weinheim-karlsruhe.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/netzverstaerkung-weinheim-karlsruhe"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/netzverstaerkung-weinheim-karlsruhe/projektportraet": {
+   "file": "pages/project-netzverstaerkung-weinheim-karlsruhe--projektportraet.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/netzverstaerkung-weinheim-karlsruhe/projektportraet"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/netzbooster-kupferzell": {
+   "file": "pages/project-netzbooster-kupferzell.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/netzbooster-kupferzell"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/netzbooster-kupferzell/projektportraet": {
+   "file": "pages/project-netzbooster-kupferzell--projektportraet.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/netzbooster-kupferzell/projektportraet"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/suedlink": {
+   "file": "pages/project-suedlink.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/suedlink"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-uw-engstlatt": {
+   "file": "pages/project-umspannwerk-uw-engstlatt.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-uw-engstlatt"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-uw-engstlatt/projektportraet": {
+   "file": "pages/project-umspannwerk-uw-engstlatt--projektportraet.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-uw-engstlatt/projektportraet"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-schwoerstadt": {
+   "file": "pages/project-umspannwerk-schwoerstadt.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-schwoerstadt"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-schwoerstadt/projektportrait": {
+   "file": "pages/project-umspannwerk-schwoerstadt--projektportrait.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-schwoerstadt/projektportrait"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/grafenrheinfeld-kupferzell-grossgartach": {
+   "file": "pages/project-grafenrheinfeld-kupferzell-grossgartach.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/grafenrheinfeld-kupferzell-grossgartach"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/grafenrheinfeld-kupferzell-grossgartach/projektportraet": {
+   "file": "pages/project-grafenrheinfeld-kupferzell-grossgartach--projektportraet.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/grafenrheinfeld-kupferzell-grossgartach/projektportraet"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/seiltausch-hoellental": {
+   "file": "pages/project-seiltausch-hoellental.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/seiltausch-hoellental"
+  },
+  "https://www.transnetbw.de/de/netzentwicklung/projekte/seiltausch-hoellental/projektportraet": {
+   "file": "pages/project-seiltausch-hoellental--projektportraet.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/seiltausch-hoellental/projektportraet"
+  },
+  "https://www.transnetbw.de/de/newsroom/news/transnetbw-und-tennet-germany-feiern-symbolische-inbetriebnahme-der-netzverstaerkung-grafenrheinfeld-kupferzell-grossgartach": {
+   "file": "pages/press-transnetbw-und-tennet-germany-feiern-symbolische-inbetriebnahme-der-netzverstaer.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-und-tennet-germany-feiern-symbolische-inbetriebnahme-der-netzverstaerkung-grafenrheinfeld-kupferzell-grossgartach"
+  },
+  "https://www.transnetbw.de/de/newsroom/news/nbr-teilbeschluss-abschnitt-B3-ortenaukreis": {
+   "file": "pages/press-nbr-teilbeschluss-abschnitt-B3-ortenaukreis.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/newsroom/news/nbr-teilbeschluss-abschnitt-B3-ortenaukreis"
+  },
+  "https://www.transnetbw.de/de/newsroom/news/freileitungsvorrang-staerkt-netzausbau-einschraenkungen-schaffen-unsicherheit": {
+   "file": "pages/press-freileitungsvorrang-staerkt-netzausbau-einschraenkungen-schaffen-unsicherheit.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/newsroom/news/freileitungsvorrang-staerkt-netzausbau-einschraenkungen-schaffen-unsicherheit"
+  },
+  "https://www.transnetbw.de/de/newsroom/news/spatenstich-am-umspannwerk-beuren-transnetbw-startet-bauarbeiten-fuer-das-projekt-hochrhein-und-sorgt-so-fuer-ein-leistungsfaehiges-und-zukunftsorientiertes-netz-in-der-region": {
+   "file": "pages/press-spatenstich-am-umspannwerk-beuren-transnetbw-startet-bauarbeiten-fuer-das-projek.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/newsroom/news/spatenstich-am-umspannwerk-beuren-transnetbw-startet-bauarbeiten-fuer-das-projekt-hochrhein-und-sorgt-so-fuer-ein-leistungsfaehiges-und-zukunftsorientiertes-netz-in-der-region"
+  },
+  "https://www.transnetbw.de/de/newsroom/news/kleinstflexibilitaeten-als-beitrag-fuer-das-netzengpassmanagement": {
+   "file": "pages/press-kleinstflexibilitaeten-als-beitrag-fuer-das-netzengpassmanagement.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/newsroom/news/kleinstflexibilitaeten-als-beitrag-fuer-das-netzengpassmanagement"
+  },
+  "https://www.transnetbw.de/de/newsroom/news/feierlicher-baubeginn-des-netzboosters": {
+   "file": "pages/press-feierlicher-baubeginn-des-netzboosters.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/newsroom/news/feierlicher-baubeginn-des-netzboosters"
+  },
+  "https://www.transnetbw.de/de/newsroom/news/transnetbw-erhaelt-planfeststellungsbeschluss-fuer-den-netzbooster-in-kupferzell": {
+   "file": "pages/press-transnetbw-erhaelt-planfeststellungsbeschluss-fuer-den-netzbooster-in-kupferzell.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-erhaelt-planfeststellungsbeschluss-fuer-den-netzbooster-in-kupferzell"
+  },
+  "https://www.transnetbw.de/de/newsroom/news/baustart-fur-suedlink-in-bayern": {
+   "file": "pages/press-baustart-fur-suedlink-in-bayern.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/newsroom/news/baustart-fur-suedlink-in-bayern"
+  },
+  "https://www.transnetbw.de/de/newsroom/news/modernisierung-des-umspannwerkes-schwoerstadt-abgeschlossen": {
+   "file": "pages/press-modernisierung-des-umspannwerkes-schwoerstadt-abgeschlossen.html",
+   "status": 200,
+   "content_type": "text/html;charset=UTF-8",
+   "final_url": "https://www.transnetbw.de/de/newsroom/news/modernisierung-des-umspannwerkes-schwoerstadt-abgeschlossen"
+  }
+ }
+}

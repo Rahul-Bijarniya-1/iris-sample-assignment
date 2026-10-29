@@ -51,4 +51,5 @@ testpaths = ["tests"]
 pythonpath = ["."]
 markers = [
     "integration: requires a live PostgreSQL server (the one DATABASE_URL points at)",
+    "live: makes live requests to transnetbw.de; skipped unless pytest is run with --run-live",
 ]

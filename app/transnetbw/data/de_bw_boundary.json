@@ -1,0 +1,13 @@
+{
+ "region_code": "DE-BW",
+ "name": "Baden-Württemberg",
+ "srid": 25832,
+ "source": "https://daten.gdz.bkg.bund.de/produkte/vg/vg250_ebenen_0101/aktuell/vg250_01-01.utm32s.shape.ebenen.zip",
+ "layer": "VG250_LAN (SN_L=08, GF=4)",
+ "licence": "Datenlizenz Deutschland – Namensnennung – 2.0 (dl-de/by-2-0)",
+ "attribution": "© GeoBasis-DE / BKG (2026)",
+ "generalization_tolerance_m": 25,
+ "area_km2": 35722.7,
+ "exterior_vertices": 5121,
+ "built_at": "2026-10-27T18:26:24+00:00"
+}

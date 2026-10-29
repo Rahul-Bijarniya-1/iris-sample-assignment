@@ -1,0 +1,45 @@
+# Runs the whole test suite — database tests included — against
+# PostgreSQL 16 / PostGIS 3.4, the versions IRIS-SIG-30 targets.
+# The service container is throwaway and uses trust authentication,
+# so no credential appears here. Live-site tests (--run-live) never run.
+
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+
+    services:
+      postgis:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    env:
+      DATABASE_URL: postgresql://postgres@localhost:5432/postgres
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Show server versions
+        run: |
+          uv run python -c "import psycopg; c = psycopg.connect('postgresql://postgres@localhost:5432/postgres'); c.execute('create extension if not exists postgis'); print(c.execute('select version(), postgis_full_version()').fetchone())"
+
+      - name: Run tests
+        run: uv run pytest -q

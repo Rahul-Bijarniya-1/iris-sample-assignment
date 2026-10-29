@@ -1,0 +1,2611 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:alle-suedlink-abschnitte-in-der-genehmigung-transnetbw-reicht-letzte-planfeststellungsunterlagen-in-niedersachsen-ein",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Alle SuedLink-Abschnitte in der Genehmigung: TransnetBW reicht letzte Planfeststellungsunterlagen in Niedersachsen ein",
+    "published_at": "2024-02-16",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/alle-suedlink-abschnitte-in-der-genehmigung-transnetbw-reicht-letzte-planfeststellungsunterlagen-in-niedersachsen-ein",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     7.958179,
+     47.595983
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:amprion-und-transnetbw-starten-dialog-zur-modernisierung-des-strom-netzknotens-kuehmoos",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Amprion und Transnet BW starten Dialog zur Modernisierung des Strom-Netzknotens Kühmoos",
+    "published_at": "2022-05-18",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/amprion-und-transnetbw-starten-dialog-zur-modernisierung-des-strom-netzknotens-kuehmoos",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Kühmoos",
+    "related_project": "project:netzknoten-kuehmoos",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:baustart-fuer-suedlink-in-baden-wuerttemberg",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Baustart für SuedLink in Baden-Württemberg",
+    "published_at": "2024-09-27",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/baustart-fuer-suedlink-in-baden-wuerttemberg",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:baustart-ultranet-im-bauabschnitt-b1",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "TransnetBW startet mit dem Leitungsbau für das Gleichstromvorhaben ULTRANET im Bauabschnitt B1",
+    "published_at": "2024-02-21",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/baustart-ultranet-im-bauabschnitt-b1",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:ultranet",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.313505,
+     49.009159
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:baustellenmeldung-umspannwerk-daxlanden",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Baustellenmeldung Umspannwerk Daxlanden",
+    "published_at": "2021-04-30",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/baustellenmeldung-umspannwerk-daxlanden",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Daxlanden",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:bundesweit-laufen-auf-allen-suedlink-baustellen-die-arbeiten-weiterhin-mit-hochdruck",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Bundesweit laufen auf allen SuedLink-Baustellen die Arbeiten weiterhin mit Hochdruck",
+    "published_at": "2026-09-29",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/bundesweit-laufen-auf-allen-suedlink-baustellen-die-arbeiten-weiterhin-mit-hochdruck",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:bwihk-stromstudie-2024-unterstreicht-die-dringlichkeit-des-stromnetzausbaus",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "unknown",
+    "review_status": "needs_review",
+    "title": "BWIHK-Stromstudie 2024 unterstreicht die Dringlichkeit des Stromnetzausbaus",
+    "published_at": "2024-01-22",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/bwihk-stromstudie-2024-unterstreicht-die-dringlichkeit-des-stromnetzausbaus",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:effizienteres-engpassmanagement-uebertragungsnetzbetreiber-nehmen-redispatch-abwicklungsserver-ras-in-betrieb",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "in_operation",
+    "review_status": "needs_review",
+    "title": "Effizienteres Engpassmanagement: Übertragungsnetzbetreiber nehmen Redispatch-Abwicklungsserver (RAS) in Betrieb",
+    "published_at": "2020-06-26",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/effizienteres-engpassmanagement-uebertragungsnetzbetreiber-nehmen-redispatch-abwicklungsserver-ras-in-betrieb",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.442869,
+     49.225018
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:einweihung-der-gasisolierten-schaltanlage-am-standort-philippsburg",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "in_operation",
+    "review_status": "auto",
+    "title": "Einweihung der gasisolierten Schaltanlage am Standort Philippsburg",
+    "published_at": "2021-07-13",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/einweihung-der-gasisolierten-schaltanlage-am-standort-philippsburg",
+    "location_status": "resolved",
+    "location_precision": "municipality",
+    "location_text": "Philippsburg",
+    "related_project": "project:ultranet",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.124056,
+     49.143426
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:energiewende-kommt-voran-baustart-fuer-suedlink",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Energiewende kommt voran: Baustart für SuedLink",
+    "published_at": "2023-07-27",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/energiewende-kommt-voran-baustart-fuer-suedlink",
+    "location_status": "resolved",
+    "location_precision": "municipality",
+    "location_text": "Leingarten",
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:energiewende-monitoringbericht",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "unknown",
+    "review_status": "needs_review",
+    "title": "Der Netzausbau ist ein wichtiger Schlüssel für die Energiewende",
+    "published_at": "2025-09-15",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/energiewende-monitoringbericht",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:erdkabelbericht-zieht-zwischenbilanz",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "needs_review",
+    "title": "Erdkabelbericht zieht Zwischenbilanz",
+    "published_at": "2020-10-07",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/erdkabelbericht-zieht-zwischenbilanz",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.045514,
+     48.902938
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:erweiterung-des-umspannwerks-pulverdingen-beginnt-voruntersuchungen-bringen-archaeologische-funde-ans-tageslicht",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Erweiterung des Umspannwerks Pulverdingen beginnt. Voruntersuchungen bringen archäologische Funde ans Tageslicht.",
+    "published_at": "2022-07-19",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/erweiterung-des-umspannwerks-pulverdingen-beginnt-voruntersuchungen-bringen-archaeologische-funde-ans-tageslicht",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Pulverdingen",
+    "related_project": "project:umspannwerk-pulverdingen",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:es-geht-voran-erdkabel-fuer-suedlink-gehen-in-produktion",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Es geht voran: Erdkabel für SuedLink gehen in Produktion",
+    "published_at": "2022-05-02",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/es-geht-voran-erdkabel-fuer-suedlink-gehen-in-produktion",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.694834,
+     49.232834
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:feierlicher-baubeginn-des-netzboosters",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Feierlicher Baubeginn des Netzboosters",
+    "published_at": "2024-06-10",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/feierlicher-baubeginn-des-netzboosters",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Kupferzell",
+    "related_project": "project:netzbooster-kupferzell",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:feierlicher-baustart-von-suedlink",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Feierlicher Baustart von SuedLink in Thüringen – größtes Infrastrukturprojekt der Energiewende in sechs Bundesländern im Bau",
+    "published_at": "2025-11-24",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/feierlicher-baustart-von-suedlink",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.439272,
+     49.255083
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:gleichstrom-umspannwerk-am-standort-philippsburg-genehmigung-liegt-vor",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Gleichstrom-Umspannwerk der TransnetBW am Standort Philippsburg: Genehmigung liegt vor",
+    "published_at": "2020-03-26",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/gleichstrom-umspannwerk-am-standort-philippsburg-genehmigung-liegt-vor",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Philippsburg",
+    "related_project": "project:ultranet",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:hoeherauslastung-der-stromleitungen-hilft-im-winter",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "unknown",
+    "review_status": "needs_review",
+    "title": "Höherauslastung der Stromleitungen hilft im Winter",
+    "published_at": "2022-11-14",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/hoeherauslastung-der-stromleitungen-hilft-im-winter",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:hydrogreen-boost-studie-bestaetigt-wirtschaftlichkeit-und-grosses-potenzial-fur-hybride-netzbooster",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "unknown",
+    "review_status": "needs_review",
+    "title": "HydrogREenBoost: Studie bestätigt Wirtschaftlichkeit und großes Potenzial für hybride Netzbooster",
+    "published_at": "2025-08-27",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/hydrogreen-boost-studie-bestaetigt-wirtschaftlichkeit-und-grosses-potenzial-fur-hybride-netzbooster",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     7.861045,
+     48.574597
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:Inbetriebnahme-des-Umspannwerks-Kork",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "in_operation",
+    "review_status": "auto",
+    "title": "Feierliche Inbetriebnahme des Umspannwerks und der Leitungseinführung Kork",
+    "published_at": "2024-10-30",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/Inbetriebnahme-des-Umspannwerks-Kork",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Kork",
+    "related_project": "project:netzverstaerkung-badische-rheinschiene",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.439272,
+     49.255083
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:Inbetriebnahme-ULTRANET-Konverter",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "in_operation",
+    "review_status": "auto",
+    "title": "Feierliche Inbetriebnahme des ULTRANET-Konverters in Philippsburg",
+    "published_at": "2024-11-29",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/Inbetriebnahme-ULTRANET-Konverter",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Philippsburg",
+    "related_project": "project:ultranet",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:kleinstflexibilitaeten-als-beitrag-fuer-das-netzengpassmanagement",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "unknown",
+    "review_status": "needs_review",
+    "title": "Kleinstflexibilitäten als Beitrag für das Netzengpassmanagement",
+    "published_at": "2024-06-24",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/kleinstflexibilitaeten-als-beitrag-fuer-das-netzengpassmanagement",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.439272,
+     49.255083
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:kretschmann-zu-besuch-in-philippsburg",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Ministerpräsident Kretschmann und Energieministerin Walker besuchen Transnet BW auf der ULTRANET-Baustelle in Philippsburg",
+    "published_at": "2022-09-08",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/kretschmann-zu-besuch-in-philippsburg",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Philippsburg",
+    "related_project": "project:ultranet",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.785243,
+     48.583664
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:kuenftige-energiedrehscheibe-modernisierung-des-umspannwerks-oberjettingen-gestartet",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Künftige Energiedrehscheibe: Modernisierung des Umspannwerks Oberjettingen gestartet",
+    "published_at": "2024-04-03",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/kuenftige-energiedrehscheibe-modernisierung-des-umspannwerks-oberjettingen-gestartet",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Oberjettingen",
+    "related_project": "project:umspannwerk-oberjettingen",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:leitungsbauprojekt-zwischen-birkenfeld-und-punkt-oetisheim-transnetbw-erhaelt-planfeststellungsbeschluss",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Leitungsbauprojekt zwischen Birkenfeld und Punkt Ötisheim: TransnetBW erhält Planfeststellungsbeschluss",
+    "published_at": "2022-02-18",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/leitungsbauprojekt-zwischen-birkenfeld-und-punkt-oetisheim-transnetbw-erhaelt-planfeststellungsbeschluss",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Birkenfeld, Ötisheim",
+    "related_project": "project:birkenfeld-punkt-oetisheim",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:letzte-genehmigungsphase-fuer-suedlink-in-baden-wuerttemberg-transnetbw-reicht-planfeststellungsunterlagen-im-raum-heilbronn-franken-ein",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Letzte Genehmigungsphase für SuedLink in Baden-Württemberg: TransnetBW reicht Planfeststellungsunterlagen im Raum Heilbronn-Franken ein",
+    "published_at": "2023-05-05",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/letzte-genehmigungsphase-fuer-suedlink-in-baden-wuerttemberg-transnetbw-reicht-planfeststellungsunterlagen-im-raum-heilbronn-franken-ein",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:mastbau-zur-netzverstaerkung-zwischen-karlsruhe-daxlanden-und-eichstetten-am-kaiserstuhl-beginnt",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Mastbau zur Netzverstärkung zwischen Karlsruhe-Daxlanden und Eichstetten am Kaiserstuhl beginnt",
+    "published_at": "2022-12-07",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/mastbau-zur-netzverstaerkung-zwischen-karlsruhe-daxlanden-und-eichstetten-am-kaiserstuhl-beginnt",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Karlsruhe-Daxlanden, Eichstetten",
+    "related_project": "project:netzverstaerkung-badische-rheinschiene",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     7.843376,
+     47.585833
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:modernisierung-des-umspannwerkes-schwoerstadt-abgeschlossen",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "in_operation",
+    "review_status": "auto",
+    "title": "Modernisierung des Umspannwerkes Schwörstadt abgeschlossen",
+    "published_at": "2023-05-10",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/modernisierung-des-umspannwerkes-schwoerstadt-abgeschlossen",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Schwörstadt",
+    "related_project": "project:umspannwerk-schwoerstadt",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     7.843376,
+     47.585833
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:modernisierung-des-umspannwerks-schwoerstadt-auf-der-zielgeraden",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Modernisierung des Umspannwerks Schwörstadt auf der Zielgeraden",
+    "published_at": "2022-08-31",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/modernisierung-des-umspannwerks-schwoerstadt-auf-der-zielgeraden",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Schwörstadt",
+    "related_project": "project:umspannwerk-schwoerstadt",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.400711,
+     48.666953
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:modernisierung-des-umspannwerks-wendlingen-beauftragt",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Modernisierung des Umspannwerks Wendlingen beauftragt",
+    "published_at": "2023-12-22",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/modernisierung-des-umspannwerks-wendlingen-beauftragt",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Wendlingen",
+    "related_project": "project:umspannwerk-wendlingen",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:naechster-schritt-der-realisierung-regionale-suedlink-planungsbueros-nehmen-arbeit-auf",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Nächster Schritt der Realisierung: Regionale SuedLink-Planungsbüros nehmen Arbeit auf",
+    "published_at": "2020-06-10",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/naechster-schritt-der-realisierung-regionale-suedlink-planungsbueros-nehmen-arbeit-auf",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.120648,
+     48.705087
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:NBR-laedt-ein-2025-Buehl",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Dem Strom auf der Spur: TransnetBW lädt zum „Tag der offenen Tür” ins Umspannwerk Bühl ein",
+    "published_at": "2025-05-09",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/NBR-laedt-ein-2025-Buehl",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Bühl",
+    "related_project": "project:netzverstaerkung-badische-rheinschiene",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     7.75388,
+     48.099531
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:nbr-teilbeschluss-abschnitt-B3-ortenaukreis",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Netzverstärkung Badische Rheinschiene (NBR): Teilbeschluss ebnet Weg für weitere Bauaktivitäten im Ortenaukreis",
+    "published_at": "2026-06-16",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/nbr-teilbeschluss-abschnitt-B3-ortenaukreis",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Eichstetten",
+    "related_project": "project:netzverstaerkung-badische-rheinschiene",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:netzbauprojekt-rippolingen-istein-transnetbw-modernisiert-zwei-leitungsanlagen-in-den-landkreisen-loerrach-und-waldshut",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "needs_review",
+    "title": "Netzbauprojekt Rippolingen – Istein: Transnet BW modernisiert zwei Leitungsanlagen in den Landkreisen Lörrach und Waldshut",
+    "published_at": "2021-12-13",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/netzbauprojekt-rippolingen-istein-transnetbw-modernisiert-zwei-leitungsanlagen-in-den-landkreisen-loerrach-und-waldshut",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Rippolingen, Istein",
+    "related_project": "project:rippolingen-istein",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.694834,
+     49.232834
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:netzbooster-und-umspannwerk-kupferzell-es-geht-voran",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Netzbooster und Umspannwerk Kupferzell — es geht voran",
+    "published_at": "2022-10-05",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/netzbooster-und-umspannwerk-kupferzell-es-geht-voran",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Kupferzell",
+    "related_project": "project:netzbooster-kupferzell",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     7.908718,
+     48.501721
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:netzverstaerkung-badische-rheinschiene-weiterer-planfeststellungsbeschluss-erteilt",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Netzverstärkung Badische Rheinschiene: Weiterer Planfeststellungsbeschluss erteilt",
+    "published_at": "2025-07-04",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/netzverstaerkung-badische-rheinschiene-weiterer-planfeststellungsbeschluss-erteilt",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Weier",
+    "related_project": "project:netzverstaerkung-badische-rheinschiene",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.641589,
+     48.890273
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:neue-hoechstspannungsleitung-zwischen-birkenfeld-und-oetisheim-in-betrieb",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "in_operation",
+    "review_status": "auto",
+    "title": "Neue Höchstspannungsleitung zwischen Birkenfeld und Ötisheim in Betrieb",
+    "published_at": "2025-09-24",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/neue-hoechstspannungsleitung-zwischen-birkenfeld-und-oetisheim-in-betrieb",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Birkenfeld",
+    "related_project": "project:birkenfeld-punkt-oetisheim",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.862018,
+     47.80632
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:spatenstich-am-umspannwerk-beuren-transnetbw-startet-bauarbeiten-fuer-das-projekt-hochrhein-und-sorgt-so-fuer-ein-leistungsfaehiges-und-zukunftsorientiertes-netz-in-der-region",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Spatenstich am Umspannwerk Beuren: TransnetBW startet Bauarbeiten für das Projekt Hochrhein und sorgt so für ein leistungsfähiges und zukunftsorientiertes Netz in der Region",
+    "published_at": "2024-09-30",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/spatenstich-am-umspannwerk-beuren-transnetbw-startet-bauarbeiten-fuer-das-projekt-hochrhein-und-sorgt-so-fuer-ein-leistungsfaehiges-und-zukunftsorientiertes-netz-in-der-region",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Beuren",
+    "related_project": "project:hochrhein",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.045514,
+     48.902938
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:spatenstich-in-pulverdingen-fuer-das-zukuenftig-groesste-umspannwerk-von-transnetbw",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Spatenstich in Pulverdingen für das zukünftig größte Umspannwerk von TransnetBW",
+    "published_at": "2023-06-21",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/spatenstich-in-pulverdingen-fuer-das-zukuenftig-groesste-umspannwerk-von-transnetbw",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Pulverdingen",
+    "related_project": "project:umspannwerk-pulverdingen",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:startschuss-fuer-witterungsabhaengigen-freileitungsbetrieb-3-0",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "unknown",
+    "review_status": "needs_review",
+    "title": "Startschuss für witterungsabhängigen Freileitungsbetrieb 3.0 - TransnetBW und energy & meteo systems legen rund 300 Standorte zur echtzeitfähigen Erfassung der Belastbarkeit von Freileitungen fest",
+    "published_at": "2020-01-20",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/startschuss-fuer-witterungsabhaengigen-freileitungsbetrieb-3-0",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-auftrag-fuer-kunststoffisolierte-525-kilovolt-erdkabel-vergeben",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink: Auftrag für kunststoffisolierte 525-Kilovolt-Erdkabel vergeben",
+    "published_at": "2020-06-29",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-auftrag-fuer-kunststoffisolierte-525-kilovolt-erdkabel-vergeben",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-auftrag-fuer-zwei-konverteranlagen-vergeben",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "SuedLink: Auftrag für zwei Konverteranlagen vergeben",
+    "published_at": "2021-08-23",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-auftrag-fuer-zwei-konverteranlagen-vergeben",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-bauarbeiten-im-bergwerk-und-kampfmitteluntersuchungen-gestartet",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "SuedLink: Bauarbeiten im Bergwerk und Kampfmitteluntersuchungen gestartet",
+    "published_at": "2023-08-04",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-bauarbeiten-im-bergwerk-und-kampfmitteluntersuchungen-gestartet",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.124056,
+     49.143426
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:suedlink-bau-des-bergwerk-abschnitts-in-baden-wuerttemberg-kann-starten",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "SuedLink: Bau des Bergwerk-Abschnitts in Baden-Württemberg kann starten",
+    "published_at": "2023-05-25",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-bau-des-bergwerk-abschnitts-in-baden-wuerttemberg-kann-starten",
+    "location_status": "resolved",
+    "location_precision": "municipality",
+    "location_text": "Leingarten",
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.124056,
+     49.143426
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:suedlink-bau-des-konverters-in-leingarten-ist-genehmigt",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink: Bau des Konverters in Leingarten ist genehmigt",
+    "published_at": "2023-02-27",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-bau-des-konverters-in-leingarten-ist-genehmigt",
+    "location_status": "resolved",
+    "location_precision": "municipality",
+    "location_text": "Leingarten",
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-bau-im-nordosten-baden-wuerttembergs-kann-starten",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink: Bau im Nordosten Baden-Württembergs kann starten",
+    "published_at": "2024-09-16",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-bau-im-nordosten-baden-wuerttembergs-kann-starten",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-bau-in-suedniedersachsen-kann-starten",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink: Bau in Südniedersachsen kann starten",
+    "published_at": "2025-05-28",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-bau-in-suedniedersachsen-kann-starten",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-einigung-mit-bauernverbaenden-ueber-entschaedigung",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "SuedLink: Einigung mit Bauernverbänden über Entschädigung",
+    "published_at": "2022-12-22",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-einigung-mit-bauernverbaenden-ueber-entschaedigung",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-erste-gleichstrom-erdkabel-erreichen-zwischenlager",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "SuedLink: Erste Gleichstrom-Erdkabel erreichen Zwischenlager",
+    "published_at": "2023-03-23",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-erste-gleichstrom-erdkabel-erreichen-zwischenlager",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-geht-auch-in-suedniedersachsen-in-den-bau",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Meilenstein der Energiewende: SuedLink geht auch in Südniedersachsen in den Bau",
+    "published_at": "2025-09-19",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-geht-auch-in-suedniedersachsen-in-den-bau",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-im-gesamten-verlauf-in-der-planfeststellung-transnetbw-reicht-planfeststellungsantrag-fuer-das-leinetal-ein",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink im gesamten Verlauf in der Planfeststellung: Transnet BW reicht Planfeststellungsantrag für das Leinetal ein",
+    "published_at": "2021-05-12",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-im-gesamten-verlauf-in-der-planfeststellung-transnetbw-reicht-planfeststellungsantrag-fuer-das-leinetal-ein",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-kommt-transnetbw-reicht-planfeststellungsunterlagen-fuer-nordhessen-ein",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink kommt: TransnetBW reicht Planfeststellungsunterlagen für Nordhessen ein",
+    "published_at": "2023-12-18",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-kommt-transnetbw-reicht-planfeststellungsunterlagen-fuer-nordhessen-ein",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-kommt-transnetbw-reicht-planfeststellungsunterlagen-fuer-suedniedersachsen-ein",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink kommt: TransnetBW reicht Planfeststellungsunterlagen für Südniedersachsen ein",
+    "published_at": "2023-11-10",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-kommt-transnetbw-reicht-planfeststellungsunterlagen-fuer-suedniedersachsen-ein",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-kommt-transnetbw-reicht-planfeststellungsunterlagen-fuer-unterfranken-ein",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink kommt: TransnetBW reicht Planfeststellungsunterlagen für Unterfranken ein",
+    "published_at": "2023-12-15",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-kommt-transnetbw-reicht-planfeststellungsunterlagen-fuer-unterfranken-ein",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-kommt-transnetbw-reicht-planfeststellungsunterlagen-fuer-west-und-suedthueringen-ein",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink kommt: TransnetBW reicht Planfeststellungsunterlagen für West- und Südthüringen ein",
+    "published_at": "2023-05-23",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-kommt-transnetbw-reicht-planfeststellungsunterlagen-fuer-west-und-suedthueringen-ein",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-kommt-voran-transnetbw-leitet-letzte-phase-des-genehmigungsverfahrens-ein-und-schafft-grundlage-fuer-spaeteren-bau",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink kommt voran: Transnet BW leitet letzte Phase des Genehmigungsverfahrens ein und schafft Grundlage für späteren Bau",
+    "published_at": "2022-06-02",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-kommt-voran-transnetbw-leitet-letzte-phase-des-genehmigungsverfahrens-ein-und-schafft-grundlage-fuer-spaeteren-bau",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.124056,
+     49.143426
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:suedlink-kommt-voran-transnetbw-reicht-letzte-genehmigungsunterlagen-fuer-konverter-bau-in-leingarten-ein",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink kommt voran: Transnet BW reicht letzte Genehmigungsunterlagen für Konverter-Bau in Leingarten ein",
+    "published_at": "2022-08-19",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-kommt-voran-transnetbw-reicht-letzte-genehmigungsunterlagen-fuer-konverter-bau-in-leingarten-ein",
+    "location_status": "resolved",
+    "location_precision": "municipality",
+    "location_text": "Leingarten",
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-letzte-abschnitte-genehmigt",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink: Letzte Abschnitte genehmigt – größtes Infrastrukturprojekt der Energiewende jetzt in allen sechs Bundesländern in Bau",
+    "published_at": "2025-10-10",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-letzte-abschnitte-genehmigt",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-planfeststellungsantrag-fuer-thueringen-und-den-noerdlichen-teil-unterfrankens-eingereicht",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink: Planfeststellungsantrag für Thüringen und den nördlichen Teil Unterfrankens eingereicht",
+    "published_at": "2020-12-11",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-planfeststellungsantrag-fuer-thueringen-und-den-noerdlichen-teil-unterfrankens-eingereicht",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-schacht-arbeiten-fuer-bergwerks-abschnitt-beauftragt",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "SuedLink: Schacht-Arbeiten für Bergwerks-Abschnitt beauftragt",
+    "published_at": "2024-03-26",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-schacht-arbeiten-fuer-bergwerks-abschnitt-beauftragt",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-tennet-und-transnetbw-begruessen-festgelegten-verlauf",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "SuedLink: TenneT und Transnet BW begrüßen festgelegten Verlauf",
+    "published_at": "2021-03-26",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-tennet-und-transnetbw-begruessen-festgelegten-verlauf",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:suedlink-tiefbau-arbeiten-in-baden-wuerttemberg-vergeben",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "SuedLink: Tiefbau-Arbeiten in Baden-Württemberg vergeben",
+    "published_at": "2024-01-17",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/suedlink-tiefbau-arbeiten-in-baden-wuerttemberg-vergeben",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.785243,
+     48.583664
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:transnetbw-beauftragt-die-bkw-anlagentechnik-gmbh-als-generalunternehmerin-fuer-das-umspannwerk-oberjettingen",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "TransnetBW beauftragt die BKW Anlagentechnik GmbH als Generalunternehmerin für das Umspannwerk Oberjettingen",
+    "published_at": "2023-05-15",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-beauftragt-die-bkw-anlagentechnik-gmbh-als-generalunternehmerin-fuer-das-umspannwerk-oberjettingen",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Oberjettingen",
+    "related_project": "project:umspannwerk-oberjettingen",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.045514,
+     48.902938
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:transnetbw-beginnt-mit-der-erweiterung-des-umspannwerks-pulverdingen",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "TransnetBW beginnt mit der Erweiterung des Umspannwerks Pulverdingen",
+    "published_at": "2021-03-03",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-beginnt-mit-der-erweiterung-des-umspannwerks-pulverdingen",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Pulverdingen",
+    "related_project": "project:umspannwerk-pulverdingen",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.313505,
+     49.009159
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:transnetbw-beginnt-um-und-neubau-des-umspannwerks-daxlanden",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "unknown",
+    "review_status": "auto",
+    "title": "TransnetBW beginnt Um- und Neubau des Umspannwerks Daxlanden",
+    "published_at": "2020-10-30",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-beginnt-um-und-neubau-des-umspannwerks-daxlanden",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Daxlanden",
+    "related_project": "project:netzverstaerkung-weinheim-karlsruhe",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.627001,
+     49.543413
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:transnetbw-erhaelt-genehmigung-fuer-erweiterung-des-umspannwerks-weinheim",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "TransnetBW erhält Genehmigung für Erweiterung des Umspannwerks Weinheim",
+    "published_at": "2021-09-28",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-erhaelt-genehmigung-fuer-erweiterung-des-umspannwerks-weinheim",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Weinheim",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.694834,
+     49.232834
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:transnetbw-erhaelt-planfeststellungsbeschluss-fuer-den-netzbooster-in-kupferzell",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "TransnetBW erhält Planfeststellungsbeschluss für den Netzbooster in Kupferzell",
+    "published_at": "2024-03-25",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-erhaelt-planfeststellungsbeschluss-fuer-den-netzbooster-in-kupferzell",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Kupferzell",
+    "related_project": "project:netzbooster-kupferzell",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     7.908718,
+     48.501721
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:transnetbw-erhaelt-planfeststellungsbeschluss-fuer-teilabschnitt-des-grossprojektes-netzverstaerkung-badische-rheinschiene",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Transnet BW erhält Planfeststellungsbeschluss für Teilabschnitt des Großprojektes „Netzverstärkung Badische Rheinschiene“",
+    "published_at": "2021-11-26",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-erhaelt-planfeststellungsbeschluss-fuer-teilabschnitt-des-grossprojektes-netzverstaerkung-badische-rheinschiene",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Weier",
+    "related_project": "project:netzverstaerkung-badische-rheinschiene",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:transnetbw-informierte-in-merdingen",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "TransnetBW informierte in Merdingen über die 380-kV-Netzverstärkung Eichstetten – Bundesgrenze Frankreich",
+    "published_at": "2023-08-10",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-informierte-in-merdingen",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Eichstetten, Bundesgrenze Frankreich",
+    "related_project": "project:eichstetten-bundesgrenze-frankreich",
+    "quality_flags": [
+     "cross_border"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:transnetbw-informierte-in-merdingen-1",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "TransnetBW erhält Planfeststellungsbeschluss für das Gleichstromvorhaben ULTRANET",
+    "published_at": "2023-08-31",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-informierte-in-merdingen-1",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:ultranet",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.400711,
+     48.666953
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:transnetbw-informierte-ueber-den-neubau-des-umspannwerks-in-wendlingen",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "TransnetBW informierte über den Neubau des Umspannwerks in Wendlingen",
+    "published_at": "2023-07-21",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-informierte-ueber-den-neubau-des-umspannwerks-in-wendlingen",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Wendlingen",
+    "related_project": "project:umspannwerk-wendlingen",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:transnetbw-modernisiert-hoechstspannungsleitung-zwischen-herbertingen-und-hoheneck",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "unknown",
+    "review_status": "auto",
+    "title": "TransnetBW modernisiert Höchstspannungsleitung zwischen Herbertingen und Hoheneck",
+    "published_at": "2020-09-30",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-modernisiert-hoechstspannungsleitung-zwischen-herbertingen-und-hoheneck",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Herbertingen, Hoheneck",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:transnetbw-reicht-planfeststellungsantraege-fuer-den-suedlichsten-suedlink-abschnitt-ein",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Transnet BW reicht Planfeststellungsanträge für den südlichsten SuedLink-Abschnitt ein",
+    "published_at": "2020-10-09",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-reicht-planfeststellungsantraege-fuer-den-suedlichsten-suedlink-abschnitt-ein",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:transnetbw-reicht-suedlink-planfeststellungsantrag-fuer-suedlichen-teil-unterfrankens-ein",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Transnet BW reicht SuedLink-Planfeststellungsantrag für südlichen Teil Unterfrankens ein",
+    "published_at": "2020-11-16",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-reicht-suedlink-planfeststellungsantrag-fuer-suedlichen-teil-unterfrankens-ein",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:transnetbw-reicht-suedlink-planfeststellungsantrag-fuer-suedniedersachsen-und-hessen-ein",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Transnet BW reicht SuedLink-Planfeststellungsantrag für Südniedersachsen und Hessen ein",
+    "published_at": "2020-12-23",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-reicht-suedlink-planfeststellungsantrag-fuer-suedniedersachsen-und-hessen-ein",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:transnetbw-startet-mit-dem-neubau-der-380-kilovolt-leitung-zwischen-birkenfeld-und-oetisheim",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Transnet BW startet mit dem Neubau der 380-Kilovolt-Leitung zwischen Birkenfeld und Ötisheim",
+    "published_at": "2022-06-24",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-startet-mit-dem-neubau-der-380-kilovolt-leitung-zwischen-birkenfeld-und-oetisheim",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Birkenfeld, Ötisheim",
+    "related_project": "project:birkenfeld-punkt-oetisheim",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.400711,
+     48.666953
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:transnetbw-startet-um-und-neubau-des-umspannwerkes-wendlingen",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "TransnetBW startet Um- und Neubau des Umspannwerkes Wendlingen",
+    "published_at": "2024-04-22",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-startet-um-und-neubau-des-umspannwerkes-wendlingen",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Wendlingen",
+    "related_project": "project:umspannwerk-wendlingen",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.694834,
+     49.232834
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:transnetbw-startet-vorzeitig-mit-dem-bau-des-netzboosters-kupferzell",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "TransnetBW startet vorzeitig mit dem Bau des Netzboosters Kupferzell",
+    "published_at": "2023-08-31",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-startet-vorzeitig-mit-dem-bau-des-netzboosters-kupferzell",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Kupferzell",
+    "related_project": "project:netzbooster-kupferzell",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:transnetbw-treibt-planfeststellung-bei-netzverstaerkungsprojekt-zwischen-gaukoenigshofen-und-kupferzell-voran",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Netzverstärkungsprojekt zwischen Gaukönigshofen und Kupferzell: Transnet BW treibt Planfeststellung voran",
+    "published_at": "2021-05-10",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-treibt-planfeststellung-bei-netzverstaerkungsprojekt-zwischen-gaukoenigshofen-und-kupferzell-voran",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Gaukönigshofen, Kupferzell",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     7.958179,
+     47.595983
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:transnetbw-und-amprion-erwerben-umspannwerk-kuehmoos",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "unknown",
+    "review_status": "auto",
+    "title": "TransnetBW und Amprion erwerben Umspannwerk Kühmoos",
+    "published_at": "2021-03-31",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-und-amprion-erwerben-umspannwerk-kuehmoos",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Kühmoos",
+    "related_project": "project:netzknoten-kuehmoos",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:transnetbw-und-netze-bw-staerken-gemeinsam-oekologisches-trassenmanagement",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "unknown",
+    "review_status": "needs_review",
+    "title": "TransnetBW und Netze BW stärken gemeinsam Ökologisches Trassenmanagement",
+    "published_at": "2026-01-29",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-und-netze-bw-staerken-gemeinsam-oekologisches-trassenmanagement",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:transnetbw-und-tennet-germany-feiern-symbolische-inbetriebnahme-der-netzverstaerkung-grafenrheinfeld-kupferzell-grossgartach",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "in_operation",
+    "review_status": "auto",
+    "title": "TransnetBW und TenneT Germany feiern symbolische Inbetriebnahme der Netzverstärkung Grafenrheinfeld – Kupferzell – Großgartach",
+    "published_at": "2026-10-15",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-und-tennet-germany-feiern-symbolische-inbetriebnahme-der-netzverstaerkung-grafenrheinfeld-kupferzell-grossgartach",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Grafenrheinfeld, Großgartach",
+    "related_project": "project:grafenrheinfeld-kupferzell-grossgartach",
+    "quality_flags": [
+     "cross_border"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:transnetbw-und-uni-hohenheim-untersuchen-einfluss-von-erdkabeln-auf-boeden-und-pflanzen",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "unknown",
+    "review_status": "auto",
+    "title": "Transnet BW und Universität Hohenheim untersuchen Einfluss von Erdkabeln auf Böden und landwirtschaftliche Kulturpflanzen",
+    "published_at": "2020-12-21",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-und-uni-hohenheim-untersuchen-einfluss-von-erdkabeln-auf-boeden-und-pflanzen",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     7.861045,
+     48.574597
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:transnetbw-unterzeichnet-vertrag-mit-spie-sag-zum-neubau-des-umspannwerks-kork",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "TransnetBW unterzeichnet Vertrag mit SPIE SAG zum Neubau des Umspannwerks Kork",
+    "published_at": "2021-09-17",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/transnetbw-unterzeichnet-vertrag-mit-spie-sag-zum-neubau-des-umspannwerks-kork",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Kork",
+    "related_project": "project:netzverstaerkung-badische-rheinschiene",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:uebertragungsnetzbetreiber-veroeffentlichen-ersten-entwurf-des-netzentwicklungsplans-2037-2045",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "unknown",
+    "review_status": "needs_review",
+    "title": "Bürgerdialog informiert Bürgerschaft in Oberjettingen zur geplanten Erweiterung und zumNeubau des örtlichen Umspannwerks",
+    "published_at": "2023-04-20",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/uebertragungsnetzbetreiber-veroeffentlichen-ersten-entwurf-des-netzentwicklungsplans-2037-2045",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.442869,
+     49.225018
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:ultranet-arbeiten-fuer-leitungsanbindung-der-gasisolierten-schaltanlage-beginnen",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "unknown",
+    "review_status": "auto",
+    "title": "ULTRANET: Arbeiten für Leitungsanbindung der gasisolierten Schaltanlage beginnen",
+    "published_at": "2021-01-15",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/ultranet-arbeiten-fuer-leitungsanbindung-der-gasisolierten-schaltanlage-beginnen",
+    "location_status": "resolved",
+    "location_precision": "municipality",
+    "location_text": "Philippsburg",
+    "related_project": "project:ultranet",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.439272,
+     49.255083
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:ultranet-grundsteinlegung-fuer-gleichstrom-umspannwerk-in-philippsburg",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "unknown",
+    "review_status": "auto",
+    "title": "ULTRANET: Grundsteinlegung für Gleichstrom-Umspannwerk in Philippsburg",
+    "published_at": "2020-09-16",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/ultranet-grundsteinlegung-fuer-gleichstrom-umspannwerk-in-philippsburg",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Philippsburg",
+    "related_project": "project:ultranet",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:ultranet-transnetbw-erreicht-meilenstein-im-genehmigungsverfahren",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "ULTRANET: Transnet BW erreicht Meilenstein im Genehmigungsverfahren",
+    "published_at": "2022-06-17",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/ultranet-transnetbw-erreicht-meilenstein-im-genehmigungsverfahren",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Mannheim-Wallstadt, Philippsburg",
+    "related_project": "project:ultranet",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:ultranet-transnetbw-informiert-ueber-planungsstand",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "ULTRANET: TransnetBW informiert über Planungsstand",
+    "published_at": "2021-03-18",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/ultranet-transnetbw-informiert-ueber-planungsstand",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:ultranet",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:umsetzung-startet-genehmigung-fuer-laengsten-teilabschnitt-der-netzverstaerkung-badische-rheinschiene-erteilt",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Umsetzung startet: Genehmigung für längsten Teilabschnitt der „Netzverstärkung Badische Rheinschiene“ erteilt",
+    "published_at": "2022-07-21",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/umsetzung-startet-genehmigung-fuer-laengsten-teilabschnitt-der-netzverstaerkung-badische-rheinschiene-erteilt",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Daxlanden, Weier",
+    "related_project": "project:netzverstaerkung-badische-rheinschiene",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.120648,
+     48.705087
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:umspannwerk-buehl-erhaelt-gasisolierte-schaltanlage",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Umspannwerk Bühl erhält gasisolierte Schaltanlage",
+    "published_at": "2022-09-13",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/umspannwerk-buehl-erhaelt-gasisolierte-schaltanlage",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Bühl",
+    "related_project": "project:netzverstaerkung-badische-rheinschiene",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:umspannwerke-gurtweil-tiengen-amprion-und-transnetbw-bleiben-im-tal",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Umspannwerke Gurtweil/Tiengen: Amprion und TransnetBW bleiben im Tal",
+    "published_at": "2021-04-26",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/umspannwerke-gurtweil-tiengen-amprion-und-transnetbw-bleiben-im-tal",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Gurtweil, Tiengen",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     7.843376,
+     47.585833
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:umspannwerk-schwoerstadt-erster-bauabschnitt-fertiggestellt",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "in_operation",
+    "review_status": "auto",
+    "title": "Umspannwerk Schwörstadt: Erster Bauabschnitt fertiggestellt",
+    "published_at": "2021-05-03",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/umspannwerk-schwoerstadt-erster-bauabschnitt-fertiggestellt",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Schwörstadt",
+    "related_project": "project:umspannwerk-schwoerstadt",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.627001,
+     49.543413
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:umspannwerk-weinheim-genehmigungsunterlagen-fuer-umbau-eingereicht",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Umspannwerk Weinheim: Genehmigungsunterlagen für Umbau eingereicht",
+    "published_at": "2021-05-07",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/umspannwerk-weinheim-genehmigungsunterlagen-fuer-umbau-eingereicht",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Weinheim",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.439272,
+     49.255083
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:weg-fuer-gleichstrom-umspannwerk-am-standort-philippsburg-ist-frei",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Weg für den Bau des Gleichstrom-Umspannwerks der TransnetBW am Standort Philippsburg ist frei",
+    "published_at": "2020-05-14",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/weg-fuer-gleichstrom-umspannwerk-am-standort-philippsburg-ist-frei",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Philippsburg",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.215909,
+     48.852276
+    ]
+   },
+   "properties": {
+    "source_record_id": "press:weltweit-einzigartiges-betriebsmittel-fuer-das-umspannwerk-muehlhausen",
+    "record_kind": "press_release",
+    "signal_type": "transformer_modernization",
+    "project_stage": "in_operation",
+    "review_status": "auto",
+    "title": "Weltweit einzigartiges Betriebsmittel für das Umspannwerk Mühlhausen",
+    "published_at": "2020-07-16",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/weltweit-einzigartiges-betriebsmittel-fuer-das-umspannwerk-muehlhausen",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Mühlhausen",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "press:wir-brauchen-suedlink",
+    "record_kind": "press_release",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "planning",
+    "review_status": "auto",
+    "title": "Wir brauchen SuedLink",
+    "published_at": "2021-06-18",
+    "source_url": "https://www.transnetbw.de/de/newsroom/news/wir-brauchen-suedlink",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": "project:suedlink",
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "project:380-kv-netzverstaerkung-mittlerer-neckarraum",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Mittlerer Neckarraum",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/380-kv-netzverstaerkung-mittlerer-neckarraum",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Mittlerer Neckarraum",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "project:birkenfeld-punkt-oetisheim",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Birkenfeld – Punkt Ötisheim",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/birkenfeld-punkt-oetisheim",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Birkenfeld, Ötisheim",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "project:eichstetten-bundesgrenze-frankreich",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Eichstetten – Bundesgrenze Frankreich",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/eichstetten-bundesgrenze-frankreich",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Eichstetten, Bundesgrenze Frankreich",
+    "related_project": null,
+    "quality_flags": [
+     "cross_border"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "project:grafenrheinfeld-kupferzell-grossgartach",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Grafenrheinfeld – Kupferzell – Großgartach",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/grafenrheinfeld-kupferzell-grossgartach",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Grafenrheinfeld, Kupferzell, Großgartach",
+    "related_project": null,
+    "quality_flags": [
+     "cross_border"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "project:hochrhein",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Hochrhein | Herbertingen – Waldshut-Tiengen",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/hochrhein",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Herbertingen, Waldshut-Tiengen, Hochrhein",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.694834,
+     49.232834
+    ]
+   },
+   "properties": {
+    "source_record_id": "project:netzbooster-kupferzell",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Netzbooster Kupferzell",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/netzbooster-kupferzell",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Kupferzell",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     7.958179,
+     47.595983
+    ]
+   },
+   "properties": {
+    "source_record_id": "project:netzknoten-kuehmoos",
+    "record_kind": "project",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Netzknoten Kühmoos",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/netzknoten-kuehmoos",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Kühmoos",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "project:netzverstaerkung-badische-rheinschiene",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Netzverstärkung Badische Rheinschiene",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/netzverstaerkung-badische-rheinschiene",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Badische Rheinschiene",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "project:netzverstaerkung-neckar-odenwald",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Netzverstärkung Neckar-Odenwald",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/netzverstaerkung-neckar-odenwald",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Neckar-Odenwald",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "project:netzverstaerkung-reicheneck-rommelsbach",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Reicheneck–Rommelsbach",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/netzverstaerkung-reicheneck-rommelsbach",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Reicheneck, Rommelsbach",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "project:netzverstaerkung-weinheim-karlsruhe",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Weinheim – Karlsruhe",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/netzverstaerkung-weinheim-karlsruhe",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Weinheim, Karlsruhe",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.205238,
+     49.04238
+    ]
+   },
+   "properties": {
+    "source_record_id": "project:projekte-am-standort-neckarwestheim",
+    "record_kind": "project",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Projekte am Standort Neckarwestheim",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/projekte-am-standort-neckarwestheim",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Neckarwestheim",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "project:rippolingen-istein",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "approval",
+    "review_status": "auto",
+    "title": "Rippolingen – Istein",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/rippolingen-istein",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Rippolingen, Istein",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.801407,
+     47.652966
+    ]
+   },
+   "properties": {
+    "source_record_id": "project:schaltanlage-obermooweiler",
+    "record_kind": "project",
+    "signal_type": "transformer_modernization",
+    "project_stage": "unknown",
+    "review_status": "auto",
+    "title": "Obermooweiler",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/schaltanlage-obermooweiler",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Obermooweiler",
+    "related_project": null,
+    "quality_flags": [
+     "not_in_listing"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "project:stalldorf-main-tauber",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "in_operation",
+    "review_status": "auto",
+    "title": "Stalldorf / Main-Tauber",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/stalldorf-main-tauber",
+    "location_status": "ambiguous",
+    "location_precision": null,
+    "location_text": "Stalldorf, Main-Tauber",
+    "related_project": null,
+    "quality_flags": [
+     "cross_border"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "project:suedlink",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "unknown",
+    "review_status": "auto",
+    "title": "SuedLink",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/suedlink",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": null,
+    "quality_flags": [
+     "portrait_missing"
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": null,
+   "properties": {
+    "source_record_id": "project:ultranet",
+    "record_kind": "project",
+    "signal_type": "grid_capacity_constraint",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "ULTRANET",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/ultranet",
+    "location_status": "unresolved",
+    "location_precision": null,
+    "location_text": null,
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.885709,
+     48.304426
+    ]
+   },
+   "properties": {
+    "source_record_id": "project:umspannwerk-dellmensingen",
+    "record_kind": "project",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Umspannwerk Dellmensingen",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-dellmensingen",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Dellmensingen",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.785243,
+     48.583664
+    ]
+   },
+   "properties": {
+    "source_record_id": "project:umspannwerk-oberjettingen",
+    "record_kind": "project",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Umspannwerk Oberjettingen",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-oberjettingen",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Oberjettingen",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.045514,
+     48.902938
+    ]
+   },
+   "properties": {
+    "source_record_id": "project:umspannwerk-pulverdingen",
+    "record_kind": "project",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Umspannwerk Pulverdingen",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-pulverdingen",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Pulverdingen",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     7.843376,
+     47.585833
+    ]
+   },
+   "properties": {
+    "source_record_id": "project:umspannwerk-schwoerstadt",
+    "record_kind": "project",
+    "signal_type": "transformer_modernization",
+    "project_stage": "in_operation",
+    "review_status": "auto",
+    "title": "Umspannwerk Schwörstadt",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-schwoerstadt",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Schwörstadt",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     8.872798,
+     48.310205
+    ]
+   },
+   "properties": {
+    "source_record_id": "project:umspannwerk-uw-engstlatt",
+    "record_kind": "project",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Umspannwerk Engstlatt",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-uw-engstlatt",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Engstlatt",
+    "related_project": null,
+    "quality_flags": []
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     9.400711,
+     48.666953
+    ]
+   },
+   "properties": {
+    "source_record_id": "project:umspannwerk-wendlingen",
+    "record_kind": "project",
+    "signal_type": "transformer_modernization",
+    "project_stage": "construction",
+    "review_status": "auto",
+    "title": "Umspannwerk Wendlingen",
+    "published_at": null,
+    "source_url": "https://www.transnetbw.de/de/netzentwicklung/projekte/umspannwerk-wendlingen",
+    "location_status": "resolved",
+    "location_precision": "substation",
+    "location_text": "Wendlingen",
+    "related_project": null,
+    "quality_flags": []
+   }
+  }
+ ]
+}

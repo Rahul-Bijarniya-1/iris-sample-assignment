@@ -1,0 +1,31 @@
+{
+ "note": "Curated, hand-maintained place vocabulary for TransnetBW titles. 'regions' are areas inside Baden-Württemberg that name a project area rather than a point (always ambiguous). 'outside' are names that place an endpoint or a whole release outside BW, with the area they denote. 'not_places' are project names that look like place names but are not. Coordinates never come from this file.",
+ "regions": [
+  "Badische Rheinschiene",
+  "Bodensee",
+  "Großraum Stuttgart",
+  "Hochrhein",
+  "Hochrhein-Bodensee",
+  "Main-Tauber",
+  "Mittlerer Neckarraum",
+  "Neckar-Odenwald",
+  "Nordost-Baden-Württemberg",
+  "Ortenau",
+  "Ortenaukreis",
+  "Rhein-Neckar",
+  "Rhein-Neckar-Karlsruhe",
+  "Stuttgart-Neckar-Alb"
+ ],
+ "outside": {
+  "Bayern": "DE-BY",
+  "Bundesgrenze Frankreich": "FR",
+  "Bundesgrenze Schweiz": "CH",
+  "Frankreich": "FR",
+  "Hessen": "DE-HE",
+  "Österreich": "AT",
+  "Rheinland-Pfalz": "DE-RP",
+  "Schweiz": "CH",
+  "Unterfranken": "DE-BY"
+ },
+ "not_places": ["SuedLink", "SüdLink", "ULTRANET", "Netzbooster"]
+}

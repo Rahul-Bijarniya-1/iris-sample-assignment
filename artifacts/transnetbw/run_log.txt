@@ -1,0 +1,81 @@
+IRIS-SIG-30 · TransnetBW Project Radar — live run log (2026-10-28)
+===================================================================
+
+Staging database: PostgreSQL 16.4 / PostGIS 3.4.3 (docker compose service postgis16).
+Every run is recorded in iris_staging.ingest_run; the committed artifacts in this
+directory were generated from run 1.
+
+Run 0 — first live crawl (16:19 UTC, code 9f7ef13)
+---------------------------------------------------
+160 HTTP requests to www.transnetbw.de at >= 1.5 s spacing (6 min 28 s), raw
+documents kept in data/raw/transnetbw/run-20261028T161949Z (161 files incl.
+robots.txt). Reviewing its 122 records exposed classification and geocoding
+misreadings (see git log: "Fix the misreadings found by the first live
+TransnetBW harvest", "Read more location structure …"). After those fixes the
+staging tables were emptied and run 0's capture was re-processed (run 1), so
+the site was not crawled a second time.
+
+TransnetBW Project Radar   run e9702d0e  mode=live
+discovery sitemap 948 urls · listing 23 cards · 25 projects (gap 3)
+projects  seen 25  fetched 25  unchanged-lastmod 0
+press     feed 563 → candidates 108 → fetched 108  unchanged-lastmod 0
+fetch     requests 160  failed 0
+classify  in 122  needs_review 20  excluded 11
+geocode   resolved 40 (substation 40, municipality 0)
+          ambiguous 17  unresolved 65  invalid 0
+load      inserted 122  updated 0  unchanged 0  reverted 0  rejected 0  retired 0
+issues    error 0  warning 68  info 29
+report    artifacts/transnetbw/quality_report.md
+status    SUCCEEDED  (exit 0)
+
+Run 1 — replay of run 0's capture with the fixed code (code 097f2b6)
+--------------------------------------------------------------------
+uv run python -m app.transnetbw.cli harvest --replay data/raw/transnetbw/run-20261028T161949Z
+("requests" counts documents served from the snapshot; no network access.)
+
+TransnetBW Project Radar   run c9dc6176  mode=live
+discovery sitemap 948 urls · listing 23 cards · 25 projects (gap 3)
+projects  seen 25  fetched 25  unchanged-lastmod 0
+press     feed 563 → candidates 108 → fetched 108  unchanged-lastmod 0
+fetch     requests 160  failed 0
+classify  in 120  needs_review 11  excluded 13
+geocode   resolved 52 (substation 46, municipality 6)
+          ambiguous 22  unresolved 46  invalid 0
+load      inserted 120  updated 0  unchanged 0  reverted 0  rejected 0  retired 0
+issues    error 0  warning 49  info 36
+report    artifacts/transnetbw/quality_report.md
+status    SUCCEEDED  (exit 0)
+
+Run 2 — live incremental crawl, same database (16:40 UTC)
+---------------------------------------------------------
+uv run python -m app.transnetbw.cli harvest --no-report
+4 HTTP requests (robots.txt, sitemap, listing, press feed). Every project and
+article was skipped because its sitemap lastmod had not changed; nothing was
+inserted, updated or retired.
+
+TransnetBW Project Radar   run 77d1aa63  mode=live
+discovery sitemap 948 urls · listing 23 cards · 25 projects (gap 3)
+projects  seen 25  fetched 0  unchanged-lastmod 25
+press     feed 563 → candidates 108 → fetched 0  unchanged-lastmod 108
+fetch     requests 4  failed 0
+classify  in 0  needs_review 0  excluded 0
+geocode   resolved 0 (substation 0, municipality 0)
+          ambiguous 0  unresolved 0  invalid 0
+load      inserted 0  updated 0  unchanged 0  reverted 0  rejected 0  retired 0
+issues    error 0  warning 3  info 1
+status    SUCCEEDED  (exit 0)
+
+After run 2: 120 rows / 120 distinct keys / 120 content versions.
+
+Validation queries (artifacts/transnetbw/validation_queries.sql) after run 2
+---------------------------------------------------------------------------
+V1 duplicate keys .......................... 0 rows
+V2 invalid / non-25832 geometry ............ 0 rows
+V3 points outside Baden-Württemberg ........ 0 rows
+V4 resolved without point / point without .. 0 rows
+V5 untraceable records ..................... 0 rows
+V6 implausible publication dates ........... 0 rows
+V7 personal contact data ................... 0 rows
+V8 version history out of step ............. 0 rows
+V11 press dates not confirmed by article+feed 0 rows
+V13 links to projects that are not staged .. 0 rows

@@ -31,6 +31,30 @@ load_dotenv()
 DEFAULT_PG_PORT = 5432
 
 
+def pytest_addoption(parser):
+    parser.addoption(
+        "--run-live",
+        action="store_true",
+        default=False,
+        help="run tests marked `live`, which make requests to transnetbw.de",
+    )
+
+
+def pytest_collection_modifyitems(config, items):
+    """
+    Live tests contact a third-party site, so they never run by accident.
+    """
+
+    if config.getoption("--run-live"):
+        return
+
+    skip = pytest.mark.skip(reason="makes live requests; run with --run-live")
+
+    for item in items:
+        if "live" in item.keywords:
+            item.add_marker(skip)
+
+
 def server_params(url: str | None) -> dict | None:
     """
     Connection details for the server a DATABASE_URL points at.

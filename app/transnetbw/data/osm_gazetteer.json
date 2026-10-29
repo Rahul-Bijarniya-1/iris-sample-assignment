@@ -1,0 +1,2881 @@
+{
+"source": "OpenStreetMap via Overpass API",
+"queries": [
+"[out:json][timeout:180];\narea[\"ISO3166-2\"=\"DE-BW\"][\"admin_level\"=\"4\"]->.bw;\n(\n  nwr[\"power\"=\"substation\"][\"name\"](area.bw);\n  nwr[\"power\"=\"converter\"](area.bw);\n);\nout tags geom;",
+"[out:json][timeout:120];\n(\n  node[\"place\"~\"^(city|town|village|hamlet|suburb|quarter|locality|isolated_dwelling)$\"][\"name\"~\"^(Beuren|Daxlanden|Engstlatt|Grafenrheinfeld|Großgartach|Gurtweil|Istein|Kork|Kühmoos|Leingarten|Merdingen|Obermooweiler|Ötisheim|Pulverdingen|Reicheneck|Rippolingen|Rommelsbach|Stalldorf)$\"](47.2,7.2,50.4,10.8);\n  nwr[\"power\"=\"substation\"][\"name\"~\"(Beuren|Daxlanden|Engstlatt|Grafenrheinfeld|Großgartach|Gurtweil|Istein|Kork|Kühmoos|Leingarten|Merdingen|Obermooweiler|Ötisheim|Pulverdingen|Reicheneck|Rippolingen|Rommelsbach|Stalldorf)\"](47.2,7.2,50.4,10.8);\n);\nout tags geom;"
+],
+"licence": "ODbL 1.0",
+"attribution": "© OpenStreetMap contributors",
+"retrieved_at": "2026-10-27T18:31:15+00:00",
+"srid": 25832,
+"substations": [
+{
+"osm": "node/11293958518",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "DB Energie",
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.248594,
+"lat": 48.848146,
+"x": 444873.6,
+"y": 5410847.3
+},
+{
+"osm": "node/11293958519",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "DB Energie",
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.248819,
+"lat": 48.84822,
+"x": 444890.2,
+"y": 5410855.3
+},
+{
+"osm": "node/12979424511",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "DB Energie",
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.376719,
+"lat": 48.981034,
+"x": 454394.4,
+"y": 5425534.6
+},
+{
+"osm": "node/12979424512",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "DB Energie",
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.376454,
+"lat": 48.980924,
+"x": 454375.0,
+"y": 5425522.5
+},
+{
+"osm": "node/13363943543",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.763161,
+"lat": 49.506249,
+"x": 482853.3,
+"y": 5483762.5
+},
+{
+"osm": "node/4851179212",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "Wircon GmbH",
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.447284,
+"lat": 49.242833,
+"x": 459769.9,
+"y": 5454598.0
+},
+{
+"osm": "node/5167698834",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "Verkehrsbetriebe Karlsruhe GmbH",
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.336056,
+"lat": 49.035253,
+"x": 451471.9,
+"y": 5431587.1
+},
+{
+"osm": "node/7570518874",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "BürgerEnergie Tauberfranken 2 eG",
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.652248,
+"lat": 49.580591,
+"x": 547149.9,
+"y": 5492205.0
+},
+{
+"osm": "node/7837437601",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "Albtal-Verkehrs-Gesellschaft mbH",
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.376056,
+"lat": 49.033438,
+"x": 454393.9,
+"y": 5431360.4
+},
+{
+"osm": "node/7837437602",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "Albtal-Verkehrs-Gesellschaft mbH",
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.376013,
+"lat": 49.033439,
+"x": 454390.7,
+"y": 5431360.6
+},
+{
+"osm": "node/7855045518",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "Verkehrsbetriebe Karlsruhe GmbH",
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.447456,
+"lat": 49.029445,
+"x": 459609.5,
+"y": 5430876.1
+},
+{
+"osm": "node/7924267880",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "Verkehrsbetriebe Karlsruhe GmbH",
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.441298,
+"lat": 49.017519,
+"x": 459149.6,
+"y": 5429553.7
+},
+{
+"osm": "node/9176673676",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "Verkehrsbetriebe Karlsruhe GmbH",
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.347099,
+"lat": 49.038605,
+"x": 452282.2,
+"y": 5431952.6
+},
+{
+"osm": "way/1066788533",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "Wircon GmbH",
+"max_voltage_kv": 20,
+"point_method": "outline",
+"lon": 8.525247,
+"lat": 49.259602,
+"x": 465456.2,
+"y": 5456423.6
+},
+{
+"osm": "way/1121034497",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "W Power GmbH",
+"max_voltage_kv": 20,
+"point_method": "outline",
+"lon": 8.521043,
+"lat": 49.25713,
+"x": 465148.7,
+"y": 5456150.7
+},
+{
+"osm": "way/1121034498",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "W Power GmbH",
+"max_voltage_kv": 20,
+"point_method": "outline",
+"lon": 8.521514,
+"lat": 49.257386,
+"x": 465183.0,
+"y": 5456179.0
+},
+{
+"osm": "way/1121034499",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "W Power GmbH",
+"max_voltage_kv": 20,
+"point_method": "outline",
+"lon": 8.522742,
+"lat": 49.258172,
+"x": 465273.0,
+"y": 5456265.7
+},
+{
+"osm": "way/1217799782",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "outline",
+"lon": 8.53496,
+"lat": 49.005546,
+"x": 465989.7,
+"y": 5428176.5
+},
+{
+"osm": "way/177390234",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "outline",
+"lon": 8.376695,
+"lat": 47.571924,
+"x": 453121.0,
+"y": 5268911.4
+},
+{
+"osm": "way/263644479",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "Wircon GmbH",
+"max_voltage_kv": 20,
+"point_method": "outline",
+"lon": 8.528178,
+"lat": 49.264593,
+"x": 465673.0,
+"y": 5456977.1
+},
+{
+"osm": "way/263644497",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "Wircon GmbH",
+"max_voltage_kv": 20,
+"point_method": "outline",
+"lon": 8.526223,
+"lat": 49.26145,
+"x": 465528.5,
+"y": 5456628.6
+},
+{
+"osm": "way/310909612",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "outline",
+"lon": 8.959458,
+"lat": 47.779634,
+"x": 496962.9,
+"y": 5291808.8
+},
+{
+"osm": "way/362083058",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "DB Energie",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.503104,
+"lat": 49.445208,
+"x": 463980.9,
+"y": 5477068.1
+},
+{
+"osm": "way/400304987",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "outline",
+"lon": 10.264604,
+"lat": 48.627154,
+"x": 593183.8,
+"y": 5386781.4
+},
+{
+"osm": "way/407750378",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "outline",
+"lon": 8.179256,
+"lat": 47.818549,
+"x": 438562.0,
+"y": 5296459.2
+},
+{
+"osm": "way/581691556",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "Tesla, Inc.",
+"max_voltage_kv": null,
+"point_method": "outline",
+"lon": 9.077218,
+"lat": 49.211966,
+"x": 505623.9,
+"y": 5451022.3
+},
+{
+"osm": "way/586994824",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "Tesla",
+"max_voltage_kv": null,
+"point_method": "outline",
+"lon": 8.037861,
+"lat": 48.641371,
+"x": 429123.3,
+"y": 5388036.6
+},
+{
+"osm": "way/984864052",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "outline",
+"lon": 9.740189,
+"lat": 48.233919,
+"x": 554964.5,
+"y": 5342564.8
+},
+{
+"osm": "way/991013773",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "DB Energie GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.997414,
+"lat": 47.821901,
+"x": 574657.9,
+"y": 5296987.1
+},
+{
+"osm": "way/991013774",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "DB Energie GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.997335,
+"lat": 47.822043,
+"x": 574651.9,
+"y": 5297002.9
+},
+{
+"osm": "way/991013779",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "DB Energie GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.624029,
+"lat": 47.837352,
+"x": 546695.8,
+"y": 5298411.3
+},
+{
+"osm": "way/991013780",
+"names": [],
+"power": "converter",
+"place": null,
+"operator": "DB Energie GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.624104,
+"lat": 47.83719,
+"x": 546701.5,
+"y": 5298393.4
+},
+{
+"osm": "way/41398918",
+"names": [
+"110-kV-Umspannwerk Gaggenau"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.33268,
+"lat": 48.80033,
+"x": 450995.8,
+"y": 5405474.5
+},
+{
+"osm": "way/72987572",
+"names": [
+"110-kV-Umspannwerk Gernsbach"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.345311,
+"lat": 48.77352,
+"x": 451897.8,
+"y": 5402486.3
+},
+{
+"osm": "way/32404366",
+"names": [
+"110kV Umspannwerk Langensteinbach"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.501079,
+"lat": 48.923165,
+"x": 463451.6,
+"y": 5419034.5
+},
+{
+"osm": "way/31130143",
+"names": [
+"110kV-Umspannwerk Otterswang"
+],
+"power": "substation",
+"place": null,
+"operator": "EnBW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.651022,
+"lat": 47.980604,
+"x": 548581.4,
+"y": 5314349.5
+},
+{
+"osm": "way/32966636",
+"names": [
+"220 kV-Umspannwerk Birkenfeld"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW;Netze BW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.641589,
+"lat": 48.890273,
+"x": 473727.4,
+"y": 5415320.0
+},
+{
+"osm": "way/87653464",
+"names": [
+"220-kV-Umspannwerk Eichstetten"
+],
+"power": "substation",
+"place": null,
+"operator": "EnBW",
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 7.751588,
+"lat": 48.096295,
+"x": 407048.3,
+"y": 5327756.8
+},
+{
+"osm": "way/32151621",
+"names": [
+"220-kV-Umspannwerk Kuppenheim"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 8.248449,
+"lat": 48.846314,
+"x": 444861.0,
+"y": 5410643.7
+},
+{
+"osm": "way/48428875",
+"names": [
+"380 kV-Umspannwerk Endersbach (TransnetBW GmbH)"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH;TransnetBW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.377528,
+"lat": 48.812542,
+"x": 527716.8,
+"y": 5406686.0
+},
+{
+"osm": "way/242756113",
+"names": [
+"380-kV-Umspannwerk Eichstetten"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 7.753881,
+"lat": 48.099531,
+"x": 407224.8,
+"y": 5328113.7
+},
+{
+"osm": "way/31131325",
+"names": [
+"380kV-Umspannwerk Grünkraut"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.645373,
+"lat": 47.744743,
+"x": 548378.8,
+"y": 5288131.8
+},
+{
+"osm": "way/152973139",
+"names": [
+"Amprion Station Rheinau"
+],
+"power": "substation",
+"place": null,
+"operator": "Amprion",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.546916,
+"lat": 49.440211,
+"x": 467153.4,
+"y": 5476492.5
+},
+{
+"osm": "way/25802269",
+"names": [
+"Amprion Umspannwerk Hoheneck"
+],
+"power": "substation",
+"place": null,
+"operator": "Amprion",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.190752,
+"lat": 48.914251,
+"x": 513976.0,
+"y": 5417941.0
+},
+{
+"osm": "way/147878692",
+"names": [
+"Bahnstrom-Umrichterwerk Neckarwestheim"
+],
+"power": "substation",
+"place": null,
+"operator": "DB Energie",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.177496,
+"lat": 49.037737,
+"x": 512972.7,
+"y": 5431666.0
+},
+{
+"osm": "way/153332489",
+"names": [
+"Bahnstromumformerwerk Neckarwestheim"
+],
+"power": "converter",
+"place": null,
+"operator": "DB Energie GmbH",
+"max_voltage_kv": 12,
+"point_method": "outline",
+"lon": 9.177828,
+"lat": 49.039598,
+"x": 512996.4,
+"y": 5431872.9
+},
+{
+"osm": "way/102743264",
+"names": [
+"Beuren"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 8.862017,
+"lat": 47.80632,
+"x": 489668.7,
+"y": 5294783.1
+},
+{
+"osm": "way/41389594",
+"names": [
+"Dellmensingen"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH;TransnetBW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.88571,
+"lat": 48.304426,
+"x": 565680.0,
+"y": 5350515.9
+},
+{
+"osm": "way/41334805",
+"names": [
+"Drehstromschaltwerk Neckarwestheim"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.205239,
+"lat": 49.04238,
+"x": 514998.9,
+"y": 5432187.3
+},
+{
+"osm": "way/146363949",
+"names": [
+"Eglosheim"
+],
+"power": "substation",
+"place": null,
+"operator": "Stadtwerke Ludwigsburg-Kornwestheim GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.177552,
+"lat": 48.905605,
+"x": 513011.1,
+"y": 5416977.6
+},
+{
+"osm": "relation/17591073",
+"names": [
+"GKM Station B"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 220,
+"point_method": "bbox_centre",
+"lon": 8.501917,
+"lat": 49.444942,
+"x": 463894.6,
+"y": 5477039.0
+},
+{
+"osm": "way/153328698",
+"names": [
+"Gemeinschaftskraftwerk Neckarwestheim 2 (GKN2)"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.17727,
+"lat": 49.039398,
+"x": 512955.7,
+"y": 5431850.6
+},
+{
+"osm": "way/1530373865",
+"names": [
+"Geplantes Umspannwerk Pfullendorf"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.268151,
+"lat": 47.941141,
+"x": 520025.6,
+"y": 5309793.1
+},
+{
+"osm": "way/691662101",
+"names": [
+"Gleichstrom-Umspannwerk Philippsburg",
+"Konverter Philippsburg"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.439273,
+"lat": 49.255084,
+"x": 459196.9,
+"y": 5455964.1
+},
+{
+"osm": "way/108797675",
+"names": [
+"Grafenrheinfeld"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 10.18831,
+"lat": 49.981072,
+"x": 585195.1,
+"y": 5537202.8
+},
+{
+"osm": "way/231443162",
+"names": [
+"Heidelberg West"
+],
+"power": "substation",
+"place": null,
+"operator": "Stadtwerke Heidelberg Netze GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.650792,
+"lat": 49.407491,
+"x": 474667.1,
+"y": 5472814.9
+},
+{
+"osm": "way/156676050",
+"names": [
+"Heidelberg-Süd"
+],
+"power": "substation",
+"place": null,
+"operator": "Stadtwerke Heidelberg Netze GmbH",
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 8.663708,
+"lat": 49.360066,
+"x": 475580.6,
+"y": 5467538.3
+},
+{
+"osm": "way/1038821599",
+"names": [
+"Heilbronn"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.20892,
+"lat": 49.174161,
+"x": 515227.6,
+"y": 5446837.7
+},
+{
+"osm": "way/1104947187",
+"names": [
+"Heilbronn"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.207113,
+"lat": 49.177715,
+"x": 515094.8,
+"y": 5447232.4
+},
+{
+"osm": "way/202865177",
+"names": [
+"Kabelanfang PSP Wehr"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 7.936916,
+"lat": 47.649102,
+"x": 420162.9,
+"y": 5277848.0
+},
+{
+"osm": "way/288174057",
+"names": [
+"Karlsruhe Nord",
+"Umspannwerk Moltkestraße"
+],
+"power": "substation",
+"place": null,
+"operator": "Stadtwerke Karlsruhe Netzservice",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.392394,
+"lat": 49.015507,
+"x": 455572.1,
+"y": 5429357.4
+},
+{
+"osm": "way/152261133",
+"names": [
+"Karlsruhe-Daxlanden"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.313506,
+"lat": 49.009159,
+"x": 449797.4,
+"y": 5428701.0
+},
+{
+"osm": "way/32731290",
+"names": [
+"Karlsruhe-West"
+],
+"power": "substation",
+"place": null,
+"operator": "Stadtwerke Karlsruhe Netzservice GmbH",
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 8.348915,
+"lat": 49.013146,
+"x": 452390.7,
+"y": 5429121.3
+},
+{
+"osm": "way/546708539",
+"names": [
+"Ludwigsburg/Nord"
+],
+"power": "substation",
+"place": null,
+"operator": "Stadtwerke Ludwigsburg-Kornwestheim GmbH",
+"max_voltage_kv": null,
+"point_method": "outline",
+"lon": 9.201333,
+"lat": 48.902273,
+"x": 514754.8,
+"y": 5416611.5
+},
+{
+"osm": "way/88394944",
+"names": [
+"Lörrach"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 7.672722,
+"lat": 47.622909,
+"x": 400272.5,
+"y": 5275242.9
+},
+{
+"osm": "way/32640453",
+"names": [
+"MVV Netze Umspannwerk 3 Käfertal"
+],
+"power": "substation",
+"place": null,
+"operator": "MVV Netze GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.523127,
+"lat": 49.506978,
+"x": 465475.8,
+"y": 5483925.9
+},
+{
+"osm": "way/140924713",
+"names": [
+"MVV Umspannwerk 2 Galileistraße"
+],
+"power": "substation",
+"place": null,
+"operator": "MVV Netze",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.475623,
+"lat": 49.479203,
+"x": 462015.2,
+"y": 5480860.9
+},
+{
+"osm": "way/153089322",
+"names": [
+"Netze BW Station Rheinau"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.544435,
+"lat": 49.435435,
+"x": 466970.3,
+"y": 5475962.6
+},
+{
+"osm": "way/26403575",
+"names": [
+"Netze BW Umspannwerk Bünzwangen"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.562702,
+"lat": 48.701547,
+"x": 541402.7,
+"y": 5394431.7
+},
+{
+"osm": "way/161446245",
+"names": [
+"Netze BW Umspannwerk Dossenheim"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.664428,
+"lat": 49.455623,
+"x": 475680.1,
+"y": 5478161.3
+},
+{
+"osm": "way/182177552",
+"names": [
+"Netze BW Umspannwerk Ladenburg"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.597642,
+"lat": 49.483613,
+"x": 470856.5,
+"y": 5481296.8
+},
+{
+"osm": "way/88916034",
+"names": [
+"Netzknoten Kühmoos"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 7.95818,
+"lat": 47.595983,
+"x": 421680.4,
+"y": 5271922.8
+},
+{
+"osm": "way/207248812",
+"names": [
+"Neurott"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.62306,
+"lat": 49.356705,
+"x": 472627.1,
+"y": 5467178.5
+},
+{
+"osm": "way/31131320",
+"names": [
+"Obermooweiler"
+],
+"power": "substation",
+"place": null,
+"operator": "Transnet BW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.801407,
+"lat": 47.652966,
+"x": 560181.0,
+"y": 5278041.1
+},
+{
+"osm": "way/48057110",
+"names": [
+"Philippsburg"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.44101,
+"lat": 49.250192,
+"x": 459319.4,
+"y": 5455419.4
+},
+{
+"osm": "way/272646943",
+"names": [
+"RDK7"
+],
+"power": "substation",
+"place": null,
+"operator": "EnBW AG",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.304463,
+"lat": 49.011543,
+"x": 449138.6,
+"y": 5428972.0
+},
+{
+"osm": "way/809941086",
+"names": [
+"RDK8"
+],
+"power": "substation",
+"place": null,
+"operator": "EnBW Energie Baden-Württemberg AG",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.30624,
+"lat": 49.012582,
+"x": 449269.6,
+"y": 5429086.3
+},
+{
+"osm": "way/109029717",
+"names": [
+"Rheinfelden"
+],
+"power": "substation",
+"place": null,
+"operator": "ED Netze",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 7.800559,
+"lat": 47.571265,
+"x": 409788.9,
+"y": 5269347.0
+},
+{
+"osm": "way/1327333164",
+"names": [
+"Schaltanlage NetzeBW 110kV"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.150559,
+"lat": 49.142492,
+"x": 510980.8,
+"y": 5443307.1
+},
+{
+"osm": "way/88901626",
+"names": [
+"Schwörstadt"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 7.843377,
+"lat": 47.585833,
+"x": 413033.3,
+"y": 5270917.1
+},
+{
+"osm": "way/120678988",
+"names": [
+"Station Wimpfen"
+],
+"power": "substation",
+"place": null,
+"operator": "RWE",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.132699,
+"lat": 49.239561,
+"x": 509659.3,
+"y": 5454095.7
+},
+{
+"osm": "way/674736058",
+"names": [
+"Stockach 110kV"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.014489,
+"lat": 47.845838,
+"x": 501084.0,
+"y": 5299166.1
+},
+{
+"osm": "way/31367936",
+"names": [
+"Stockach 220kV"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW GmbH",
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 9.012857,
+"lat": 47.844709,
+"x": 500962.0,
+"y": 5299040.6
+},
+{
+"osm": "way/228957523",
+"names": [
+"Tamm"
+],
+"power": "substation",
+"place": null,
+"operator": "Stadtwerke Ludwigsburg-Kornwestheim GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.147706,
+"lat": 48.927186,
+"x": 510819.3,
+"y": 5419372.0
+},
+{
+"osm": "way/378697665",
+"names": [
+"Trafostation Ludwigsburg/Mitte"
+],
+"power": "substation",
+"place": null,
+"operator": "Stadtwerke Ludwigsburg-Kornwestheim GmbH",
+"max_voltage_kv": null,
+"point_method": "outline",
+"lon": 9.185123,
+"lat": 48.895546,
+"x": 513568.7,
+"y": 5415860.7
+},
+{
+"osm": "way/25786404",
+"names": [
+"Transnet BW Umspannwerk Hoheneck"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 9.196549,
+"lat": 48.913153,
+"x": 514401.1,
+"y": 5417820.1
+},
+{
+"osm": "way/1430509179",
+"names": [
+"Umspannstation"
+],
+"power": "substation",
+"place": null,
+"operator": "FairNetz",
+"max_voltage_kv": null,
+"point_method": "outline",
+"lon": 9.166259,
+"lat": 48.568532,
+"x": 512265.3,
+"y": 5379506.7
+},
+{
+"osm": "way/1351650752",
+"names": [
+"Umspannstation Gießenbrücke"
+],
+"power": "substation",
+"place": null,
+"operator": "EnBW Regional AG",
+"max_voltage_kv": null,
+"point_method": "outline",
+"lon": 9.597392,
+"lat": 47.629593,
+"x": 544880.7,
+"y": 5275305.2
+},
+{
+"osm": "way/165634583",
+"names": [
+"Umspannstation Schramberg"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.381509,
+"lat": 48.229971,
+"x": 454068.8,
+"y": 5342045.9
+},
+{
+"osm": "way/35908199",
+"names": [
+"Umspannwerk 1"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.457383,
+"lat": 49.502748,
+"x": 460712.7,
+"y": 5483487.8
+},
+{
+"osm": "way/138703817",
+"names": [
+"Umspannwerk Albbruck"
+],
+"power": "substation",
+"place": null,
+"operator": "ED Netze",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.126502,
+"lat": 47.59228,
+"x": 434329.5,
+"y": 5271355.1
+},
+{
+"osm": "way/37721677",
+"names": [
+"Umspannwerk Altbach 1"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.371012,
+"lat": 48.718969,
+"x": 527289.1,
+"y": 5396282.0
+},
+{
+"osm": "way/1465630139",
+"names": [
+"Umspannwerk Altheimer Grund"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": null,
+"point_method": "outline",
+"lon": 9.440796,
+"lat": 49.549629,
+"x": 531884.6,
+"y": 5488651.7
+},
+{
+"osm": "way/409305507",
+"names": [
+"Umspannwerk Altlußheim"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 8.511596,
+"lat": 49.293441,
+"x": 464487.3,
+"y": 5460191.8
+},
+{
+"osm": "way/154730260",
+"names": [
+"Umspannwerk Baienfurt Schachen"
+],
+"power": "substation",
+"place": null,
+"operator": "EnBW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.631544,
+"lat": 47.837675,
+"x": 547257.8,
+"y": 5298451.8
+},
+{
+"osm": "way/149076077",
+"names": [
+"Umspannwerk Bauernfeldstraße"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.198999,
+"lat": 48.780434,
+"x": 441155.9,
+"y": 5403357.6
+},
+{
+"osm": "way/698936607",
+"names": [
+"Umspannwerk Blankenloch"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.482058,
+"lat": 49.069441,
+"x": 462169.2,
+"y": 5435304.4
+},
+{
+"osm": "way/202830460",
+"names": [
+"Umspannwerk Breitenmatt"
+],
+"power": "substation",
+"place": null,
+"operator": "ED Netze",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.03922,
+"lat": 47.559299,
+"x": 427722.2,
+"y": 5267767.2
+},
+{
+"osm": "way/254326606",
+"names": [
+"Umspannwerk Bruchsal-Kändelweg"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH;TransnetBW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.562183,
+"lat": 49.132885,
+"x": 468062.3,
+"y": 5442320.4
+},
+{
+"osm": "way/102625864",
+"names": [
+"Umspannwerk Buch"
+],
+"power": "substation",
+"place": null,
+"operator": "EnBW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.562106,
+"lat": 47.684435,
+"x": 542185.6,
+"y": 5281380.5
+},
+{
+"osm": "way/1212202333",
+"names": [
+"Umspannwerk Burladingen"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.144798,
+"lat": 48.288574,
+"x": 510740.9,
+"y": 5348385.0
+},
+{
+"osm": "way/435068539",
+"names": [
+"Umspannwerk Böblingen-Ost"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.04123,
+"lat": 48.686345,
+"x": 503034.5,
+"y": 5392590.1
+},
+{
+"osm": "way/39011884",
+"names": [
+"Umspannwerk Bühl"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 8.120647,
+"lat": 48.705087,
+"x": 435303.4,
+"y": 5395045.6
+},
+{
+"osm": "way/93522878",
+"names": [
+"Umspannwerk Denzlingen"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 7.911706,
+"lat": 48.075516,
+"x": 418937.2,
+"y": 5325266.4
+},
+{
+"osm": "way/169348252",
+"names": [
+"Umspannwerk Dornstadt"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.96062,
+"lat": 48.472812,
+"x": 571000.3,
+"y": 5369299.1
+},
+{
+"osm": "way/87756080",
+"names": [
+"Umspannwerk Dotternhausen"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.778735,
+"lat": 48.231163,
+"x": 483568.5,
+"y": 5342017.2
+},
+{
+"osm": "way/114406893",
+"names": [
+"Umspannwerk Eberbach"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.995972,
+"lat": 49.459762,
+"x": 499708.1,
+"y": 5478567.4
+},
+{
+"osm": "way/138659368",
+"names": [
+"Umspannwerk Ebingen"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.035685,
+"lat": 48.205402,
+"x": 502651.3,
+"y": 5339130.9
+},
+{
+"osm": "way/1251777450",
+"names": [
+"Umspannwerk Endingen"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 7.705159,
+"lat": 48.152123,
+"x": 403695.9,
+"y": 5334019.0
+},
+{
+"osm": "way/42736239",
+"names": [
+"Umspannwerk Engstlatt"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH;TransnetBW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.872797,
+"lat": 48.310205,
+"x": 490568.3,
+"y": 5350787.0
+},
+{
+"osm": "way/144432365",
+"names": [
+"Umspannwerk Erlau"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 10.11122,
+"lat": 48.827065,
+"x": 581557.8,
+"y": 5408827.1
+},
+{
+"osm": "way/93459372",
+"names": [
+"Umspannwerk Freiburg - Mooswaldallee"
+],
+"power": "substation",
+"place": null,
+"operator": "badenova",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 7.857454,
+"lat": 48.035296,
+"x": 414829.9,
+"y": 5320854.7
+},
+{
+"osm": "way/369944837",
+"names": [
+"Umspannwerk Gaisburg"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.222017,
+"lat": 48.788375,
+"x": 516307.5,
+"y": 5403954.6
+},
+{
+"osm": "way/42050342",
+"names": [
+"Umspannwerk Goldshöfe"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 10.11777,
+"lat": 48.897187,
+"x": 581924.0,
+"y": 5416628.9
+},
+{
+"osm": "way/1327333163",
+"names": [
+"Umspannwerk Großgartach TransnetBW 380kV"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.149465,
+"lat": 49.142872,
+"x": 510901.0,
+"y": 5443349.1
+},
+{
+"osm": "way/25371276",
+"names": [
+"Umspannwerk Großholz"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.09587,
+"lat": 48.520637,
+"x": 507079.2,
+"y": 5374173.9
+},
+{
+"osm": "way/31367937",
+"names": [
+"Umspannwerk Gurtweil"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 8.251989,
+"lat": 47.63956,
+"x": 443814.3,
+"y": 5276511.0
+},
+{
+"osm": "way/27385181",
+"names": [
+"Umspannwerk Gültstein"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.896788,
+"lat": 48.577171,
+"x": 492387.1,
+"y": 5380458.7
+},
+{
+"osm": "way/25306752",
+"names": [
+"Umspannwerk Herbertingen"
+],
+"power": "substation",
+"place": null,
+"operator": "EnBW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.425065,
+"lat": 48.064506,
+"x": 531668.3,
+"y": 5323557.2
+},
+{
+"osm": "way/23098846",
+"names": [
+"Umspannwerk Herrenberg"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.87501,
+"lat": 48.602509,
+"x": 490785.4,
+"y": 5383277.6
+},
+{
+"osm": "way/145002769",
+"names": [
+"Umspannwerk Höpfingen"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW;Netze BW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.44674,
+"lat": 49.590301,
+"x": 532287.7,
+"y": 5493176.0
+},
+{
+"osm": "way/143903369",
+"names": [
+"Umspannwerk Hüffenhardt"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW;Netze BW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.09183,
+"lat": 49.294651,
+"x": 506677.0,
+"y": 5460215.6
+},
+{
+"osm": "way/32725958",
+"names": [
+"Umspannwerk Karlsruhe Ost",
+"Umspannwerk Karlsruhe-Rintheim",
+"Umspannwerk Ost"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 8.451854,
+"lat": 49.007438,
+"x": 459913.3,
+"y": 5428427.4
+},
+{
+"osm": "way/1362798512",
+"names": [
+"Umspannwerk Kork"
+],
+"power": "substation",
+"place": null,
+"operator": "Transnet BW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 7.861045,
+"lat": 48.574597,
+"x": 415987.5,
+"y": 5380793.6
+},
+{
+"osm": "way/143854536",
+"names": [
+"Umspannwerk Kupferzell"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.694834,
+"lat": 49.232835,
+"x": 550584.4,
+"y": 5453571.7
+},
+{
+"osm": "way/26404600",
+"names": [
+"Umspannwerk Laichingen"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.704299,
+"lat": 48.464866,
+"x": 552063.6,
+"y": 5368209.8
+},
+{
+"osm": "way/138659367",
+"names": [
+"Umspannwerk Lautlingen"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.942299,
+"lat": 48.214107,
+"x": 495713.6,
+"y": 5340099.3
+},
+{
+"osm": "way/197145478",
+"names": [
+"Umspannwerk Mannheim"
+],
+"power": "substation",
+"place": null,
+"operator": "Transnet BW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.493181,
+"lat": 49.44606,
+"x": 463262.2,
+"y": 5477167.5
+},
+{
+"osm": "way/97825259",
+"names": [
+"Umspannwerk Marbach"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH;TransnetBW GmbH",
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 9.236405,
+"lat": 48.926783,
+"x": 517316.6,
+"y": 5419343.6
+},
+{
+"osm": "way/142993613",
+"names": [
+"Umspannwerk Meimsheim"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.10127,
+"lat": 49.063055,
+"x": 507397.8,
+"y": 5434470.3
+},
+{
+"osm": "way/30734324",
+"names": [
+"Umspannwerk Metzingen"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH;TransnetBW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.274119,
+"lat": 48.549994,
+"x": 520229.7,
+"y": 5377469.0
+},
+{
+"osm": "way/146878067",
+"names": [
+"Umspannwerk Mosbach"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.15121,
+"lat": 49.371453,
+"x": 510977.4,
+"y": 5468760.8
+},
+{
+"osm": "way/22960899",
+"names": [
+"Umspannwerk Mühlhausen"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.215909,
+"lat": 48.852277,
+"x": 515838.8,
+"y": 5411056.7
+},
+{
+"osm": "way/31105067",
+"names": [
+"Umspannwerk Niederstotzingen"
+],
+"power": "substation",
+"place": null,
+"operator": "EnBW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 10.231283,
+"lat": 48.529634,
+"x": 590903.3,
+"y": 5375901.4
+},
+{
+"osm": "way/144437237",
+"names": [
+"Umspannwerk Nord"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 10.099059,
+"lat": 48.852087,
+"x": 580625.0,
+"y": 5411595.5
+},
+{
+"osm": "way/26814283",
+"names": [
+"Umspannwerk Oberjettingen"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH;TransnetBW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.785243,
+"lat": 48.583664,
+"x": 484161.6,
+"y": 5381197.6
+},
+{
+"osm": "way/32725957",
+"names": [
+"Umspannwerk Oberwald"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW;Netze BW",
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 8.445437,
+"lat": 48.986058,
+"x": 459426.6,
+"y": 5426054.1
+},
+{
+"osm": "way/41389394",
+"names": [
+"Umspannwerk Ochsenhausen"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.95481,
+"lat": 48.079694,
+"x": 571114.4,
+"y": 5325598.9
+},
+{
+"osm": "way/107475255",
+"names": [
+"Umspannwerk Ost"
+],
+"power": "substation",
+"place": null,
+"operator": "Stadtwerke Ulm/Neu Ulm",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.984592,
+"lat": 48.426235,
+"x": 572838.7,
+"y": 5364144.4
+},
+{
+"osm": "way/43688805",
+"names": [
+"Umspannwerk Pulverdingen"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.045515,
+"lat": 48.902937,
+"x": 503335.5,
+"y": 5416666.9
+},
+{
+"osm": "way/139076638",
+"names": [
+"Umspannwerk Ravensburg"
+],
+"power": "substation",
+"place": null,
+"operator": "EnBW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.621414,
+"lat": 47.795436,
+"x": 546537.5,
+"y": 5293751.2
+},
+{
+"osm": "way/87287424",
+"names": [
+"Umspannwerk Rielasingen"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.836176,
+"lat": 47.741281,
+"x": 487718.5,
+"y": 5287558.3
+},
+{
+"osm": "way/38325076",
+"names": [
+"Umspannwerk Rotensohl",
+"UW Rotensohl"
+],
+"power": "substation",
+"place": null,
+"operator": "EnBW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 10.222433,
+"lat": 48.736709,
+"x": 589881.3,
+"y": 5398908.5
+},
+{
+"osm": "way/31692357",
+"names": [
+"Umspannwerk Schwann"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.554857,
+"lat": 48.838473,
+"x": 467336.0,
+"y": 5409595.3
+},
+{
+"osm": "way/31653753",
+"names": [
+"Umspannwerk Stalldorf"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.944934,
+"lat": 49.578166,
+"x": 568310.8,
+"y": 5492159.8
+},
+{
+"osm": "way/41393670",
+"names": [
+"Umspannwerk Söflingen"
+],
+"power": "substation",
+"place": null,
+"operator": "EnBW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.943183,
+"lat": 48.404548,
+"x": 569805.0,
+"y": 5361695.3
+},
+{
+"osm": "way/41389404",
+"names": [
+"Umspannwerk Süd"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.953474,
+"lat": 48.359415,
+"x": 570629.0,
+"y": 5356688.1
+},
+{
+"osm": "way/31367940",
+"names": [
+"Umspannwerk Tiengen"
+],
+"power": "substation",
+"place": null,
+"operator": "Amprion",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.259398,
+"lat": 47.634281,
+"x": 444365.2,
+"y": 5275919.1
+},
+{
+"osm": "way/35954395",
+"names": [
+"Umspannwerk Trossingen"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.616516,
+"lat": 48.066024,
+"x": 471430.3,
+"y": 5323709.7
+},
+{
+"osm": "way/34868476",
+"names": [
+"Umspannwerk Tunsel"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW;ED Netze",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 7.662045,
+"lat": 47.914616,
+"x": 400030.9,
+"y": 5307676.5
+},
+{
+"osm": "way/42049947",
+"names": [
+"Umspannwerk Villingen"
+],
+"power": "substation",
+"place": null,
+"operator": "EnBW; Energiedienst",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.465575,
+"lat": 48.04348,
+"x": 460167.9,
+"y": 5321271.0
+},
+{
+"osm": "way/36960150",
+"names": [
+"Umspannwerk Waldhäuser"
+],
+"power": "substation",
+"place": null,
+"operator": "Stadtwerke Tübingen",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.055729,
+"lat": 48.541503,
+"x": 504113.4,
+"y": 5376490.4
+},
+{
+"osm": "way/146962222",
+"names": [
+"Umspannwerk Weier"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 7.910588,
+"lat": 48.501218,
+"x": 419525.6,
+"y": 5372584.0
+},
+{
+"osm": "way/933248930",
+"names": [
+"Umspannwerk Weier"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 7.908718,
+"lat": 48.501722,
+"x": 419388.3,
+"y": 5372641.9
+},
+{
+"osm": "way/102640013",
+"names": [
+"Umspannwerk Weildorf"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.302472,
+"lat": 47.79238,
+"x": 522653.4,
+"y": 5293268.8
+},
+{
+"osm": "way/116613615",
+"names": [
+"Umspannwerk Weilheim"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.923899,
+"lat": 48.353447,
+"x": 494362.1,
+"y": 5355588.4
+},
+{
+"osm": "way/23414063",
+"names": [
+"Umspannwerk Weilimdorf"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.09682,
+"lat": 48.827913,
+"x": 507106.0,
+"y": 5408330.5
+},
+{
+"osm": "way/160929097",
+"names": [
+"Umspannwerk Weinheim"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW;Netze BW",
+"max_voltage_kv": 220,
+"point_method": "outline",
+"lon": 8.627001,
+"lat": 49.543413,
+"x": 473016.0,
+"y": 5487934.1
+},
+{
+"osm": "way/26260052",
+"names": [
+"Umspannwerk Wendlingen"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW GmbH",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 9.400711,
+"lat": 48.666953,
+"x": 529503.9,
+"y": 5390511.1
+},
+{
+"osm": "way/46584363",
+"names": [
+"Umspannwerk Wiesloch"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW;Netze BW",
+"max_voltage_kv": 380,
+"point_method": "outline",
+"lon": 8.673888,
+"lat": 49.290338,
+"x": 476286.3,
+"y": 5459783.3
+},
+{
+"osm": "way/32205824",
+"names": [
+"Umspannwerk Winnenden"
+],
+"power": "substation",
+"place": null,
+"operator": "TransnetBW GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.378844,
+"lat": 48.879801,
+"x": 527776.2,
+"y": 5414163.1
+},
+{
+"osm": "way/103336526",
+"names": [
+"Umspannwerk Winterlingen"
+],
+"power": "substation",
+"place": null,
+"operator": "Netze BW GmbH",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 9.147058,
+"lat": 48.176113,
+"x": 510932.5,
+"y": 5335885.3
+},
+{
+"osm": "way/1466799812",
+"names": [
+"Umspannwerk Zimmern"
+],
+"power": "substation",
+"place": null,
+"operator": "ENRW Energieversorgung Rottweil GmbH & Co. KG",
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.56271,
+"lat": 48.1719,
+"x": 467488.7,
+"y": 5335498.9
+},
+{
+"osm": "way/88124820",
+"names": [
+"Umspannwerk Zollhaus"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 8.550842,
+"lat": 47.831894,
+"x": 466386.2,
+"y": 5297713.9
+},
+{
+"osm": "way/426662540",
+"names": [
+"Zell"
+],
+"power": "substation",
+"place": null,
+"operator": null,
+"max_voltage_kv": 110,
+"point_method": "outline",
+"lon": 7.846765,
+"lat": 47.699412,
+"x": 413475.8,
+"y": 5283536.1
+}
+],
+"places": [
+{
+"osm": "node/1582614829",
+"names": [
+"Beuren"
+],
+"power": null,
+"place": "hamlet",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.880779,
+"lat": 47.663514,
+"x": 566128.0,
+"y": 5279278.1
+},
+{
+"osm": "node/1678057292",
+"names": [
+"Beuren"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.323443,
+"lat": 47.802414,
+"x": 524219.4,
+"y": 5294390.4
+},
+{
+"osm": "node/1700232367",
+"names": [
+"Beuren"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 10.187243,
+"lat": 48.357835,
+"x": 587948.1,
+"y": 5356754.3
+},
+{
+"osm": "node/208174919",
+"names": [
+"Beuren"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 10.01172,
+"lat": 47.74367,
+"x": 575842.5,
+"y": 5288306.5
+},
+{
+"osm": "node/2255879335",
+"names": [
+"Beuren"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.811942,
+"lat": 47.626124,
+"x": 561003.4,
+"y": 5275066.1
+},
+{
+"osm": "node/240091595",
+"names": [
+"Beuren"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.400501,
+"lat": 48.569592,
+"x": 529545.2,
+"y": 5379688.6
+},
+{
+"osm": "node/263884809",
+"names": [
+"Beuren"
+],
+"power": null,
+"place": "hamlet",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.920096,
+"lat": 48.775518,
+"x": 567599.7,
+"y": 5402909.9
+},
+{
+"osm": "node/272454364",
+"names": [
+"Beuren"
+],
+"power": null,
+"place": "hamlet",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 10.246398,
+"lat": 48.823283,
+"x": 591485.8,
+"y": 5408560.3
+},
+{
+"osm": "node/276985023",
+"names": [
+"Beuren"
+],
+"power": null,
+"place": "hamlet",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 10.591222,
+"lat": 48.508,
+"x": 617526.2,
+"y": 5373987.4
+},
+{
+"osm": "node/2879635890",
+"names": [
+"Beuren"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.03007,
+"lat": 48.363619,
+"x": 502227.3,
+"y": 5356716.7
+},
+{
+"osm": "node/293232950",
+"names": [
+"Beuren"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.544394,
+"lat": 48.594207,
+"x": 466406.0,
+"y": 5382447.5
+},
+{
+"osm": "node/31057577",
+"names": [
+"Beuren"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.375517,
+"lat": 48.080764,
+"x": 527968.1,
+"y": 5325345.1
+},
+{
+"osm": "node/59869823",
+"names": [
+"Beuren"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 10.006617,
+"lat": 48.264654,
+"x": 574703.8,
+"y": 5346205.8
+},
+{
+"osm": "node/98155334",
+"names": [
+"Daxlanden"
+],
+"power": null,
+"place": "suburb",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.338606,
+"lat": 49.001411,
+"x": 451625.5,
+"y": 5427823.4
+},
+{
+"osm": "node/291410123",
+"names": [
+"Engstlatt"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.875064,
+"lat": 48.299503,
+"x": 490734.4,
+"y": 5349597.1
+},
+{
+"osm": "node/60647145",
+"names": [
+"Grafenrheinfeld"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 10.196681,
+"lat": 50.005532,
+"x": 585751.7,
+"y": 5539931.8
+},
+{
+"osm": "node/2026307991",
+"names": [
+"Großgartach"
+],
+"power": null,
+"place": "suburb",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.12587,
+"lat": 49.142541,
+"x": 509180.2,
+"y": 5443309.2
+},
+{
+"osm": "node/629379893",
+"names": [
+"Gurtweil"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.246514,
+"lat": 47.641242,
+"x": 443404.9,
+"y": 5276702.0
+},
+{
+"osm": "node/30916358",
+"names": [
+"Istein"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 7.53962,
+"lat": 47.658483,
+"x": 390346.3,
+"y": 5279376.2
+},
+{
+"osm": "node/27149581",
+"names": [
+"Kork"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 7.870206,
+"lat": 48.567002,
+"x": 416650.7,
+"y": 5379939.4
+},
+{
+"osm": "node/2289435686",
+"names": [
+"Kühmoos"
+],
+"power": null,
+"place": "isolated_dwelling",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 7.965797,
+"lat": 47.599045,
+"x": 422257.6,
+"y": 5272255.5
+},
+{
+"osm": "node/29727657",
+"names": [
+"Leingarten"
+],
+"power": null,
+"place": "town",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.124057,
+"lat": 49.143427,
+"x": 509047.7,
+"y": 5443407.4
+},
+{
+"osm": "node/240049985",
+"names": [
+"Merdingen"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 7.684799,
+"lat": 48.019575,
+"x": 401929.9,
+"y": 5319312.7
+},
+{
+"osm": "node/357121418",
+"names": [
+"Obermooweiler"
+],
+"power": null,
+"place": "hamlet",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.806313,
+"lat": 47.653119,
+"x": 560549.2,
+"y": 5278061.9
+},
+{
+"osm": "node/1706927952",
+"names": [
+"Pulverdingen"
+],
+"power": null,
+"place": "hamlet",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.023603,
+"lat": 48.905923,
+"x": 501729.7,
+"y": 5416998.1
+},
+{
+"osm": "node/247092792",
+"names": [
+"Reicheneck"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.228775,
+"lat": 48.540797,
+"x": 516886.5,
+"y": 5376435.6
+},
+{
+"osm": "node/974136309",
+"names": [
+"Rippolingen"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 7.988366,
+"lat": 47.576449,
+"x": 423921.4,
+"y": 5269721.8
+},
+{
+"osm": "node/539317979",
+"names": [
+"Rommelsbach"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.204398,
+"lat": 48.53153,
+"x": 515089.9,
+"y": 5375400.5
+},
+{
+"osm": "node/122523451",
+"names": [
+"Stalldorf"
+],
+"power": null,
+"place": "hamlet",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 9.937121,
+"lat": 49.565874,
+"x": 567763.1,
+"y": 5490786.3
+},
+{
+"osm": "node/240064396",
+"names": [
+"Ötisheim"
+],
+"power": null,
+"place": "village",
+"operator": null,
+"max_voltage_kv": null,
+"point_method": "node",
+"lon": 8.803243,
+"lat": 48.960307,
+"x": 485597.3,
+"y": 5423062.0
+}
+]
+}
